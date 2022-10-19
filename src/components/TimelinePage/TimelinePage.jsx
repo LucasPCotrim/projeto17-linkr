@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { publishPost } from '../../services/LinkrAPI';
-import { PublishForm } from '../PublishForm/PublishForm';
+import { PublishForm } from './PublishForm';
 import { PostsContainer } from './PostsContainer';
 import styled from 'styled-components';
 

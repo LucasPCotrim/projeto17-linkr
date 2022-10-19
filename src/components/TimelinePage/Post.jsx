@@ -78,6 +78,7 @@ const LinkPreviewWrapper = styled.div`
   font-style: normal;
   font-weight: 400;
   display: flex;
+  overflow: hidden;
   .info-container {
     width: 69.38%;
     padding-top: 24px;

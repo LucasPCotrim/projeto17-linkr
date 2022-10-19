@@ -13,6 +13,16 @@ function PostsContainer() {
           profileName={'Lele'}
           postDescription={'Muito maneiro esse tutorial de Material UI com React, deem uma olhada!'}
         />
+        <Post
+          profilePic={sampleProfilePic}
+          profileName={'Lele'}
+          postDescription={'Muito maneiro esse tutorial de Material UI com React, deem uma olhada!'}
+        />
+        <Post
+          profilePic={sampleProfilePic}
+          profileName={'Lele'}
+          postDescription={'Muito maneiro esse tutorial de Material UI com React, deem uma olhada!'}
+        />
       </Wrapper>
     </>
   );

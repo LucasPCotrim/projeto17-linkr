@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import logo from '../../assets/yoda.jpeg';
+
 const PublishForm = ({ handleForm, status }) => {
   const isLoading = status === 'loading';
   const isError = status === 'error';
