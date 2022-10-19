@@ -18,7 +18,7 @@ function LinkPreview({ url }) {
   );
 }
 
-function Post({ profilePic, profileName, postUrl, postDescription }) {
+export default function Post({ profilePic, profileName, postUrl, postDescription }) {
   return (
     <Wrapper>
       <img src={profilePic} alt='profilePic' />
@@ -105,5 +105,3 @@ const LinkPreviewWrapper = styled.div`
     height: 155px;
   }
 `;
-
-export default Post;
