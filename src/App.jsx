@@ -3,6 +3,7 @@ import GlobalStyle from "./global/GlobalStyle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import PrivatePage from "./components/PrivatePage";
+import LoginPage from "./components/SignIn/LoginPage";
 import { Timeline } from "./components/TimelinePage/Timeline";
 import SignUp from './components/SignUp/SignUp';
 
@@ -15,8 +16,8 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}></UserContext.Provider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<h1>LoginPage</h1>} />
-          <Route path='/sign-up' element={<SignUp />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route
             path="/timeline"
             element={
