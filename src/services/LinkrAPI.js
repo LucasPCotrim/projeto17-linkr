@@ -5,8 +5,14 @@ const BASE_URL =
     : process.env.REACT_APP_API_BASE_URL;
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem('shortly'));
+  const auth = JSON.parse(localStorage.getItem('linkr'));
   return auth?.token;
 }
 
-export { getToken };
+const publishPost = (data, token) => {
+  return axios.post(`${BASE_URL}posts`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export { getToken, publishPost };

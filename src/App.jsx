@@ -3,6 +3,7 @@ import GlobalStyle from './global/GlobalStyle';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserContext from './contexts/UserContext';
 import PrivatePage from './components/PrivatePage';
+import TimelinePage from './components/TimelinePage/TimelinePage';
 
 function App() {
   const [user, setUser] = useState({});
@@ -15,14 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<h1>LoginPage</h1>} />
           <Route path='/sign-up' element={<h1>SignUpPage</h1>} />
-          <Route
-            path='/timeline'
-            element={
-              <PrivatePage>
-                <h1>TimelinePage</h1>
-              </PrivatePage>
-            }
-          />
+          <Route path='/timeline' element={<TimelinePage />} />
           <Route
             path='/hashtag'
             element={
