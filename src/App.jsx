@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import GlobalStyle from './global/GlobalStyle';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserContext from './contexts/UserContext';
-import PrivatePage from './components/PrivatePage';
-import LoginPage from './components/LoginPage';
+import { useState } from "react";
+import GlobalStyle from "./global/GlobalStyle";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserContext from "./contexts/UserContext";
+import PrivatePage from "./components/PrivatePage";
+import LoginPage from "./components/LoginPage";
+import SignUp from "./components/SignUp/SignUp";
 
 function App() {
   const [user, setUser] = useState({});
@@ -14,10 +15,10 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}></UserContext.Provider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<LoginPage />} />
-          <Route path='/sign-up' element={<h1>SignUpPage</h1>} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route
-            path='/timeline'
+            path="/timeline"
             element={
               <PrivatePage>
                 <h1>TimelinePage</h1>
@@ -25,7 +26,7 @@ function App() {
             }
           />
           <Route
-            path='/hashtag'
+            path="/hashtag"
             element={
               <PrivatePage>
                 <h1>HashtagPage</h1>
@@ -33,7 +34,7 @@ function App() {
             }
           />
           <Route
-            path='/user'
+            path="/user"
             element={
               <PrivatePage>
                 <h1>UserPage</h1>
@@ -47,4 +48,3 @@ function App() {
 }
 
 export default App;
-
