@@ -26,15 +26,15 @@ export default function LoginPage() {
         localStorage.setItem(
           "linkr",
           JSON.stringify({
-            name: response.data.name,
             token: response.data.token,
-            profilePic: response.data.profilePic,
           })
         );
         navigate("/timeline");
       })
       .catch((erro) => {
-        alert("Não foi possível logar, tente novamente");
+        alert(
+          "Não foi possível logar, email ou senha incorretos, tente novamente"
+        );
         console.log(erro);
         setEmail("");
         setPassword("");

@@ -10,7 +10,7 @@ function getToken() {
 }
 
 function login(body) {
-  const promise = axios.post(`${URL_BASE}/sign-in`, body);
+  const promise = axios.post(`${BASE_URL}sign-in`, body);
   return promise;
 }
 export { getToken, login };
