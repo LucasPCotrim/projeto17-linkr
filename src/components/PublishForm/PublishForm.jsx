@@ -1,17 +1,31 @@
 import styled from "styled-components";
 import logo from "../../assets/yoda.jpeg";
-const PublishForm = ({}) => {
+const PublishForm = ({ handleForm, status }) => {
+  const isLoading = status === "loading";
+  const isError = status === "error";
+
   return (
     <Container>
       <ContainerHeader>
         <img src={logo} />
         <h3>What are you going to share today?</h3>
       </ContainerHeader>
-      <Form>
-        <input placeholder="http://..." required />
-        <input placeholder="Awesome article about #javascript" />
+      <Form onSubmit={handleForm}>
+        <input
+          id="url"
+          placeholder="http://..."
+          required
+          disabled={isLoading}
+        />
+        <input
+          id="content"
+          placeholder="Awesome article about #javascript"
+          disabled={isLoading}
+        />
         <ButtonContainer>
-          <Button>Publish</Button>
+          <Button disabled={isLoading} type="submit">
+            {isLoading ? "Publishing..." : "Publish"}
+          </Button>
         </ButtonContainer>
       </Form>
     </Container>
@@ -62,10 +76,10 @@ const Form = styled.form`
     padding: 10px;
   }
 
-  input:nth-child(1) {
+  input#id {
     height: 30px;
   }
-  input:nth-child(2) {
+  input#content {
     text-align: left;
     vertical-align: top;
     height: 66px;
@@ -82,6 +96,7 @@ const Button = styled.button`
   width: 112px;
   color: #ffffff;
   height: 31px;
+  cursor: pointer;
   background: #1877f2;
   border-radius: 5px;
 `;
