@@ -3,7 +3,7 @@ import GlobalStyle from "./global/GlobalStyle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import PrivatePage from "./components/PrivatePage";
-import LoginPage from "./components/LoginPage";
+import LoginPage from "./components/SignIn/LoginPage";
 import SignUp from "./components/SignUp/SignUp";
 
 function App() {

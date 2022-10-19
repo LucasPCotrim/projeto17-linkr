@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Loading from "../commons/Loading";
+import Loading from "../../commons/Loading";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/LinkrAPI";
+import { login } from "../../services/LinkrAPI";
 
 export default function LoginPage() {
   const navigate = useNavigate();
