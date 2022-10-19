@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle, css } from "styled-components";
 
 const Reset = css`
   html,
@@ -118,7 +118,7 @@ const Reset = css`
   blockquote:after,
   q:before,
   q:after {
-    content: '';
+    content: "";
     content: none;
   }
   table {
@@ -132,6 +132,9 @@ const Global = css`
     box-sizing: border-box;
     border: 0;
     padding: 0;
+  }
+  body {
+    background-color: #333333;
   }
 `;
 

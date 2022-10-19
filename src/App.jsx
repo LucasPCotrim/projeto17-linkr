@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import GlobalStyle from './global/GlobalStyle';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserContext from './contexts/UserContext';
-import PrivatePage from './components/PrivatePage';
+import { useState } from "react";
+import GlobalStyle from "./global/GlobalStyle";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserContext from "./contexts/UserContext";
+import PrivatePage from "./components/PrivatePage";
+import { Timeline } from "./components/TimelinePage/Timeline";
 import SignUp from './components/SignUp/SignUp';
 
 function App() {
@@ -17,15 +18,15 @@ function App() {
           <Route path='/' element={<h1>LoginPage</h1>} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route
-            path='/timeline'
+            path="/timeline"
             element={
               <PrivatePage>
-                <h1>TimelinePage</h1>
+                <Timeline />
               </PrivatePage>
             }
           />
           <Route
-            path='/hashtag'
+            path="/hashtag"
             element={
               <PrivatePage>
                 <h1>HashtagPage</h1>
@@ -33,7 +34,7 @@ function App() {
             }
           />
           <Route
-            path='/user'
+            path="/user"
             element={
               <PrivatePage>
                 <h1>UserPage</h1>
@@ -47,4 +48,3 @@ function App() {
 }
 
 export default App;
-
