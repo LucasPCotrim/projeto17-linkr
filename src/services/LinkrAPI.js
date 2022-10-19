@@ -9,10 +9,15 @@ function getToken() {
   return auth?.token;
 }
 
+function login(body) {
+  const promise = axios.post(`${BASE_URL}sign-in`, body);
+  return promise;
+}
+
 const publishPost = (data, token) => {
   return axios.post(`${BASE_URL}posts`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-export { getToken, publishPost };
+export { getToken, login, publishPost };
