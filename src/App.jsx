@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import PrivatePage from "./components/PrivatePage";
 import { Timeline } from "./components/TimelinePage/Timeline";
+import SignUp from './components/SignUp/SignUp';
 
 function App() {
   const [user, setUser] = useState({});
@@ -14,9 +15,16 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}></UserContext.Provider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<h1>LoginPage</h1>} />
-          <Route path="/sign-up" element={<h1>SignUpPage</h1>} />
-          <Route path="/timeline" element={<Timeline />} />
+          <Route path='/' element={<h1>LoginPage</h1>} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route
+            path="/timeline"
+            element={
+              <PrivatePage>
+                <Timeline />
+              </PrivatePage>
+            }
+          />
           <Route
             path="/hashtag"
             element={
