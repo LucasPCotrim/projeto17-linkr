@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { BsTrashFill } from "react-icons/bs";
-import Modal from "react-modal";
 import styled from "styled-components";
-import { Button } from "./PublishForm";
+import { DeletionModal } from "./DeletionModal";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -23,21 +22,6 @@ function LinkPreview({ url, metadata }) {
 
 export default function Post({ user, postUrl, postDescription, urlMetadata }) {
   const [isOpen, setIsOpen] = useState(false);
-  const customStyles = {
-    content: {
-      width: "500px",
-      height: "262px",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      background: "#333333",
-      borderRadius: "50px",
-    },
-  };
-
   return (
     <Wrapper>
       <img src={user.profilePic} alt="profilePic" />
@@ -46,18 +30,8 @@ export default function Post({ user, postUrl, postDescription, urlMetadata }) {
           <div className="profile-name">{user.name}</div>
           <div onClick={() => setIsOpen(true)} className="trash">
             <BsTrashFill color="#FFFFFF" />
-            <Modal isOpen={isOpen} style={customStyles}>
-              <ModalContainer>
-                <div className="modal-header">
-                  Are you sure you want to delete this post?
-                </div>
-                <div className="button-container">
-                  <Button>No, go back</Button>
-                  <Button>Yes, delete it </Button>
-                </div>
-              </ModalContainer>
-            </Modal>
           </div>
+          <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
 
         <div className="post-description">{postDescription}</div>
@@ -115,23 +89,6 @@ const PostContent = styled.div`
   }
   a {
     text-decoration: none;
-  }
-`;
-const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .modal-header {
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 34px;
-    text-align: center;
-    color: #ffffff;
-  }
-  .button-container {
-    display: flex;
-    margin-top: 70px;
-    column-gap: 20px;
   }
 `;
 
