@@ -112,5 +112,8 @@ const Button = styled.button`
   cursor: pointer;
   background: #1877f2;
   border-radius: 5px;
+  &:hover {
+    filter: brightness(1.5);
+  }
 `;
 export { PublishForm };
