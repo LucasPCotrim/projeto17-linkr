@@ -43,6 +43,9 @@ const Wrapper = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
+  @media screen and (max-width: 614px) {
+    border-radius: 0;
+  }
 `;
 
 const PostContent = styled.div`
@@ -72,6 +75,7 @@ const PostContent = styled.div`
 
 const LinkPreviewWrapper = styled.div`
   width: 100%;
+  height: 75%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
   font-family: 'Lato';
@@ -83,6 +87,7 @@ const LinkPreviewWrapper = styled.div`
   overflow: hidden;
   .info-container {
     width: 69.38%;
+    height: 100%;
     padding-top: 24px;
     padding-left: 19.31px;
     margin-bottom: 15px;
@@ -106,6 +111,11 @@ const LinkPreviewWrapper = styled.div`
   }
   img {
     width: 155px;
-    height: 155px;
+    height: 100%;
+    object-fit: cover;
+  }
+  &:hover {
+    background-color: #2c2c2c;
+    border: 1px solid #bebebe;
   }
 `;

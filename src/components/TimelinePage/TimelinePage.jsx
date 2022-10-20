@@ -40,7 +40,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   margin-top: 150px;
   margin-bottom: 100px;
-  width: 50%;
+  width: min(100%, 614px);
   header {
     font-family: 'Oswald';
     font-style: normal;
@@ -48,6 +48,8 @@ const Wrapper = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
+    margin-left: 17px;
+    margin-bottom: 19px;
   }
 `;
 

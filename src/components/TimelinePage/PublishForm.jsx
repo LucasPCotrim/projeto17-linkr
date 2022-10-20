@@ -25,8 +25,8 @@ const PublishForm = ({ handleForm, status }) => {
 };
 
 const Container = styled.div`
-  width: 80%;
-  padding: 10px;
+  width: 100%;
+  padding: 10px 14px 10px 10px;
   display: flex;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -34,6 +34,9 @@ const Container = styled.div`
   row-gap: 5px;
   flex-direction: column;
   height: 225px;
+  @media screen and (max-width: 614px) {
+    border-radius: 0;
+  }
 `;
 
 const ContainerHeader = styled.div`
