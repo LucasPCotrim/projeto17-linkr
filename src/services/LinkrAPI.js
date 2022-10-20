@@ -20,4 +20,8 @@ const publishPost = (data, token) => {
   });
 };
 
-export { getToken, login, publishPost };
+const logOn = (body) => {
+  return axios.post(`${BASE_URL}sign-up`, body);
+};
+
+export { getToken, login, publishPost, logOn };
