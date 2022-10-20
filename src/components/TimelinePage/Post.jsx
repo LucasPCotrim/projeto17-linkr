@@ -3,14 +3,16 @@ import styled from 'styled-components';
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <LinkPreviewWrapper>
-        <div className='info-container'>
-          <div className='title'>{metadata.title}</div>
-          <div className='description'>{metadata.description}</div>
-          <div className='link'>{url}</div>
-        </div>
-        <img src={metadata.image} alt='post preview' />
-      </LinkPreviewWrapper>
+      <a href={url} target='_blank'>
+        <LinkPreviewWrapper>
+          <div className='info-container'>
+            <div className='title'>{metadata.title}</div>
+            <div className='description'>{metadata.description}</div>
+            <div className='link'>{url}</div>
+          </div>
+          <img src={metadata.image} alt='post preview' />
+        </LinkPreviewWrapper>
+      </a>
     </>
   );
 }
@@ -35,8 +37,7 @@ const Wrapper = styled.div`
   border-radius: 16px;
   display: flex;
   gap: 18px;
-  margin-bottom: 100px;
-  img {
+  > img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -64,6 +65,9 @@ const PostContent = styled.div`
     color: #b7b7b7;
     margin-bottom: 12px;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 
 const LinkPreviewWrapper = styled.div`
@@ -75,11 +79,13 @@ const LinkPreviewWrapper = styled.div`
   font-weight: 400;
   display: flex;
   justify-content: space-between;
+  gap: 18px;
   overflow: hidden;
   .info-container {
     width: 69.38%;
     padding-top: 24px;
     padding-left: 19.31px;
+    margin-bottom: 15px;
     .title {
       font-size: 16px;
       line-height: 19px;

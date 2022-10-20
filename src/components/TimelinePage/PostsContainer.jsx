@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react';
 import { getPosts } from '../../services/LinkrAPI';
 import Loading from '../../commons/Loading';
 
-const sampleProfilePic =
-  'https://aldeiaconteudo.com.br/wp-content/uploads/2019/06/ciclo-de-vida-do-meme-aldeia-marketing-de-conteudo.jpg';
-
 function PostsContainer() {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
@@ -17,7 +14,6 @@ function PostsContainer() {
     const promise = getPosts();
     promise
       .then((res) => {
-        console.log(res);
         setPosts(res.data);
         setLoading(false);
       })

@@ -39,6 +39,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   margin: 0 auto;
   margin-top: 150px;
+  margin-bottom: 100px;
   width: 50%;
   header {
     font-family: 'Oswald';
