@@ -6,7 +6,16 @@ const BASE_URL =
 
 function getToken() {
   const auth = JSON.parse(localStorage.getItem("linkr"));
-  return auth?.token;
+  if (!auth) {
+    return false
+  }
+  const config = {
+    headers: {
+      Authorization: `Bearer ${auth.token}`
+    }
+  };
+
+  return config;
 }
 
 function login(body) {
@@ -20,4 +29,11 @@ const publishPost = (data, token) => {
   });
 };
 
-export { getToken, login, publishPost };
+function logout() {
+  const config = getToken();
+  const promise = axios.get(`${BASE_URL}logout`, config);
+  return promise;
+}
+
+
+export { getToken, login, publishPost, logout };
