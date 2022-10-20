@@ -1,8 +1,9 @@
-import styled from "styled-components";
-import logo from "../../assets/yoda.jpeg";
+import styled from 'styled-components';
+import logo from '../../assets/yoda.jpeg';
+
 const PublishForm = ({ handleForm, status }) => {
-  const isLoading = status === "loading";
-  const isError = status === "error";
+  const isLoading = status === 'loading';
+  const isError = status === 'error';
 
   return (
     <Container>
@@ -11,20 +12,11 @@ const PublishForm = ({ handleForm, status }) => {
         <h3>What are you going to share today?</h3>
       </ContainerHeader>
       <Form onSubmit={handleForm}>
-        <input
-          id="url"
-          placeholder="http://..."
-          required
-          disabled={isLoading}
-        />
-        <input
-          id="content"
-          placeholder="Awesome article about #javascript"
-          disabled={isLoading}
-        />
+        <input id='url' placeholder='http://...' required disabled={isLoading} />
+        <input id='content' placeholder='Awesome article about #javascript' disabled={isLoading} />
         <ButtonContainer>
-          <Button disabled={isLoading} type="submit">
-            {isLoading ? "Publishing..." : "Publish"}
+          <Button disabled={isLoading} type='submit'>
+            {isLoading ? 'Publishing...' : 'Publish'}
           </Button>
         </ButtonContainer>
       </Form>
@@ -54,7 +46,7 @@ const ContainerHeader = styled.div`
     height: 50px;
   }
   h3 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 300;
     font-size: 20px;
@@ -69,13 +61,11 @@ const Form = styled.form`
   width: 90%;
   flex-direction: column;
   row-gap: 8px;
-
   input {
     background: #efefef;
     border-radius: 5px;
     padding: 10px;
   }
-
   input#id {
     height: 30px;
   }

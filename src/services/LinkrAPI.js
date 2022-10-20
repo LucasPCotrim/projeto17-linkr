@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://127.0.0.1:5000/"
+  process.env.NODE_ENV === 'development'
+    ? 'http://127.0.0.1:5000/'
     : process.env.REACT_APP_API_BASE_URL;
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+  const auth = JSON.parse(localStorage.getItem('linkr'));
   return auth?.token;
 }
 
@@ -20,8 +20,15 @@ const publishPost = (data, token) => {
   });
 };
 
+function getPosts(limit = 20) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);
+  return promise;
+}
+
 const logOn = (body) => {
   return axios.post(`${BASE_URL}sign-up`, body);
 };
 
-export { getToken, login, publishPost, logOn };
+export { getToken, login, publishPost, getPosts, logOn };
