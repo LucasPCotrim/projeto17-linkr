@@ -1,16 +1,20 @@
-import styled from 'styled-components';
+import { useState } from "react";
+import { BsTrashFill } from "react-icons/bs";
+import Modal from "react-modal";
+import styled from "styled-components";
+import { Button } from "./PublishForm";
 
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target='_blank'>
+      <a href={url} target="_blank">
         <LinkPreviewWrapper>
-          <div className='info-container'>
-            <div className='title'>{metadata.title}</div>
-            <div className='description'>{metadata.description}</div>
-            <div className='link'>{url}</div>
+          <div className="info-container">
+            <div className="title">{metadata.title}</div>
+            <div className="description">{metadata.description}</div>
+            <div className="link">{url}</div>
           </div>
-          <img src={metadata.image} alt='post preview' />
+          <img src={metadata.image} alt="post preview" />
         </LinkPreviewWrapper>
       </a>
     </>
@@ -18,12 +22,45 @@ function LinkPreview({ url, metadata }) {
 }
 
 export default function Post({ user, postUrl, postDescription, urlMetadata }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const customStyles = {
+    content: {
+      width: "500px",
+      height: "262px",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      background: "#333333",
+      borderRadius: "50px",
+    },
+  };
+
   return (
     <Wrapper>
-      <img src={user.profilePic} alt='profilePic' />
+      <img src={user.profilePic} alt="profilePic" />
       <PostContent>
-        <div className='profile-name'>{user.name}</div>
-        <div className='post-description'>{postDescription}</div>
+        <div className="post-header">
+          <div className="profile-name">{user.name}</div>
+          <div onClick={() => setIsOpen(true)} className="trash">
+            <BsTrashFill color="#FFFFFF" />
+            <Modal isOpen={isOpen} style={customStyles}>
+              <ModalContainer>
+                <div className="modal-header">
+                  Are you sure you want to delete this post?
+                </div>
+                <div className="button-container">
+                  <Button>No, go back</Button>
+                  <Button>Yes, delete it </Button>
+                </div>
+              </ModalContainer>
+            </Modal>
+          </div>
+        </div>
+
+        <div className="post-description">{postDescription}</div>
         <LinkPreview url={postUrl} metadata={urlMetadata} />
       </PostContent>
     </Wrapper>
@@ -51,7 +88,7 @@ const Wrapper = styled.div`
 const PostContent = styled.div`
   width: 100%;
   .profile-name {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -60,7 +97,7 @@ const PostContent = styled.div`
     margin-bottom: 7px;
   }
   .post-description {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -68,8 +105,33 @@ const PostContent = styled.div`
     color: #b7b7b7;
     margin-bottom: 12px;
   }
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .trash {
+    cursor: pointer;
+  }
   a {
     text-decoration: none;
+  }
+`;
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .modal-header {
+    font-family: "Lato";
+    font-weight: 700;
+    font-size: 34px;
+    text-align: center;
+    color: #ffffff;
+  }
+  .button-container {
+    display: flex;
+    margin-top: 70px;
+    column-gap: 20px;
   }
 `;
 
@@ -78,7 +140,7 @@ const LinkPreviewWrapper = styled.div`
   height: 75%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 400;
   display: flex;

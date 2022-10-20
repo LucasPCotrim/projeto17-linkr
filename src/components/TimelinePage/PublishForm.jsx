@@ -125,4 +125,4 @@ const Button = styled.button`
     filter: brightness(1.5);
   }
 `;
-export { PublishForm };
+export { PublishForm, Button };
