@@ -17,9 +17,9 @@ export default function SignUp() {
   }
 
   function sendForm(e) {
-    console.log(form)
     setDisable(true);
     e.preventDefault();
+    
     const promise = logOn(form);
 
     promise.then((res) => navigate("/"));
@@ -27,12 +27,13 @@ export default function SignUp() {
       console.log(err.response.status)
       err.response.status === 409 ? alert(
         "Oops.. Email already exists! 😅 "
-      ) : alert(
-        "Registration failed! 😢 Please try again..."
-      );
+      ) : err.response.status=== 422 ?  alert(
+        "You have to fill all the fields in the form and 'picture url' must be a valid url !🤔 Please try again..."
+      ) : ("Registration failed! 😢 Please try again...");
       
-      setDisable(false);
+     setDisable(false);
     });
+    
   }
 
   return (
@@ -47,7 +48,6 @@ export default function SignUp() {
         <PageForm onSubmit={sendForm}>
           <input
             type="email"
-            required
             name="email"
             placeholder="e-mail"
             disabled={disable}
@@ -57,7 +57,6 @@ export default function SignUp() {
           ></input>
           <input
             type="password"
-            required
             name="password"
             placeholder="password"
             disabled={disable}
@@ -67,7 +66,6 @@ export default function SignUp() {
           ></input>
           <input
             type="name"
-            required
             name="name"
             placeholder="username"
             disabled={disable}
@@ -77,7 +75,6 @@ export default function SignUp() {
           ></input>
           <input
             type="text"
-            required
             name="profilePic"
             placeholder="picture url"
             disabled={disable}
