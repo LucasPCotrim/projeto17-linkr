@@ -1,16 +1,19 @@
-import styled from 'styled-components';
+import { useState } from "react";
+import { BsTrashFill } from "react-icons/bs";
+import styled from "styled-components";
+import { DeletionModal } from "./DeletionModal";
 
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target='_blank'>
+      <a href={url} target="_blank">
         <LinkPreviewWrapper>
-          <div className='info-container'>
-            <div className='title'>{metadata.title}</div>
-            <div className='description'>{metadata.description}</div>
-            <div className='link'>{url}</div>
+          <div className="info-container">
+            <div className="title">{metadata.title}</div>
+            <div className="description">{metadata.description}</div>
+            <div className="link">{url}</div>
           </div>
-          <img src={metadata.image} alt='post preview' />
+          <img src={metadata.image} alt="post preview" />
         </LinkPreviewWrapper>
       </a>
     </>
@@ -18,12 +21,20 @@ function LinkPreview({ url, metadata }) {
 }
 
 export default function Post({ user, postUrl, postDescription, urlMetadata }) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>
-      <img src={user.profilePic} alt='profilePic' />
+      <img src={user.profilePic} alt="profilePic" />
       <PostContent>
-        <div className='profile-name'>{user.name}</div>
-        <div className='post-description'>{postDescription}</div>
+        <div className="post-header">
+          <div className="profile-name">{user.name}</div>
+          <div onClick={() => setIsOpen(true)} className="trash">
+            <BsTrashFill color="#FFFFFF" />
+          </div>
+          <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
+
+        <div className="post-description">{postDescription}</div>
         <LinkPreview url={postUrl} metadata={urlMetadata} />
       </PostContent>
     </Wrapper>
@@ -51,7 +62,7 @@ const Wrapper = styled.div`
 const PostContent = styled.div`
   width: 100%;
   .profile-name {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -60,13 +71,21 @@ const PostContent = styled.div`
     margin-bottom: 7px;
   }
   .post-description {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
     color: #b7b7b7;
     margin-bottom: 12px;
+  }
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .trash {
+    cursor: pointer;
   }
   a {
     text-decoration: none;
@@ -78,7 +97,7 @@ const LinkPreviewWrapper = styled.div`
   height: 75%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 400;
   display: flex;
