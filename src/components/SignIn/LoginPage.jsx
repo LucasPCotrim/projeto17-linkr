@@ -26,6 +26,7 @@ export default function LoginPage() {
         localStorage.setItem(
           "linkr",
           JSON.stringify({
+            email,
             token: response.data.token,
           })
         );
@@ -48,7 +49,7 @@ export default function LoginPage() {
         <h1>linkr</h1>
         <h2>save, share and discover the best links on the web</h2>
       </Header>
-      <Forms on onSubmit={logIn}>
+      <Forms onSubmit={logIn}>
         <Input
           disabled={sending}
           required
