@@ -20,6 +20,13 @@ const publishPost = (data, token) => {
   });
 };
 
+function logout() {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}logout`, config);
+  return promise;
+}
+
 function getPosts(limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -31,4 +38,4 @@ const logOn = (body) => {
   return axios.post(`${BASE_URL}sign-up`, body);
 };
 
-export { getToken, login, publishPost, getPosts, logOn };
+export { getToken, login, publishPost, getPosts, logOn, logout };
