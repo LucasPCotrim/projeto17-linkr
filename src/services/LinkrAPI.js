@@ -20,7 +20,7 @@ const publishPost = (data, token) => {
   });
 };
 
-function getPosts(limit) {
+function getPosts(limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);

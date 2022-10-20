@@ -1,31 +1,28 @@
 import styled from 'styled-components';
 
-function LinkPreview({ url }) {
+function LinkPreview({ url, metadata }) {
   return (
     <>
       <LinkPreviewWrapper>
         <div className='info-container'>
-          <div className='title'>Como aplicar o Material UI em um projeto React</div>
-          <div className='description'>
-            Hey! I have moved thi tutorial to my personal blog. Same content, new location. Sorry
-            about making you click through another page.
-          </div>
-          <div className='link'>https://medium.com/@pshrmn/a-simple-react-router</div>
+          <div className='title'>{metadata.title}</div>
+          <div className='description'>{metadata.description}</div>
+          <div className='link'>{url}</div>
         </div>
-        <img src='' alt='' />
+        <img src={metadata.image} alt='post preview' />
       </LinkPreviewWrapper>
     </>
   );
 }
 
-export default function Post({ profilePic, profileName, postUrl, postDescription }) {
+export default function Post({ user, postUrl, postDescription, urlMetadata }) {
   return (
     <Wrapper>
-      <img src={profilePic} alt='profilePic' />
+      <img src={user.profilePic} alt='profilePic' />
       <PostContent>
-        <div className='profile-name'>{profileName}</div>
+        <div className='profile-name'>{user.name}</div>
         <div className='post-description'>{postDescription}</div>
-        <LinkPreview url={postUrl} />
+        <LinkPreview url={postUrl} metadata={urlMetadata} />
       </PostContent>
     </Wrapper>
   );
@@ -34,11 +31,11 @@ export default function Post({ profilePic, profileName, postUrl, postDescription
 const Wrapper = styled.div`
   background-color: #171717;
   width: 100%;
-  height: 276px;
   padding: 20px;
   border-radius: 16px;
   display: flex;
   gap: 18px;
+  margin-bottom: 100px;
   img {
     width: 50px;
     height: 50px;
@@ -49,7 +46,6 @@ const Wrapper = styled.div`
 
 const PostContent = styled.div`
   width: 100%;
-  height: 50px;
   .profile-name {
     font-family: 'Lato';
     font-style: normal;
@@ -78,6 +74,7 @@ const LinkPreviewWrapper = styled.div`
   font-style: normal;
   font-weight: 400;
   display: flex;
+  justify-content: space-between;
   overflow: hidden;
   .info-container {
     width: 69.38%;
