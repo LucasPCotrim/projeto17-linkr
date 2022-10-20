@@ -27,4 +27,8 @@ function getPosts(limit = 20) {
   return promise;
 }
 
-export { getToken, login, publishPost, getPosts };
+const logOn = (body) => {
+  return axios.post(`${BASE_URL}sign-up`, body);
+};
+
+export { getToken, login, publishPost, getPosts, logOn };
