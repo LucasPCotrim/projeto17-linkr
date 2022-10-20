@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { publishPost } from "../../services/LinkrAPI";
+import { getToken, publishPost } from "../../services/LinkrAPI";
 import { PublishForm } from "./PublishForm";
 import { PostsContainer } from "./PostsContainer";
 import styled from "styled-components";
@@ -10,8 +10,8 @@ const TimelinePage = () => {
     e.preventDefault();
     const { url, content } = e.target.elements;
     setStatus("loading");
-    // Token hardcoded
-    publishPost({ url: url.value, content: content.value }, 25).then(
+    const token = getToken();
+    publishPost({ url: url.value, content: content.value }, token).then(
       () => {
         setStatus("sucess");
         url.value = null;

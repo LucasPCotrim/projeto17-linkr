@@ -24,6 +24,11 @@ const PublishForm = ({ handleForm, status }) => {
           disabled={isLoading}
         />
         <ButtonContainer>
+          {isError && (
+            <p>
+              An error occured while publishing your post, please try again!
+            </p>
+          )}
           <Button disabled={isLoading} type="submit">
             {isLoading ? "Publishing..." : "Publish"}
           </Button>
@@ -103,6 +108,10 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  column-gap: 80px;
+  p {
+    color: crimson;
+  }
 `;
 
 const Button = styled.button`
