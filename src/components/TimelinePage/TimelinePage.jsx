@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { publishPost } from "../../services/LinkrAPI";
 import { PublishForm } from "./PublishForm";
 import { PostsContainer } from "./PostsContainer";
 import styled from "styled-components";
-import { getToken } from "../../services/LinkrAPI";
+import { getToken, publishPost } from "../../services/LinkrAPI";
 
 const TimelinePage = () => {
   const [status, setStatus] = useState("idle");
@@ -11,7 +10,6 @@ const TimelinePage = () => {
     e.preventDefault();
     const { url, content } = e.target.elements;
     setStatus("loading");
-    // Token hardcoded
     const token = getToken();
     publishPost({ url: url.value, content: content.value }, token).then(
       () => {
@@ -31,7 +29,7 @@ const TimelinePage = () => {
     <Wrapper>
       <header>timeline</header>
       <PublishForm status={status} handleForm={formHandler} />
-      <PostsContainer />
+      <PostsContainer status={status} />
     </Wrapper>
   );
 };

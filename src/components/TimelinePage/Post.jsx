@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { updatePost } from "../../services/LinkrAPI";
-import UserContext from "../../contexts/UserContext";
+import { BsTrashFill } from "react-icons/bs";
+import { DeletionModal } from "./DeletionModal";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -34,7 +35,7 @@ export default function Post({
   const [waiting, setWaiting] = useState(false);
   const [postDescriptionSave, setPostDescriptionSave] =
     useState(postDescription);
-
+  const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -62,8 +63,9 @@ export default function Post({
             }
           >
             <RiPencilFill className="icon" onClick={editingText} />
-            <BsFillTrashFill />
+            <BsFillTrashFill onClick={() => setIsOpen(true)} />
           </EditingDelete>
+          <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
         <div className="post-description">
           {editing ? (
@@ -168,6 +170,14 @@ const PostContent = styled.div`
       box-shadow: 0 0 0 0;
       outline: 0;
     }
+  }
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .trash {
+    cursor: pointer;
   }
   a {
     text-decoration: none;
