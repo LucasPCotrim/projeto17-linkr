@@ -17,15 +17,20 @@ export default function SignUp() {
   }
 
   function sendForm(e) {
+    console.log(form)
     setDisable(true);
     e.preventDefault();
     const promise = logOn(form);
 
     promise.then((res) => navigate("/"));
     promise.catch((err) => {
-      alert(
-        "Registration failed! 😢 Please check your email and password before trying again..."
+      console.log(err.response.status)
+      err.response.status === 409 ? alert(
+        "Oops.. Email already exists! 😅 "
+      ) : alert(
+        "Registration failed! 😢 Please try again..."
       );
+      
       setDisable(false);
     });
   }
