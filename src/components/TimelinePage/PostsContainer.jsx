@@ -51,7 +51,7 @@ function PostsContainer({ status }) {
     <>
       <Wrapper>
         {posts.length === 0 ? (
-          <WarningMessage>There are no posts yet</WarningMessage>
+          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
         ) : (
           posts.map((post, index) => {
             return (
