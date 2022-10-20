@@ -18,14 +18,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LoginPage />} />
           <Route path='/sign-up' element={<SignUp />} />
-          <Route
-            path='/timeline'
-            element={
-              <PrivatePage>
-                <Timeline />
-              </PrivatePage>
-            }
-          />
+          <Route path='/timeline' element={<TimelinePage />} />
           <Route
             path='/hashtag'
             element={

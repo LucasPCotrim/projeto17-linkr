@@ -20,4 +20,11 @@ const publishPost = (data, token) => {
   });
 };
 
-export { getToken, login, publishPost };
+function getPosts(limit) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);
+  return promise;
+}
+
+export { getToken, login, publishPost, getPosts };
