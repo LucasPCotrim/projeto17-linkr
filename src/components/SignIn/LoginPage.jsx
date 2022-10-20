@@ -26,6 +26,7 @@ export default function LoginPage() {
         localStorage.setItem(
           'linkr',
           JSON.stringify({
+            email,
             token: response.data.token,
           })
         );

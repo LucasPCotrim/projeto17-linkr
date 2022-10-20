@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { getToken, publishPost } from "../../services/LinkrAPI";
 import { PublishForm } from "./PublishForm";
 import { PostsContainer } from "./PostsContainer";
 import styled from "styled-components";
+import { getToken, publishPost } from "../../services/LinkrAPI";
 
 const TimelinePage = () => {
   const [status, setStatus] = useState("idle");

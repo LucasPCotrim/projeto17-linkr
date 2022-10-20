@@ -58,6 +58,7 @@ function PostsContainer({ status }) {
               <Post
                 key={index}
                 user={post.user}
+                id={post.id}
                 postUrl={post.url}
                 postDescription={post.content}
                 urlMetadata={post.metadata}
