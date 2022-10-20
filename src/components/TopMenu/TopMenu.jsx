@@ -11,6 +11,8 @@ export default function TopMenu() {
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
+    // is required refatoring latter { userDate return /signin + localStorage.setItem
+    //}
     const localUser = JSON.parse(localStorage.getItem("linkr"));
     if (!user.profilePic && !!localUser.profilePic) {
       setUser(localUser);
@@ -18,7 +20,7 @@ export default function TopMenu() {
   }, []);
   console.log(user);
   function resetUser() {
-    logout(user.id)
+    logout()
       .then(() => {
         localStorage.setItem("linkr", JSON.stringify({}));
         setUser({});
