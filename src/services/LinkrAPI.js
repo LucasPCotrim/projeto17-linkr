@@ -1,21 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://127.0.0.1:5000/"
+  process.env.NODE_ENV === 'development'
+    ? 'http://127.0.0.1:5000/'
     : process.env.REACT_APP_API_BASE_URL;
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem("linkr"));
-  if (!auth) {
-    return false
-  }
-  const config = {
-    headers: {
-      Authorization: `Bearer ${auth.token}`
-    }
-  };
-
-  return config;
+  const auth = JSON.parse(localStorage.getItem('linkr'));
+  return auth?.token;
 }
 
 function login(body) {
@@ -30,10 +21,21 @@ const publishPost = (data, token) => {
 };
 
 function logout() {
-  const config = getToken();
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}logout`, config);
   return promise;
 }
 
+function getPosts(limit = 20) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);
+  return promise;
+}
 
-export { getToken, login, publishPost, logout };
+const logOn = (body) => {
+  return axios.post(`${BASE_URL}sign-up`, body);
+};
+
+export { getToken, login, publishPost, getPosts, logOn, logout };

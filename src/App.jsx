@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import PrivatePage from "./components/PrivatePage";
 import LoginPage from "./components/SignIn/LoginPage";
-import { Timeline } from "./components/TimelinePage/Timeline";
 import SignUp from "./components/SignUp/SignUp";
+import TimelinePage from "./components/TimelinePage/TimelinePage";
 
 function App() {
   const [user, setUser] = useState({});
@@ -18,14 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/sign-up" element={<SignUp />} />
-            <Route
-              path="/timeline"
-              element={
-                <PrivatePage>
-                  <Timeline />
-                </PrivatePage>
-              }
-            />
+            <Route path="/timeline" element={<TimelinePage />} />
             <Route
               path="/hashtag"
               element={
