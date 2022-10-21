@@ -1,5 +1,6 @@
 import Modal from "react-modal";
 import styled from "styled-components";
+import Loading from "../../commons/Loading";
 import { deletePost, getToken } from "../../services/LinkrAPI";
 import { Button } from "./PublishForm";
 
@@ -30,9 +31,11 @@ const DeletionModal = ({ isOpen, setIsOpen, id, setStatus, status }) => {
         console.log(error);
         setStatus("deletionError");
         setIsOpen(false);
+        alert("Error while deleting your post, please try again!");
       }
     );
   };
+  const isLoading = status === "loading";
 
   return (
     <Modal
@@ -46,10 +49,16 @@ const DeletionModal = ({ isOpen, setIsOpen, id, setStatus, status }) => {
           Are you sure you want to delete this post?
         </div>
         <div className="button-container">
-          <Button onClick={() => setIsOpen(false)}>No, go back</Button>
-          <Button onClick={() => postDeletion(id, token)}>
-            Yes, delete it
-          </Button>
+          {isLoading ? (
+            <Loading color={"white"} />
+          ) : (
+            <>
+              <Button onClick={() => setIsOpen(false)}>No, go back</Button>
+              <Button onClick={() => postDeletion(id, token)}>
+                Yes, delete it
+              </Button>
+            </>
+          )}
         </div>
       </ModalContainer>
     </Modal>
@@ -69,6 +78,7 @@ const ModalContainer = styled.div`
   }
   .button-container {
     display: flex;
+    align-items: center;
     margin-top: 70px;
     column-gap: 20px;
   }
