@@ -1,34 +1,44 @@
-import styled from 'styled-components';
-import { RiPencilFill } from 'react-icons/ri';
-import { BsFillTrashFill } from 'react-icons/bs';
-import { useState, useRef, useEffect, useContext } from 'react';
-import { updatePost } from '../../services/LinkrAPI';
-import { DeletionModal } from './DeletionModal';
-import { LikeButton } from './LikeButton';
-import UserContext from '../../contexts/UserContext';
+import styled from "styled-components";
+import { RiPencilFill } from "react-icons/ri";
+import { BsFillTrashFill } from "react-icons/bs";
+import { useState, useRef, useEffect, useContext } from "react";
+import { updatePost } from "../../services/LinkrAPI";
+import { DeletionModal } from "./DeletionModal";
+import { LikeButton } from "./LikeButton";
+import UserContext from "../../contexts/UserContext";
 
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target='_blank'>
+      <a href={url} target="_blank">
         <LinkPreviewWrapper>
-          <div className='info-container'>
-            <div className='title'>{metadata.title}</div>
-            <div className='description'>{metadata.description}</div>
-            <div className='link'>{url}</div>
+          <div className="info-container">
+            <div className="title">{metadata.title}</div>
+            <div className="description">{metadata.description}</div>
+            <div className="link">{url}</div>
           </div>
-          <img src={metadata.image} alt='post preview' />
+          <img src={metadata.image} alt="post preview" />
         </LinkPreviewWrapper>
       </a>
     </>
   );
 }
 
-export default function Post({ user, postUrl, id, postDescription, urlMetadata, usersWhoLiked }) {
+export default function Post({
+  user,
+  postUrl,
+  id,
+  postDescription,
+  urlMetadata,
+  setStatus,
+  status,
+  usersWhoLiked,
+}) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState('teste');
+  const [descriptionEdition, setDescriptionEdition] = useState("teste");
   const [waiting, setWaiting] = useState(false);
-  const [postDescriptionSave, setPostDescriptionSave] = useState(postDescription);
+  const [postDescriptionSave, setPostDescriptionSave] =
+    useState(postDescription);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -49,34 +59,42 @@ export default function Post({ user, postUrl, id, postDescription, urlMetadata, 
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img src={user.profilePic} alt='profilePic' />
+        <img src={user.profilePic} alt="profilePic" />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
-        <div className='conteiner'>
-          <div className='profile-name'>{user.name}</div>
-          <EditingDelete display={userLogged.email === user.email ? 'true' : 'false'}>
-            <RiPencilFill className='icon' onClick={editingText} />
-            <BsFillTrashFill className='icon' onClick={() => setIsOpen(true)} />
+        <div className="conteiner">
+          <div className="profile-name">{user.name}</div>
+          <EditingDelete
+            display={userLogged.email === user.email ? "true" : "false"}
+          >
+            <RiPencilFill className="icon" onClick={editingText} />
+            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          <DeletionModal
+            setStatus={setStatus}
+            status={status}
+            id={id}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
         </div>
-        <div className='post-description'>
+        <div className="post-description">
           {editing ? (
             <input
               disabled={waiting}
               ref={inputRef}
-              type='text'
+              type="text"
               value={descriptionEdition}
               onChange={(e) => {
                 setDescriptionEdition(e.target.value);
               }}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') {
+                if (event.key === "Escape") {
                   setEditing(false);
                   return;
                 }
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   const body = { postId: id, content: descriptionEdition };
                   updatePost(body)
                     .then((response) => {
@@ -84,7 +102,7 @@ export default function Post({ user, postUrl, id, postDescription, urlMetadata, 
                       setPostDescriptionSave(descriptionEdition);
                     })
                     .catch((erro) => {
-                      alert('Não foi possivel salvar as alterações');
+                      alert("Não foi possivel salvar as alterações");
                       console.log(erro);
                       setEditing(true);
                       setWaiting(false);
@@ -95,7 +113,8 @@ export default function Post({ user, postUrl, id, postDescription, urlMetadata, 
                       setEditing(false);
                     });
                 }
-              }}></input>
+              }}
+            ></input>
           ) : (
             postDescriptionSave
           )}
@@ -136,7 +155,7 @@ const ProfilePicAndLikeButton = styled.div`
 const PostContent = styled.div`
   width: 90%;
 
-  .conteiner { 
+  .conteiner {
     display: flex;
     color: white;
     justify-content: space-between;
@@ -146,7 +165,7 @@ const PostContent = styled.div`
     }
   }
   .profile-name {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     line-height: 23px;
@@ -154,7 +173,7 @@ const PostContent = styled.div`
     margin-bottom: 7px;
   }
   .post-description {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -191,7 +210,7 @@ const LinkPreviewWrapper = styled.div`
   height: 70%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 400;
   display: flex;
@@ -226,7 +245,6 @@ const LinkPreviewWrapper = styled.div`
     width: 155px;
     height: 100%;
     object-fit: cover;
-    
   }
   &:hover {
     background-color: #2c2c2c;
@@ -236,7 +254,7 @@ const LinkPreviewWrapper = styled.div`
 
 const EditingDelete = styled.div`
   display: flex;
-  color: white; 
+  color: white;
   padding-right: 5px;
   justify-content: space-between;
   font-size: 19px;
@@ -248,5 +266,5 @@ const EditingDelete = styled.div`
       color: #a6a6a6;
     }
   }
-  display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
+  display: ${(props) => (props.display === "true" ? "initial" : "none")};
 `;
