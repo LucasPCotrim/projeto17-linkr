@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:5000/'
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:5000/"
     : process.env.REACT_APP_API_BASE_URL;
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem('linkr'));
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   return auth?.token;
 }
 
@@ -20,6 +20,13 @@ const publishPost = (data, token) => {
   });
 };
 
+function logout() {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}logout`, config);
+  return promise;
+}
+
 function getPosts(limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -31,4 +38,27 @@ const logOn = (body) => {
   return axios.post(`${BASE_URL}sign-up`, body);
 };
 
-export { getToken, login, publishPost, getPosts, logOn };
+function updatePost(body) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.put(`${BASE_URL}posts/update`, body, config);
+  return promise;
+}
+
+function getUser() {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}user`, config);
+  return promise;
+}
+
+export {
+  getToken,
+  login,
+  publishPost,
+  getPosts,
+  logOn,
+  logout,
+  updatePost,
+  getUser,
+};

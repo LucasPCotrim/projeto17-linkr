@@ -1,21 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 import Loading from "../../commons/Loading";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../services/LinkrAPI";
+import { getUser, login } from "../../services/LinkrAPI";
+import UserContext from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     if (localStorage.getItem("linkr") !== null) {
+      setUser(JSON.parse(localStorage.getItem("linkr")));
       navigate("/timeline");
     }
-  }, [navigate]);
+  }, []);
+
+  function loadUser() {
+    getUser()
+      .then((response) => {
+        const { email, token } = JSON.parse(localStorage.getItem("linkr"));
+        const { name, profilePic, id } = response.data;
+        const newUser = { email, token, name, profilePic, id };
+        setUser(newUser);
+        localStorage.setItem("linkr", JSON.stringify(newUser));
+      })
+      .catch(() => {
+        localStorage.removeItem("linkr");
+      });
+  }
 
   function logIn(e) {
     e.preventDefault();
@@ -26,9 +43,11 @@ export default function LoginPage() {
         localStorage.setItem(
           "linkr",
           JSON.stringify({
+            email,
             token: response.data.token,
           })
         );
+        loadUser();
         navigate("/timeline");
       })
       .catch((erro) => {
@@ -48,7 +67,7 @@ export default function LoginPage() {
         <h1>linkr</h1>
         <h2>save, share and discover the best links on the web</h2>
       </Header>
-      <Forms on onSubmit={logIn}>
+      <Forms onSubmit={logIn}>
         <Input
           disabled={sending}
           required

@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from "styled-components";
+import { createGlobalStyle, css } from 'styled-components';
 
 const Reset = css`
   html,
@@ -118,14 +118,13 @@ const Reset = css`
   blockquote:after,
   q:before,
   q:after {
-    content: "";
+    content: '';
     content: none;
   }
   table {
     border-collapse: collapse;
     border-spacing: 0;
   }
-  @import url("https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@300;400;500;700&family=Passion+One:wght@400;700&display=swap");
 `;
 
 const Global = css`
