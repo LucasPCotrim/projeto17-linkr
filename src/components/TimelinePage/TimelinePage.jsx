@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PublishForm } from "./PublishForm";
 import { PostsContainer } from "./PostsContainer";
 import styled from "styled-components";
-import { getToken, publishPost } from "../../services/LinkrAPI";
+import { getToken, publishPost, getUser } from "../../services/LinkrAPI";
 
 const TimelinePage = () => {
   const [status, setStatus] = useState("idle");
+
   const formHandler = (e) => {
     e.preventDefault();
     const { url, content } = e.target.elements;

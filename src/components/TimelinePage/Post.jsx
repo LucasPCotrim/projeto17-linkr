@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
-import { BsTrashFill } from "react-icons/bs";
 import { DeletionModal } from "./DeletionModal";
+import UserContext from "../../contexts/UserContext";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -38,6 +38,9 @@ export default function Post({
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
+  const obj = useContext(UserContext);
+  const userLogged = obj.user;
+
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
@@ -54,14 +57,8 @@ export default function Post({
       <img src={user.profilePic} alt="profilePic" />
       <PostContent>
         <div className="conteiner">
-          <div className="profile-name">{user.name}</div>
-          <EditingDelete
-            display={
-              JSON.parse(localStorage.getItem("linkr")).email === user.email
-                ? "true"
-                : "false"
-            }
-          >
+          <div className="profile-name">{userLogged.name}</div>
+          <EditingDelete display={user.email === user.email ? "true" : "false"}>
             <RiPencilFill className="icon" onClick={editingText} />
             <BsFillTrashFill onClick={() => setIsOpen(true)} />
           </EditingDelete>

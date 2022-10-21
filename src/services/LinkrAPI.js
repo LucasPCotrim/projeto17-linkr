@@ -45,4 +45,20 @@ function updatePost(body) {
   return promise;
 }
 
-export { getToken, login, publishPost, getPosts, logOn, logout, updatePost };
+function getUser() {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}user`, config);
+  return promise;
+}
+
+export {
+  getToken,
+  login,
+  publishPost,
+  getPosts,
+  logOn,
+  logout,
+  updatePost,
+  getUser,
+};
