@@ -28,7 +28,7 @@ export default function SignUp() {
       err.response.status === 409 ? alert(
         "Oops.. Email already exists! 😅 "
       ) : err.response.status=== 422 ?  alert(
-        "You have to fill all the fields in the form and 'picture url' must be a valid url !🤔 Please try again..."
+        "You have to fill all the fields in the form and 'picture url' must be a valid url ('http://...') !🤔 Please try again..."
       ) : ("Registration failed! 😢 Please try again...");
       
      setDisable(false);

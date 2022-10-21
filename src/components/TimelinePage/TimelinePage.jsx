@@ -26,13 +26,17 @@ const TimelinePage = () => {
   };
 
   return (
-    <Wrapper>
-      <header>timeline</header>
-      <PublishForm status={status} handleForm={formHandler} />
-      <PostsContainer />
-    </Wrapper>
+    
+        <Wrapper>
+          <header>timeline</header>
+          <PublishForm status={status} handleForm={formHandler} />
+          <PostsContainer />
+        </Wrapper>
+      
+    
   );
 };
+
 
 const Wrapper = styled.div`
   display: flex;
