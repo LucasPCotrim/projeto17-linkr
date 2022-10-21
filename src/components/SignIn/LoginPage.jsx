@@ -1,21 +1,38 @@
-import React from 'react';
-import styled from 'styled-components';
-import Loading from '../../commons/Loading';
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/LinkrAPI';
+import React from "react";
+import styled from "styled-components";
+import Loading from "../../commons/Loading";
+import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getUser, login } from "../../services/LinkrAPI";
+import UserContext from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    if (localStorage.getItem('linkr') !== null) {
-      navigate('/timeline');
+    if (localStorage.getItem("linkr") !== null) {
+      setUser(JSON.parse(localStorage.getItem("linkr")));
+      navigate("/timeline");
     }
-  }, [navigate]);
+  }, []);
+
+  function loadUser() {
+    getUser()
+      .then((response) => {
+        const { email, token } = JSON.parse(localStorage.getItem("linkr"));
+        const { name, profilePic, id } = response.data;
+        const newUser = { email, token, name, profilePic, id };
+        setUser(newUser);
+        localStorage.setItem("linkr", JSON.stringify(newUser));
+      })
+      .catch(() => {
+        localStorage.removeItem("linkr");
+      });
+  }
 
   function logIn(e) {
     e.preventDefault();
@@ -24,19 +41,22 @@ export default function LoginPage() {
     login(body)
       .then((response) => {
         localStorage.setItem(
-          'linkr',
+          "linkr",
           JSON.stringify({
             email,
             token: response.data.token,
           })
         );
-        navigate('/timeline');
+        loadUser();
+        navigate("/timeline");
       })
       .catch((erro) => {
-        alert('Não foi possível logar, email ou senha incorretos, tente novamente');
+        alert(
+          "Não foi possível logar, email ou senha incorretos, tente novamente"
+        );
         console.log(erro);
-        setEmail('');
-        setPassword('');
+        setEmail("");
+        setPassword("");
         setSending(false);
       });
   }
@@ -51,26 +71,26 @@ export default function LoginPage() {
         <Input
           disabled={sending}
           required
-          type='email'
-          name='email'
+          type="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder='E-mail'
+          placeholder="E-mail"
         />
         <Input
           disabled={sending}
           required
-          type='password'
-          name='password'
+          type="password"
+          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder='Senha'
+          placeholder="Senha"
         />
-        <Button type='submit' disabled={sending}>
-          {sending ? <Loading /> : 'Log In'}
+        <Button type="submit" disabled={sending}>
+          {sending ? <Loading /> : "Log In"}
         </Button>
 
-        <Link to='/sign-up'>
+        <Link to="/sign-up">
           <h5>First time? Create an account!</h5>
         </Link>
       </Forms>
@@ -101,14 +121,14 @@ const Header = styled.div`
   align-items: center;
   box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.25);
   h1 {
-    font-family: 'Passion One', cursive;
+    font-family: "Passion One", cursive;
     font-weight: bold;
     font-size: 76px;
   }
   h2 {
     width: 280px;
     height: 70px;
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
     font-weight: bold;
     font-size: 23px;
   }
@@ -128,7 +148,7 @@ const Forms = styled.form`
   h5 {
     font-size: 17px;
     color: white;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     text-decoration: underline;
     margin-top: 20px;
   }

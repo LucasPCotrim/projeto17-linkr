@@ -14,21 +14,20 @@ export default function TopMenu() {
     // is required refatoring latter { userDate + localStorage.setItem
     //}
     const localUser = JSON.parse(localStorage.getItem("linkr"));
-    if (!user.profilePic && !!localUser.profilePic) {
+    if (!user?.profilePic && !!localUser?.profilePic) {
       setUser(localUser);
+      console.log(localUser);
     }
   }, []);
-  console.log(user);
+
   function resetUser() {
     logout()
       .then(() => {
-        localStorage.setItem("linkr", JSON.stringify({}));
-        setUser({});
+        localStorage.removeItem("linkr");
         navigate("/");
       })
       .catch(() => {
         alert("Ops... não foi possível deslogar, tente novamente mais tarde.");
-        navigate("/");
       });
   }
 
