@@ -1,19 +1,20 @@
 import styled from "styled-components";
 import Post from "./Post";
 import { useEffect, useState } from "react";
-import { getPosts } from "../../services/LinkrAPI";
+import { getPosts, getPageUser } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 
-function PostsContainer({ status }) {
+function PostsContainer({ status, userId = 0 }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    const promise = getPosts();
+    const promise = userId === 0 ? getPosts() : getPageUser(userId);
     promise
       .then((res) => {
+        console.log(res.data);
         setPosts(res.data);
         setLoading(false);
       })
@@ -51,7 +52,9 @@ function PostsContainer({ status }) {
     <>
       <Wrapper>
         {posts.length === 0 ? (
-          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
+          <WarningMessage color={"white"}>
+            There are no posts yet
+          </WarningMessage>
         ) : (
           posts.map((post, index) => {
             return (
