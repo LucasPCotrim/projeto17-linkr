@@ -20,6 +20,12 @@ const publishPost = (data, token) => {
   });
 };
 
+const deletePost = (id, token) => {
+  return axios.delete(`${BASE_URL}posts/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 function logout() {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -45,6 +51,17 @@ function updatePost(body) {
   return promise;
 }
 
+function toggleLikePost(postId) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(
+    `${BASE_URL}posts/${postId}/like/toggle`,
+    {},
+    config
+  );
+  return promise;
+}
+
 function getUser() {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -67,6 +84,8 @@ export {
   logOn,
   logout,
   updatePost,
+  toggleLikePost,
   getUser,
-  getPageUser
+  deletePost,
+  getPageUser,
 };

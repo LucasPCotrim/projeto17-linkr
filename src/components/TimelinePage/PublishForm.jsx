@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import logo from "../../assets/yoda.jpeg";
+import UserContext from "../../contexts/UserContext";
+import { useContext } from "react";
 
 const PublishForm = ({ handleForm, status }) => {
+  const { user: loggedUser } = useContext(UserContext);
   const isLoading = status === "loading";
   const isError = status === "error";
 
   return (
     <Container>
       <ContainerHeader>
-        <img src={logo} />
+        <img src={loggedUser.profilePic} alt="logged in user profile pic" />
         <h3>What are you going to share today?</h3>
       </ContainerHeader>
       <Form onSubmit={handleForm}>
@@ -59,9 +61,10 @@ const ContainerHeader = styled.div`
   align-items: center;
 
   img {
-    border-radius: 50%;
     width: 50px;
     height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
   h3 {
     width: 100%;

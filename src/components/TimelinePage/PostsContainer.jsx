@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getPosts, getPageUser } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 
-function PostsContainer({ status, userId = 0 }) {
+function PostsContainer({ status, setStatus, userId = 0 }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,6 +65,9 @@ function PostsContainer({ status, userId = 0 }) {
                 postUrl={post.url}
                 postDescription={post.content}
                 urlMetadata={post.metadata}
+                usersWhoLiked={post.usersWhoLiked}
+                status={status}
+                setStatus={setStatus}
               />
             );
           })

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PublishForm } from "./PublishForm";
 import { PostsContainer } from "./PostsContainer";
 import styled from "styled-components";
-import { getToken, publishPost, getUser } from "../../services/LinkrAPI";
+import { getToken, publishPost } from "../../services/LinkrAPI";
+import HashtagContainer from "./HashtagContainer";
 
 const TimelinePage = () => {
   const [status, setStatus] = useState("idle");
@@ -27,13 +28,31 @@ const TimelinePage = () => {
   };
 
   return (
-    <Wrapper>
-      <header>timeline</header>
-      <PublishForm status={status} handleForm={formHandler} />
-      <PostsContainer status={status} />
-    </Wrapper>
+    <MainContainer>
+      <ContentContainter>
+        <Wrapper>
+          <header>timeline</header>
+          <PublishForm status={status} handleForm={formHandler} />
+          <PostsContainer setStatus={setStatus} status={status} />
+        </Wrapper>
+        <HashtagContainer />
+      </ContentContainter>
+    </MainContainer>
   );
 };
+
+const MainContainer = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+const ContentContainter = styled.header`
+  display: flex;
+  width: 915px;
+  overflow: hidden;
+  gap: 25px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,7 +60,9 @@ const Wrapper = styled.div`
   margin: 0 auto;
   margin-top: 150px;
   margin-bottom: 100px;
-  width: min(100%, 614px);
+  //width: min(100%, 614px);
+  max-width: 614px;
+  min-width: 500px;
   header {
     font-family: "Oswald";
     font-style: normal;
