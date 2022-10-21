@@ -30,6 +30,8 @@ export default function Post({
   id,
   postDescription,
   urlMetadata,
+  setStatus,
+  status,
   usersWhoLiked,
 }) {
   const [editing, setEditing] = useState(false);
@@ -69,7 +71,13 @@ export default function Post({
             <RiPencilFill className="icon" onClick={editingText} />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          <DeletionModal
+            setStatus={setStatus}
+            status={status}
+            id={id}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
         </div>
         <div className="post-description">
           {editing ? (

@@ -1,8 +1,9 @@
 import Modal from "react-modal";
 import styled from "styled-components";
+import { deletePost, getToken } from "../../services/LinkrAPI";
 import { Button } from "./PublishForm";
 
-const DeletionModal = ({ isOpen, setIsOpen }) => {
+const DeletionModal = ({ isOpen, setIsOpen, id, setStatus, status }) => {
   const customStyles = {
     content: {
       width: "500px",
@@ -17,6 +18,22 @@ const DeletionModal = ({ isOpen, setIsOpen }) => {
       borderRadius: "50px",
     },
   };
+  const token = getToken();
+  const postDeletion = (id, token) => {
+    setStatus("loading");
+    deletePost(id, token).then(
+      (response) => {
+        console.log(response);
+        setStatus("deleted");
+      },
+      (error) => {
+        console.log(error);
+        setStatus("deletionError");
+        setIsOpen(false);
+      }
+    );
+  };
+
   return (
     <Modal
       onRequestClose={() => setIsOpen(false)}
@@ -30,7 +47,9 @@ const DeletionModal = ({ isOpen, setIsOpen }) => {
         </div>
         <div className="button-container">
           <Button onClick={() => setIsOpen(false)}>No, go back</Button>
-          <Button>Yes, delete it </Button>
+          <Button onClick={() => postDeletion(id, token)}>
+            Yes, delete it
+          </Button>
         </div>
       </ModalContainer>
     </Modal>

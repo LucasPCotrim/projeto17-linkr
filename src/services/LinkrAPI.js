@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:5000/'
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:5000/"
     : process.env.REACT_APP_API_BASE_URL;
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem('linkr'));
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   return auth?.token;
 }
 
@@ -16,6 +16,12 @@ function login(body) {
 
 const publishPost = (data, token) => {
   return axios.post(`${BASE_URL}posts`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+const deletePost = (id, token) => {
+  return axios.delete(`${BASE_URL}posts/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -48,7 +54,11 @@ function updatePost(body) {
 function toggleLikePost(postId) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.post(`${BASE_URL}posts/${postId}/like/toggle`, {}, config);
+  const promise = axios.post(
+    `${BASE_URL}posts/${postId}/like/toggle`,
+    {},
+    config
+  );
   return promise;
 }
 
@@ -69,4 +79,5 @@ export {
   updatePost,
   toggleLikePost,
   getUser,
+  deletePost,
 };

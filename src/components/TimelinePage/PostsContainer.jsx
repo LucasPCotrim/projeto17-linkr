@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-import Post from './Post';
-import { useEffect, useState } from 'react';
-import { getPosts } from '../../services/LinkrAPI';
-import Loading from '../../commons/Loading';
+import styled from "styled-components";
+import Post from "./Post";
+import { useEffect, useState } from "react";
+import { getPosts } from "../../services/LinkrAPI";
+import Loading from "../../commons/Loading";
 
-function PostsContainer({ status }) {
+function PostsContainer({ status, setStatus }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,8 +28,9 @@ function PostsContainer({ status }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'#853232'}>
-            An error occured while trying to fetch the posts, please refresh the page
+          <WarningMessage color={"#853232"}>
+            An error occured while trying to fetch the posts, please refresh the
+            page
           </WarningMessage>
         </Wrapper>
       </>
@@ -39,8 +40,8 @@ function PostsContainer({ status }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'white'}>Loading</WarningMessage>
-          <Loading color={'white'} />
+          <WarningMessage color={"white"}>Loading</WarningMessage>
+          <Loading color={"white"} />
         </Wrapper>
       </>
     );
@@ -50,7 +51,9 @@ function PostsContainer({ status }) {
     <>
       <Wrapper>
         {posts.length === 0 ? (
-          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
+          <WarningMessage color={"white"}>
+            There are no posts yet
+          </WarningMessage>
         ) : (
           posts.map((post, index) => {
             return (
@@ -62,6 +65,8 @@ function PostsContainer({ status }) {
                 postDescription={post.content}
                 urlMetadata={post.metadata}
                 usersWhoLiked={post.usersWhoLiked}
+                status={status}
+                setStatus={setStatus}
               />
             );
           })
@@ -92,12 +97,12 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || 'ffffff'};
+  color: ${(props) => props.color || "ffffff"};
 `;
 
 export { PostsContainer };
