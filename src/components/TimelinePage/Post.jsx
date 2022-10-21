@@ -50,7 +50,7 @@ export default function Post({ user, postUrl, id, postDescription, urlMetadata, 
     <Wrapper>
       <ProfilePicAndLikeButton>
         <img src={user.profilePic} alt='profilePic' />
-        <LikeButton usersWhoLiked={usersWhoLiked} />
+        <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
         <div className='conteiner'>
