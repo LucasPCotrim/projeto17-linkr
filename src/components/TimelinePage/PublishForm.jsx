@@ -1,36 +1,25 @@
-import styled from "styled-components";
-import logo from "../../assets/yoda.jpeg";
+import styled from 'styled-components';
+import UserContext from '../../contexts/UserContext';
+import { useContext } from 'react';
 
 const PublishForm = ({ handleForm, status }) => {
-  const isLoading = status === "loading";
-  const isError = status === "error";
+  const { user: loggedUser } = useContext(UserContext);
+  const isLoading = status === 'loading';
+  const isError = status === 'error';
 
   return (
     <Container>
       <ContainerHeader>
-        <img src={logo} />
+        <img src={loggedUser.profilePic} />
         <h3>What are you going to share today?</h3>
       </ContainerHeader>
       <Form onSubmit={handleForm}>
-        <input
-          id="url"
-          placeholder="http://..."
-          required
-          disabled={isLoading}
-        />
-        <input
-          id="content"
-          placeholder="Awesome article about #javascript"
-          disabled={isLoading}
-        />
+        <input id='url' placeholder='http://...' required disabled={isLoading} />
+        <input id='content' placeholder='Awesome article about #javascript' disabled={isLoading} />
         <ButtonContainer>
-          {isError && (
-            <p>
-              An error occured while publishing your post, please try again!
-            </p>
-          )}
-          <Button disabled={isLoading} type="submit">
-            {isLoading ? "Publishing..." : "Publish"}
+          {isError && <p>An error occured while publishing your post, please try again!</p>}
+          <Button disabled={isLoading} type='submit'>
+            {isLoading ? 'Publishing...' : 'Publish'}
           </Button>
         </ButtonContainer>
       </Form>
@@ -65,7 +54,7 @@ const ContainerHeader = styled.div`
   }
   h3 {
     width: 100%;
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 300;
     font-size: 20px;

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
-import { BsTrashFill } from "react-icons/bs";
 import { DeletionModal } from "./DeletionModal";
+import { LikeButton } from "./LikeButton";
+import UserContext from "../../contexts/UserContext";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -29,6 +30,7 @@ export default function Post({
   id,
   postDescription,
   urlMetadata,
+  usersWhoLiked,
 }) {
   const [editing, setEditing] = useState(false);
   const [descriptionEdition, setDescriptionEdition] = useState("teste");
@@ -37,6 +39,9 @@ export default function Post({
     useState(postDescription);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+
+  const obj = useContext(UserContext);
+  const userLogged = obj.user;
 
   useEffect(() => {
     if (editing) {
@@ -51,23 +56,18 @@ export default function Post({
 
   return (
     <Wrapper>
-      <img src={user.profilePic} alt="profilePic" />
+      <ProfilePicAndLikeButton>
+        <img src={user.profilePic} alt="profilePic" />
+        <LikeButton likes={usersWhoLiked} postId={id} />
+      </ProfilePicAndLikeButton>
       <PostContent>
         <div className="conteiner">
           <div className="profile-name">{user.name}</div>
           <EditingDelete
-            display={
-              JSON.parse(localStorage.getItem("linkr")).email === user.email
-                ? "true"
-                : "false"
-            }
+            display={userLogged.email === user.email ? "true" : "false"}
           >
             <RiPencilFill className="icon" onClick={editingText} />
-
-            <BsFillTrashFill
-              className="trash"
-              onClick={() => setIsOpen(true)}
-            />
+            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
           <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
@@ -124,20 +124,29 @@ const Wrapper = styled.div`
   border-radius: 16px;
   display: flex;
   gap: 18px;
-  > img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
 
   @media screen and (max-width: 614px) {
     border-radius: 0;
   }
 `;
 
+const ProfilePicAndLikeButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 19px;
+  > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
+
 const PostContent = styled.div`
-  width: 100%;
+  width: 90%;
+
   .conteiner {
     display: flex;
     color: white;
@@ -234,13 +243,20 @@ const LinkPreviewWrapper = styled.div`
     border: 1px solid #bebebe;
   }
 `;
+
 const EditingDelete = styled.div`
   display: flex;
   color: white;
+  padding-right: 5px;
   justify-content: space-between;
   font-size: 19px;
+  gap: 10px;
   .icon {
-    margin-right: 10px;
+    margin: 0;
+    cursor: pointer;
+    &:hover {
+      color: #a6a6a6;
+    }
   }
   display: ${(props) => (props.display === "true" ? "initial" : "none")};
 `;
