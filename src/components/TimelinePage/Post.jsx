@@ -63,7 +63,11 @@ export default function Post({
             }
           >
             <RiPencilFill className="icon" onClick={editingText} />
-            <BsFillTrashFill onClick={() => setIsOpen(true)} />
+
+            <BsFillTrashFill
+              className="trash"
+              onClick={() => setIsOpen(true)}
+            />
           </EditingDelete>
           <DeletionModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
