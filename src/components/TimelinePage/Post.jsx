@@ -130,8 +130,9 @@ const Wrapper = styled.div`
 `;
 
 const PostContent = styled.div`
-  width: 100%;
-  .conteiner {
+  width: 90%;
+
+  .conteiner { 
     display: flex;
     color: white;
     justify-content: space-between;
@@ -221,6 +222,7 @@ const LinkPreviewWrapper = styled.div`
     width: 155px;
     height: 100%;
     object-fit: cover;
+    
   }
   &:hover {
     background-color: #2c2c2c;
@@ -229,7 +231,8 @@ const LinkPreviewWrapper = styled.div`
 `;
 const EditingDelete = styled.div`
   display: flex;
-  color: white;
+  color: white; 
+  padding-right: 5px;
   justify-content: space-between;
   font-size: 19px;
   .icon {
