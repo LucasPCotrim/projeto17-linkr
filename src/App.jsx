@@ -28,7 +28,7 @@ function App() {
               }
             />
             <Route
-              path="/hashtag:hashtag"
+              path="/hashtag/:hashtag"
               element={
                 <PrivatePage>
                   <HashtagPage />
