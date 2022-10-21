@@ -26,8 +26,9 @@ const MainContainer = styled.nav`
 const ContentContainter = styled.header`
   display: flex;
   width: 915px;
-  overflow: scroll;
+  //overflow-x: scroll;
   gap: 25px;
+
 `
 
 const Wrapper = styled.div`
