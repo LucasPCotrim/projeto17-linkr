@@ -6,6 +6,7 @@ import { updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -45,6 +46,8 @@ export default function Post({
   const obj = useContext(UserContext);
   const userLogged = obj.user;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
@@ -59,12 +62,21 @@ export default function Post({
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img src={user.profilePic} alt="profilePic" />
+        <img
+          onClick={() => navigate(`/user/${user.id}`)}
+          src={user.profilePic}
+          alt="profilePic"
+        />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
         <div className="conteiner">
-          <div className="profile-name">{user.name}</div>
+          <div
+            onClick={() => navigate(`/user/${user.id}`)}
+            className="profile-name"
+          >
+            {user.name}
+          </div>
           <EditingDelete
             display={userLogged.email === user.email ? "true" : "false"}
           >
@@ -149,6 +161,7 @@ const ProfilePicAndLikeButton = styled.div`
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
 `;
 
@@ -171,6 +184,7 @@ const PostContent = styled.div`
     line-height: 23px;
     color: #ffffff;
     margin-bottom: 7px;
+    cursor: pointer;
   }
   .post-description {
     font-family: "Lato";

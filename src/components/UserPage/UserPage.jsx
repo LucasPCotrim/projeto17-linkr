@@ -34,7 +34,7 @@ export default function UserPage() {
       ) : (
         ""
       )}
-      <PostsContainer status={status} userId={id} />
+      <PostsContainer setStatus={setStatus} status={status} userId={id} />
     </Wrapper>
   );
 }

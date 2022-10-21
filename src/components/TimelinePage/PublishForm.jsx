@@ -1,16 +1,23 @@
 import styled from "styled-components";
 import UserContext from "../../contexts/UserContext";
 import { useContext } from "react";
+import { RiContactsBookUploadFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const PublishForm = ({ handleForm, status }) => {
   const { user: loggedUser } = useContext(UserContext);
   const isLoading = status === "loading";
   const isError = status === "error";
+  const navigate = useNavigate();
 
   return (
     <Container>
       <ContainerHeader>
-        <img src={loggedUser.profilePic} alt="logged in user profile pic" />
+        <img
+          onClick={() => navigate(`/user/${loggedUser.id}`)}
+          src={loggedUser.profilePic}
+          alt="logged in user profile pic"
+        />
         <h3>What are you going to share today?</h3>
       </ContainerHeader>
       <Form onSubmit={handleForm}>
@@ -65,6 +72,7 @@ const ContainerHeader = styled.div`
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
   h3 {
     width: 100%;
