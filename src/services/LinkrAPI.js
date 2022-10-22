@@ -44,6 +44,20 @@ const logOn = (body) => {
   return axios.post(`${BASE_URL}sign-up`, body);
 };
 
+const getHashtagList = () => {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}hashtag`, config);
+  return promise;
+};
+
+const getHashtag = (hashtag) => {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}hashtag/${hashtag}`, config);
+  return promise;
+};
+
 function updatePost(body) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -80,4 +94,6 @@ export {
   toggleLikePost,
   getUser,
   deletePost,
+  getHashtagList,
+  getHashtag,
 };

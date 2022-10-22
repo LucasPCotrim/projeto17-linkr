@@ -1,13 +1,28 @@
 import styled from "styled-components";
 import { PostsContainer } from "../TimelinePage/PostsContainer";
 import HashtagContainer from "../TimelinePage/HashtagContainer";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getHashtag } from "../../services/LinkrAPI";
 
 export default function HashtagPage(){
+  const [hashtagData, setHashtagData] = useState()
+  const location = useLocation();
+  const { hashtag } = useParams();
+
+  // useEffect(() => {
+  //   const promise = getHashtag(hashtag);
+  //   promise.then((res) => {
+  //       setHashtagData(res.data);
+  //   });
+  //   }, []);
+
     return (
         <MainContainer>
           <ContentContainter>
             <Wrapper> 
-              <header>#  react</header>
+              <header>#  {location.state.name}</header>
               
             </Wrapper>
             <HashtagContainer/>
