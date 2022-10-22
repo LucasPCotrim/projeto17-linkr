@@ -17,7 +17,6 @@ export default function HashtagContainer(){
     });
     }, []);
 
-console.log(hashtagId); 
     return(
         <OutterBox> 
             <span><h1>trending</h1></span>
