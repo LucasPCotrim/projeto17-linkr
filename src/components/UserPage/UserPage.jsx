@@ -4,25 +4,11 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { PostsContainer } from "../TimelinePage/PostsContainer";
 import { useParams } from "react-router-dom";
-import { getPageUser } from "../../services/LinkrAPI";
 
 export default function UserPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
   const [status, setStatus] = useState("idle");
   const [pageName, setPageName] = useState({});
-
-  useEffect(() => {
-    const promise = getPageUser(id);
-    promise
-      .then((res) => {
-        setPageName(res.data[0].user);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-  }, []);
 
   return (
     <Wrapper>
@@ -34,7 +20,12 @@ export default function UserPage() {
       ) : (
         ""
       )}
-      <PostsContainer setStatus={setStatus} status={status} userId={id} />
+      <PostsContainer
+        setStatus={setStatus}
+        status={status}
+        userId={id}
+        setPageName={setPageName}
+      />
     </Wrapper>
   );
 }

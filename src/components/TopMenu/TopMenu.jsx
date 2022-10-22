@@ -3,7 +3,7 @@ import UserContext from "../../contexts/UserContext";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { logout } from "../../services/LinkrAPI";
+import { logout, getUser } from "../../services/LinkrAPI";
 
 export default function TopMenu() {
   const navigate = useNavigate();
@@ -13,6 +13,17 @@ export default function TopMenu() {
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("linkr"));
     if (!user?.profilePic && !!localUser?.profilePic) {
+      const promise = getUser();
+      promise
+        .then((res) => {
+          console.log(res);
+          if (res.data === "token expirado") {
+            localStorage.removeItem("linkr");
+          }
+        })
+        .catch((res) => {
+          console.log(res);
+        });
       setUser(localUser);
       console.log(localUser);
     }
@@ -115,6 +126,7 @@ const UserPic = styled.img`
   width: 44px;
   height: 44px;
   border-radius: 26px;
+  object-fit: cover;
 `;
 
 const Linkr = styled.div`

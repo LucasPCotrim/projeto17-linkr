@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getPosts, getPageUser } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 
-function PostsContainer({ status, setStatus, userId = 0 }) {
+function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -16,6 +16,9 @@ function PostsContainer({ status, setStatus, userId = 0 }) {
       .then((res) => {
         console.log(res.data);
         setPosts(res.data);
+        if (userId !== 0) {
+          setPageName(res.data[0].user);
+        }
         setLoading(false);
       })
       .catch((res) => {
