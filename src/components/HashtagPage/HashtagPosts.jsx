@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { RiPencilFill } from "react-icons/ri";
+import { RiContactsBookUploadFill, RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "../TimelinePage/DeletionModal";
 import { LikeButton } from "../TimelinePage/LikeButton";
 import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -39,6 +40,7 @@ export default function HashtagPosts({
     useState(postDescription);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
@@ -57,23 +59,28 @@ export default function HashtagPosts({
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img src={user.profilePic} alt="profilePic" />
+        <img
+          onClick={() => navigate(`/user/${user.id}`)}
+          src={user.profilePic}
+          alt="profilePic"
+        />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
         <div className="conteiner">
-          <div className="profile-name">{user.name}</div>
+          <div
+            onClick={() => navigate(`/user/${user.id}`)}
+            className="profile-name"
+          >
+            {user.name}
+          </div>
           <EditingDelete
             display={userLogged.email === user.email ? "true" : "false"}
           >
             <RiPencilFill className="icon" onClick={editingText} />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <DeletionModal
-            id={id}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-          />
+          <DeletionModal id={id} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
         <div className="post-description">
           {editing ? (
@@ -145,6 +152,7 @@ const ProfilePicAndLikeButton = styled.div`
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
 `;
 
