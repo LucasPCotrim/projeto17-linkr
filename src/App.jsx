@@ -6,6 +6,7 @@ import PrivatePage from "./components/PrivatePage";
 import LoginPage from "./components/SignIn/LoginPage";
 import SignUp from "./components/SignUp/SignUp";
 import TimelinePage from "./components/TimelinePage/TimelinePage";
+import UserPage from "./components/UserPage/UserPage";
 import HashtagPage from "./components/HashtagPage/HashtagPage";
 
 function App() {
@@ -36,10 +37,10 @@ function App() {
               }
             />
             <Route
-              path="/user"
+              path="/user/:id"
               element={
                 <PrivatePage>
-                  <h1>UserPage</h1>
+                  <UserPage />
                 </PrivatePage>
               }
             />

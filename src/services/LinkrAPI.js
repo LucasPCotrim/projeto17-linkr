@@ -83,6 +83,13 @@ function getUser() {
   return promise;
 }
 
+function getPageUser(id, limit = 20) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}user/${id}?limit=${limit}`, config);
+  return promise;
+}
+
 export {
   getToken,
   login,
@@ -94,6 +101,7 @@ export {
   toggleLikePost,
   getUser,
   deletePost,
+  getPageUser,
   getHashtagList,
   getHashtag,
 };

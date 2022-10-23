@@ -1,20 +1,24 @@
 import styled from "styled-components";
 import Post from "./Post";
 import { useEffect, useState } from "react";
-import { getPosts } from "../../services/LinkrAPI";
+import { getPosts, getPageUser } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 
-function PostsContainer({ status, setStatus }) {
+function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    const promise = getPosts();
+    const promise = userId === 0 ? getPosts() : getPageUser(userId);
     promise
       .then((res) => {
+        console.log(res.data);
         setPosts(res.data);
+        if (userId !== 0) {
+          setPageName(res.data[0].user);
+        }
         setLoading(false);
       })
       .catch((res) => {
