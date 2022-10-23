@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getHashtagList } from '../../services/LinkrAPI';
 import { useEffect, useState } from 'react';
 
-export default function HashtagContainer() {
+export default function HashtagContainer({ status }) {
   const [hashtagId, setHashtagId] = useState(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function HashtagContainer() {
     promise.then((res) => {
       setHashtagId(res.data);
     });
-  }, []);
+  }, [status]);
 
   return (
     <OutterBox>
