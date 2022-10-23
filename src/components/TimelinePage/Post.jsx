@@ -279,13 +279,25 @@ const LinkPreviewWrapper = styled.div`
     }
   }
   img {
-    width: 155px;
+    width: 30.62%;
     height: 100%;
     object-fit: cover;
   }
   &:hover {
     background-color: #2c2c2c;
     border: 1px solid #bebebe;
+  }
+  @media (max-width: 500px) {
+    .info-container {
+      width: 50%;
+    }
+    .description {
+      max-height: 30px;
+      overflow: hidden;
+    }
+    img {
+      width: 50%;
+    }
   }
 `;
 

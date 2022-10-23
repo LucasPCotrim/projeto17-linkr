@@ -45,7 +45,7 @@ const OutterBox = styled.main`
   margin-top: 228px;
   margin-bottom: 100px;
 
-  @media (max-width: 670px) {
+  @media (max-width: 820px) {
     display: none;
   }
 
