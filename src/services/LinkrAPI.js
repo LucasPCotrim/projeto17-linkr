@@ -1,11 +1,9 @@
-import axios from "axios";
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://127.0.0.1:5000/"
-    : process.env.REACT_APP_API_BASE_URL;
+import axios from 'axios';
 
+/* const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/'; */
+const BASE_URL = 'http://localhost:5000/';
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+  const auth = JSON.parse(localStorage.getItem('linkr'));
   return auth?.token;
 }
 
@@ -44,6 +42,20 @@ const logOn = (body) => {
   return axios.post(`${BASE_URL}sign-up`, body);
 };
 
+const getHashtagList = () => {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}hashtag`, config);
+  return promise;
+};
+
+const getHashtag = (hashtag) => {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}hashtag/${hashtag}`, config);
+  return promise;
+};
+
 function updatePost(body) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -54,11 +66,7 @@ function updatePost(body) {
 function toggleLikePost(postId) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.post(
-    `${BASE_URL}posts/${postId}/like/toggle`,
-    {},
-    config
-  );
+  const promise = axios.post(`${BASE_URL}posts/${postId}/like/toggle`, {}, config);
   return promise;
 }
 
@@ -88,4 +96,6 @@ export {
   getUser,
   deletePost,
   getPageUser,
+  getHashtagList,
+  getHashtag,
 };

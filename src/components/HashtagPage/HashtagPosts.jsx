@@ -1,49 +1,12 @@
 import styled from "styled-components";
-import { RiPencilFill } from "react-icons/ri";
+import { RiContactsBookUploadFill, RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
-import { DeletionModal } from "./DeletionModal";
-import { LikeButton } from "./LikeButton";
+import { DeletionModal } from "../TimelinePage/DeletionModal";
+import { LikeButton } from "../TimelinePage/LikeButton";
 import UserContext from "../../contexts/UserContext";
-import { Link, useNavigate } from "react-router-dom";
-
-function PostDescription({ postText, hashtagsList }) {
-  const arrayWords = postText.split(" ");
-
-  const findHashtagName = (word, hashtagsList) => {
-    let hashtag = undefined;
-    hashtagsList.forEach((e) => {
-      if (e.name === word || e.name === word.toLowerCase()) {
-        hashtag = e;
-      }
-    });
-    return hashtag;
-  };
-  return (
-    <>
-      <PostDescriptionWrapper>
-        {arrayWords.map((word, index) => {
-          if (word[0] === "#") {
-            const hashtag = findHashtagName(word.slice(1), hashtagsList);
-            if (hashtag) {
-              return (
-                <Link
-                  to={`/hashtag/${hashtag.name}`}
-                  state={hashtag}
-                  key={index}
-                >
-                  <span>{`#${word.slice(1)} `}</span>
-                </Link>
-              );
-            }
-          }
-          return `${word} `;
-        })}
-      </PostDescriptionWrapper>
-    </>
-  );
-}
+import { useNavigate } from "react-router-dom";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -62,29 +25,25 @@ function LinkPreview({ url, metadata }) {
   );
 }
 
-export default function Post({
+export default function HashtagPosts({
   user,
   postUrl,
   id,
-  postDescriptionText,
+  postDescription,
   urlMetadata,
-  setStatus,
-  status,
   usersWhoLiked,
-  hashtagsList,
 }) {
   const [editing, setEditing] = useState(false);
   const [descriptionEdition, setDescriptionEdition] = useState("teste");
   const [waiting, setWaiting] = useState(false);
   const [postDescriptionSave, setPostDescriptionSave] =
-    useState(postDescriptionText);
+    useState(postDescription);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (editing) {
@@ -96,6 +55,7 @@ export default function Post({
     setEditing(true);
     setDescriptionEdition(postDescriptionSave);
   }
+
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
@@ -120,15 +80,9 @@ export default function Post({
             <RiPencilFill className="icon" onClick={editingText} />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <DeletionModal
-            setStatus={setStatus}
-            status={status}
-            id={id}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-          />
+          <DeletionModal id={id} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
-        <div className="post-description-container">
+        <div className="post-description">
           {editing ? (
             <input
               disabled={waiting}
@@ -150,9 +104,9 @@ export default function Post({
                       setWaiting(true);
                       setPostDescriptionSave(descriptionEdition);
                     })
-                    .catch((error) => {
+                    .catch((erro) => {
                       alert("Não foi possivel salvar as alterações");
-                      console.log(error);
+                      console.log(erro);
                       setEditing(true);
                       setWaiting(false);
                       setDescriptionEdition(postDescriptionSave);
@@ -165,10 +119,7 @@ export default function Post({
               }}
             ></input>
           ) : (
-            <PostDescription
-              postText={postDescriptionSave}
-              hashtagsList={hashtagsList}
-            />
+            postDescriptionSave
           )}
         </div>
         <LinkPreview url={postUrl} metadata={urlMetadata} />
@@ -224,9 +175,8 @@ const PostContent = styled.div`
     line-height: 23px;
     color: #ffffff;
     margin-bottom: 7px;
-    cursor: pointer;
   }
-  .post-description-container {
+  .post-description {
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
@@ -296,25 +246,13 @@ const LinkPreviewWrapper = styled.div`
     }
   }
   img {
-    width: 30.62%;
+    width: 155px;
     height: 100%;
     object-fit: cover;
   }
   &:hover {
     background-color: #2c2c2c;
     border: 1px solid #bebebe;
-  }
-  @media (max-width: 500px) {
-    .info-container {
-      width: 50%;
-    }
-    .description {
-      max-height: 30px;
-      overflow: hidden;
-    }
-    img {
-      width: 50%;
-    }
   }
 `;
 
@@ -333,15 +271,4 @@ const EditingDelete = styled.div`
     }
   }
   display: ${(props) => (props.display === "true" ? "initial" : "none")};
-`;
-
-const PostDescriptionWrapper = styled.div`
-  a,
-  a:visited {
-    text-decoration: none;
-    color: #b7b7b7;
-  }
-  span {
-    font-weight: 700;
-  }
 `;

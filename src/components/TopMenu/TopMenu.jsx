@@ -17,16 +17,15 @@ export default function TopMenu() {
       const promise = getUser();
       promise
         .then((res) => {
-          console.log(res);
           if (res.data === "token expirado") {
             localStorage.removeItem("linkr");
+            navigate("/");
           }
         })
         .catch((res) => {
           console.log(res);
         });
       setUser(localUser);
-      console.log(localUser);
     }
   }, []);
 

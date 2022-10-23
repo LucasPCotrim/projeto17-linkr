@@ -1,25 +1,34 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { getHashtagList } from '../../services/LinkrAPI';
+import { useEffect, useState } from 'react';
 
-export default function HashtagContainer() {
+export default function HashtagContainer({ status }) {
+  const [hashtagId, setHashtagId] = useState(null);
+
+  useEffect(() => {
+    const promise = getHashtagList();
+    promise.then((res) => {
+      setHashtagId(res.data);
+    });
+  }, [status]);
+
   return (
     <OutterBox>
       <span>
         <h1>trending</h1>
       </span>
       <div>
-        <Link to={`/hashtag/:hashtag`}>
-          <h2># javascript</h2>
-          <h2># react</h2>
-          <h2># react-native</h2>
-          <h2># material</h2>
-          <h2># web-dev</h2>
-          <h2># mobile</h2>
-          <h2># css</h2>
-          <h2># html</h2>
-          <h2># node</h2>
-          <h2># sql</h2>
-        </Link>
+        {hashtagId === null ? (
+          <h2>Loading...</h2>
+        ) : (
+          hashtagId.map((i, index) => (
+            <Link to={`/hashtag/${i.name}`} state={i} key={index}>
+              {' '}
+              <h2># {i.name}</h2>{' '}
+            </Link>
+          ))
+        )}
       </div>
     </OutterBox>
   );
@@ -36,7 +45,7 @@ const OutterBox = styled.main`
   margin-top: 228px;
   margin-bottom: 100px;
 
-  @media (max-width: 670px) {
+  @media (max-width: 820px) {
     display: none;
   }
 
@@ -53,7 +62,7 @@ const OutterBox = styled.main`
       font-size: 27px;
       font-weight: 700;
       color: #ffffff;
-      font-family: "Oswald", sans-serif;
+      font-family: 'Oswald', sans-serif;
       cursor: default;
     }
   }
@@ -67,7 +76,7 @@ const OutterBox = styled.main`
       font-size: 19px;
       font-weight: 700;
       color: #ffffff;
-      font-family: "Lato", sans-serif;
+      font-family: 'Lato', sans-serif;
       padding: 5px 0;
       cursor: pointer;
     }
