@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import UserContext from "../../contexts/UserContext";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
 import { getUsersList } from "../../services/LinkrAPI";
+import { useNavigate } from "react-router-dom";
+import { FiSearch, FiXCircle } from "react-icons/fi";
 
 function ResultSearch({ user, ...otherProps }) {
   return (
     <BoxResultuser {...otherProps}>
       <img src={user.profilePic} alt="profilePic" />
-      {user?.name}
+      {user.name}
     </BoxResultuser>
   );
 }
@@ -18,6 +18,13 @@ export default function SearchBar() {
   const [stringSearch, setStringSearch] = useState("");
   const [listUsers, setListUsers] = useState([]);
   const navigate = useNavigate();
+
+  function clickSearch() {
+    if (stringSearch === "") {
+    } else {
+      setStringSearch("");
+    }
+  }
 
   useEffect(() => {
     if (stringSearch !== "" && stringSearch.length > 2) {
@@ -31,7 +38,6 @@ export default function SearchBar() {
           console.log(res);
         });
     } else {
-      setStringSearch("");
       setListUsers([]);
     }
   }, [stringSearch]);
@@ -44,16 +50,24 @@ export default function SearchBar() {
         placeholder="Search for people and friends"
         value={stringSearch}
       />
+      <StyledSearch>
+        {stringSearch === "" ? (
+          <FiSearch onClick={() => clickSearch()} />
+        ) : (
+          <FiXCircle onClick={() => clickSearch()} />
+        )}
+      </StyledSearch>
       <ContainerResultSearch>
-        {listUsers.length > 0 ? (
-          listUsers.map((user, index) => (
+        {listUsers?.length > 0 ? (
+          listUsers?.map((user, index) => (
             <ResultSearch
               key={index}
               user={user}
               onClick={() => {
-                navigate(`/user/${user.id}`);
                 setListUsers([]);
                 setStringSearch("");
+                /* navigate(`/user/${user.id}`); */
+                window.location.assign(`/user/${user.id}`);
               }}
             />
           ))
@@ -68,11 +82,11 @@ export default function SearchBar() {
 const StyledDebounce = styled(DebounceInput)`
   width: 50vw;
   height: 45px;
-
+  position: relative;
+  z-index: 3;
   background: #ffffff;
   border-radius: 8px;
-  padding: 0 16px;
-
+  padding: 0 38px 0 16px;
   font-family: "Lato";
   font-weight: 400;
   font-size: 19px;
@@ -81,12 +95,21 @@ const StyledDebounce = styled(DebounceInput)`
     color: #c6c6c6;
   }
   outline: 0;
-  z-index: 1;
+  @media screen and (max-width: 614px) {
+    width: 100%;
+    position: relative;
+    z-index: 3;
+  }
 `;
+
 const ContainerSearch = styled.div`
   position: relative;
   @media screen and (max-width: 614px) {
-    display: none;
+    position: absolute;
+    width: 96%;
+    top: 82px;
+    left: 10px;
+    z-index: 10;
   }
 `;
 
@@ -94,13 +117,17 @@ const ContainerResultSearch = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  z-index: -1;
   width: 100%;
   background: #e7e7e7;
   border-radius: 8px;
   padding-top: 45px;
   div {
     height: 66px;
+  }
+  max-height: 600px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -121,7 +148,21 @@ const BoxResultuser = styled.div`
   font-weight: 400;
   font-size: 19px;
   color: #515151;
+  border-radius: 8px;
+  transition: all 0.6s;
   &:hover {
-    background-color: #cecaca;
+    transform: scale(1.04);
   }
+`;
+
+const StyledSearch = styled.div`
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 4;
+
+  font-size: 19px;
+  color: #c6c6c6;
+  font-size: 28px;
+  cursor: pointer;
 `;
