@@ -35,7 +35,7 @@ const TimelinePage = () => {
           <PublishForm status={status} handleForm={formHandler} />
           <PostsContainer setStatus={setStatus} status={status} />
         </Wrapper>
-        <HashtagContainer />
+        <HashtagContainer status={status}/>
       </ContentContainter>
     </MainContainer>
   );

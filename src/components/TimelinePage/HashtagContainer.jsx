@@ -2,20 +2,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getHashtagList } from "../../services/LinkrAPI";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getHashtag } from "../../services/LinkrAPI";
 
-export default function HashtagContainer(){
+export default function HashtagContainer({status}){
  const [hashtagId, setHashtagId] = useState(null);
- const { hashtag } = useParams();
 
  useEffect(() => {
     const promise = getHashtagList();
-    getHashtag(hashtag)
     promise.then((res) => {
         setHashtagId(res.data);
     });
-    }, []);
+    }, [status]);
 
     return(
         <OutterBox> 
