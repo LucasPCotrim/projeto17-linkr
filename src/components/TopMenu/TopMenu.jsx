@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { logout, getUser } from "../../services/LinkrAPI";
+import SearchBar from "./SearchBar";
 
 export default function TopMenu() {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export default function TopMenu() {
         <Linkr>
           <h1 onClick={() => navigate("/")}>linkr</h1>
         </Linkr>
+        <SearchBar />
         <ContainerUserPic onClick={() => setTurnArrow(!turnArrow)}>
           {turnArrow ? <FiChevronUp /> : <FiChevronDown />}
 
