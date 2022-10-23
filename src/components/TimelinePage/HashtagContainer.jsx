@@ -1,28 +1,32 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { getHashtagList } from "../../services/LinkrAPI";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getHashtag } from "../../services/LinkrAPI";
 
-export default function HashtagContainer() {
-  return (
-    <OutterBox>
-      <span>
-        <h1>trending</h1>
-      </span>
-      <div>
-        <Link to={`/hashtag/:hashtag`}>
-          <h2># javascript</h2>
-          <h2># react</h2>
-          <h2># react-native</h2>
-          <h2># material</h2>
-          <h2># web-dev</h2>
-          <h2># mobile</h2>
-          <h2># css</h2>
-          <h2># html</h2>
-          <h2># node</h2>
-          <h2># sql</h2>
-        </Link>
-      </div>
-    </OutterBox>
-  );
+export default function HashtagContainer(){
+ const [hashtagId, setHashtagId] = useState(null);
+ const { hashtag } = useParams();
+
+ useEffect(() => {
+    const promise = getHashtagList();
+    getHashtag(hashtag)
+    promise.then((res) => {
+        setHashtagId(res.data);
+    });
+    }, []);
+
+    return(
+        <OutterBox> 
+            <span><h1>trending</h1></span>
+            <div>
+            
+                {hashtagId === null ? <h2>Loading...</h2>: hashtagId.map((i,index) => <Link to={`/hashtag/${i.name}`} state= {i} key= {index}> <h2># {i.name}</h2> </Link> )}
+          
+            </div>
+        </OutterBox>
+    )
 }
 
 const OutterBox = styled.main`
