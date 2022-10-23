@@ -69,11 +69,7 @@ export default function HashtagPosts({
             <RiPencilFill className="icon" onClick={editingText} />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <DeletionModal
-            id={id}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-          />
+          <DeletionModal id={id} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
         <div className="post-description">
           {editing ? (
