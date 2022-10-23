@@ -1,24 +1,57 @@
-import styled from "styled-components";
-import { RiPencilFill } from "react-icons/ri";
-import { BsFillTrashFill } from "react-icons/bs";
-import { useState, useRef, useEffect, useContext } from "react";
-import { updatePost } from "../../services/LinkrAPI";
-import { DeletionModal } from "./DeletionModal";
-import { LikeButton } from "./LikeButton";
-import UserContext from "../../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import { RiPencilFill } from 'react-icons/ri';
+import { BsFillTrashFill } from 'react-icons/bs';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { updatePost } from '../../services/LinkrAPI';
+import { DeletionModal } from './DeletionModal';
+import { LikeButton } from './LikeButton';
+import UserContext from '../../contexts/UserContext';
+import { Link, useNavigate } from 'react-router-dom';
+
+function PostDescription({ postText, hashtagsList }) {
+  const arrayWords = postText.split(' ');
+
+  const findHashtagName = (word, hashtagsList) => {
+    let hashtag = undefined;
+    hashtagsList.forEach((e) => {
+      if (e.name === word || e.name === word.toLowerCase()) {
+        hashtag = e;
+      }
+    });
+    return hashtag;
+  };
+  return (
+    <>
+      <PostDescriptionWrapper>
+        {arrayWords.map((word, index) => {
+          if (word[0] === '#') {
+            const hashtag = findHashtagName(word.slice(1), hashtagsList);
+            if (hashtag) {
+              return (
+                <Link to={`/hashtag/${hashtag.name}`} state={hashtag} key={index}>
+                  <span>{`#${word.slice(1)} `}</span>
+                </Link>
+              );
+            }
+          }
+          return `${word} `;
+        })}
+      </PostDescriptionWrapper>
+    </>
+  );
+}
 
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target="_blank">
+      <a href={url} target='_blank'>
         <LinkPreviewWrapper>
-          <div className="info-container">
-            <div className="title">{metadata.title}</div>
-            <div className="description">{metadata.description}</div>
-            <div className="link">{url}</div>
+          <div className='info-container'>
+            <div className='title'>{metadata.title}</div>
+            <div className='description'>{metadata.description}</div>
+            <div className='link'>{url}</div>
           </div>
-          <img src={metadata.image} alt="post preview" />
+          <img src={metadata.image} alt='post preview' />
         </LinkPreviewWrapper>
       </a>
     </>
@@ -29,17 +62,17 @@ export default function Post({
   user,
   postUrl,
   id,
-  postDescription,
+  postDescriptionText,
   urlMetadata,
   setStatus,
   status,
   usersWhoLiked,
+  hashtagsList,
 }) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState("teste");
+  const [descriptionEdition, setDescriptionEdition] = useState('teste');
   const [waiting, setWaiting] = useState(false);
-  const [postDescriptionSave, setPostDescriptionSave] =
-    useState(postDescription);
+  const [postDescriptionSave, setPostDescriptionSave] = useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -63,26 +96,17 @@ export default function Post({
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img
-          onClick={() => navigate(`/user/${user.id}`)}
-          src={user.profilePic}
-          alt="profilePic"
-        />
+        <img onClick={() => navigate(`/user/${user.id}`)} src={user.profilePic} alt='profilePic' />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
-        <div className="conteiner">
-          <div
-            onClick={() => navigate(`/user/${user.id}`)}
-            className="profile-name"
-          >
+        <div className='conteiner'>
+          <div onClick={() => navigate(`/user/${user.id}`)} className='profile-name'>
             {user.name}
           </div>
-          <EditingDelete
-            display={userLogged.email === user.email ? "true" : "false"}
-          >
-            <RiPencilFill className="icon" onClick={editingText} />
-            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
+          <EditingDelete display={userLogged.email === user.email ? 'true' : 'false'}>
+            <RiPencilFill className='icon' onClick={editingText} />
+            <BsFillTrashFill className='icon' onClick={() => setIsOpen(true)} />
           </EditingDelete>
           <DeletionModal
             setStatus={setStatus}
@@ -92,31 +116,31 @@ export default function Post({
             setIsOpen={setIsOpen}
           />
         </div>
-        <div className="post-description">
+        <div className='post-description-container'>
           {editing ? (
             <input
               disabled={waiting}
               ref={inputRef}
-              type="text"
+              type='text'
               value={descriptionEdition}
               onChange={(e) => {
                 setDescriptionEdition(e.target.value);
               }}
               onKeyDown={(event) => {
-                if (event.key === "Escape") {
+                if (event.key === 'Escape') {
                   setEditing(false);
                   return;
                 }
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                   const body = { postId: id, content: descriptionEdition };
                   updatePost(body)
                     .then((response) => {
                       setWaiting(true);
                       setPostDescriptionSave(descriptionEdition);
                     })
-                    .catch((erro) => {
-                      alert("Não foi possivel salvar as alterações");
-                      console.log(erro);
+                    .catch((error) => {
+                      alert('Não foi possivel salvar as alterações');
+                      console.log(error);
                       setEditing(true);
                       setWaiting(false);
                       setDescriptionEdition(postDescriptionSave);
@@ -126,10 +150,9 @@ export default function Post({
                       setEditing(false);
                     });
                 }
-              }}
-            ></input>
+              }}></input>
           ) : (
-            postDescriptionSave
+            <PostDescription postText={postDescriptionSave} hashtagsList={hashtagsList} />
           )}
         </div>
         <LinkPreview url={postUrl} metadata={urlMetadata} />
@@ -179,7 +202,7 @@ const PostContent = styled.div`
     }
   }
   .profile-name {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     line-height: 23px;
@@ -187,8 +210,8 @@ const PostContent = styled.div`
     margin-bottom: 7px;
     cursor: pointer;
   }
-  .post-description {
-    font-family: "Lato";
+  .post-description-container {
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -225,7 +248,7 @@ const LinkPreviewWrapper = styled.div`
   height: 70%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
   display: flex;
@@ -257,13 +280,25 @@ const LinkPreviewWrapper = styled.div`
     }
   }
   img {
-    width: 155px;
+    width: 30.62%;
     height: 100%;
     object-fit: cover;
   }
   &:hover {
     background-color: #2c2c2c;
     border: 1px solid #bebebe;
+  }
+  @media (max-width: 500px) {
+    .info-container {
+      width: 50%;
+    }
+    .description {
+      max-height: 30px;
+      overflow: hidden;
+    }
+    img {
+      width: 50%;
+    }
   }
 `;
 
@@ -281,5 +316,16 @@ const EditingDelete = styled.div`
       color: #a6a6a6;
     }
   }
-  display: ${(props) => (props.display === "true" ? "initial" : "none")};
+  display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
+`;
+
+const PostDescriptionWrapper = styled.div`
+  a,
+  a:visited {
+    text-decoration: none;
+    color: #b7b7b7;
+  }
+  span {
+    font-weight: 700;
+  }
 `;

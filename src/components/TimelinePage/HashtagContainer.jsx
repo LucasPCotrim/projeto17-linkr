@@ -1,28 +1,37 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { getHashtagList } from "../../services/LinkrAPI";
-import { useEffect, useState } from "react";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { getHashtagList } from '../../services/LinkrAPI';
+import { useEffect, useState } from 'react';
 
-export default function HashtagContainer({status}){
- const [hashtagId, setHashtagId] = useState(null);
+export default function HashtagContainer({ status }) {
+  const [hashtagId, setHashtagId] = useState(null);
 
- useEffect(() => {
+  useEffect(() => {
     const promise = getHashtagList();
     promise.then((res) => {
-        setHashtagId(res.data);
+      setHashtagId(res.data);
     });
-    }, [status]);
+  }, [status]);
 
-    return(
-        <OutterBox> 
-            <span><h1>trending</h1></span>
-            <div>
-            
-                {hashtagId === null ? <h2>Loading...</h2>: hashtagId.map((i,index) => <Link to={`/hashtag/${i.name}`} state= {i} key= {index}> <h2># {i.name}</h2> </Link> )}
-          
-            </div>
-        </OutterBox>
-    )
+  return (
+    <OutterBox>
+      <span>
+        <h1>trending</h1>
+      </span>
+      <div>
+        {hashtagId === null ? (
+          <h2>Loading...</h2>
+        ) : (
+          hashtagId.map((i, index) => (
+            <Link to={`/hashtag/${i.name}`} state={i} key={index}>
+              {' '}
+              <h2># {i.name}</h2>{' '}
+            </Link>
+          ))
+        )}
+      </div>
+    </OutterBox>
+  );
 }
 
 const OutterBox = styled.main`
@@ -36,7 +45,7 @@ const OutterBox = styled.main`
   margin-top: 228px;
   margin-bottom: 100px;
 
-  @media (max-width: 670px) {
+  @media (max-width: 820px) {
     display: none;
   }
 
@@ -53,7 +62,7 @@ const OutterBox = styled.main`
       font-size: 27px;
       font-weight: 700;
       color: #ffffff;
-      font-family: "Oswald", sans-serif;
+      font-family: 'Oswald', sans-serif;
       cursor: default;
     }
   }
@@ -67,7 +76,7 @@ const OutterBox = styled.main`
       font-size: 19px;
       font-weight: 700;
       color: #ffffff;
-      font-family: "Lato", sans-serif;
+      font-family: 'Lato', sans-serif;
       padding: 5px 0;
       cursor: pointer;
     }
