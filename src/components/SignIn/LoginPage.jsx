@@ -51,9 +51,7 @@ export default function LoginPage() {
         navigate("/timeline");
       })
       .catch((erro) => {
-        alert(
-          "Não foi possível logar, email ou senha incorretos, tente novamente"
-        );
+        alert("Login failed! Incorrect email or password, please try again");
         console.log(erro);
         setEmail("");
         setPassword("");
@@ -64,8 +62,10 @@ export default function LoginPage() {
   return (
     <Wrapper>
       <Header>
+        <nav>
         <h1>linkr</h1>
         <h2>save, share and discover the best links on the web</h2>
+        </nav>
       </Header>
       <Forms onSubmit={logIn}>
         <Input
@@ -110,6 +110,7 @@ const Wrapper = styled.div`
     flex-direction: row;
   }
 `;
+
 const Header = styled.div`
   width: 100%;
   height: 40vh;
@@ -120,6 +121,18 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.25);
+  nav{
+    
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    @media (max-width: 614px) {
+      align-items: center;
+      justify-content: center;
+    }
+  }
   h1 {
     font-family: "Passion One", cursive;
     font-weight: bold;
