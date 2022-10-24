@@ -42,7 +42,13 @@ export default function TopMenu() {
 
   return (
     <>
-      <ContainerTop>
+      <ContainerTop
+        onClick={() => {
+          if (turnArrow) {
+            setTurnArrow(false);
+          }
+        }}
+      >
         <Linkr>
           <h1 onClick={() => navigate("/")}>linkr</h1>
         </Linkr>
@@ -61,6 +67,14 @@ export default function TopMenu() {
           <h3 onClick={() => resetUser()}>logout</h3>
         </div>
       </BoxLogout>
+      <ClickCaptureBox
+        active={turnArrow}
+        onClick={() => {
+          if (turnArrow) {
+            setTurnArrow(false);
+          }
+        }}
+      />
     </>
   );
 }
@@ -146,4 +160,20 @@ const Linkr = styled.div`
       transform: scale(1.05);
     }
   }
+`;
+
+const ClickCaptureBox = styled.div`
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  ${(props) => {
+    if (props.active) {
+      return `
+        display flex;
+      `;
+    }
+  }}
 `;
