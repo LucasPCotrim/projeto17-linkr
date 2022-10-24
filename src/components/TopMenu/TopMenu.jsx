@@ -17,7 +17,7 @@ export default function TopMenu() {
       const promise = getUser();
       promise
         .then((res) => {
-          if (res.data === "token expirado") {
+          if (res.data === "token expirado" || res.status !== 200) {
             localStorage.removeItem("linkr");
             navigate("/");
           }
