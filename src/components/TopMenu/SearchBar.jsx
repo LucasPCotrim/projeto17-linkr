@@ -31,7 +31,6 @@ export default function SearchBar() {
       const promise = getUsersList(stringSearch);
       promise
         .then((res) => {
-          console.log(res.data);
           setListUsers(res.data);
         })
         .catch((res) => {

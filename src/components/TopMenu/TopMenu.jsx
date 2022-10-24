@@ -23,7 +23,8 @@ export default function TopMenu() {
           }
         })
         .catch((res) => {
-          console.log(res);
+          localStorage.removeItem("linkr");
+          navigate("/");
         });
       setUser(localUser);
     }
