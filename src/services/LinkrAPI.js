@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-/* const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/'; */
-const BASE_URL = 'http://localhost:5000/';
+const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
+/* const BASE_URL = 'http://localhost:5000/'; */
+
 function getToken() {
   const auth = JSON.parse(localStorage.getItem('linkr'));
   return auth?.token;
@@ -84,6 +85,13 @@ function getPageUser(id, limit = 20) {
   return promise;
 }
 
+function getUsersList(string, limit = 20) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}searchName/${string}?limit=${limit}`, config);
+  return promise;
+}
+
 export {
   getToken,
   login,
@@ -98,4 +106,5 @@ export {
   getPageUser,
   getHashtagList,
   getHashtag,
+  getUsersList,
 };

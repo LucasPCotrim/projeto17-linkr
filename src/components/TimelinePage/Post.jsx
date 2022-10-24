@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
 
-  const findHashtagName = (word, hashtagsList) => {
+  const findHashtagName = (word, hashtagsList = []) => {
     let hashtag = undefined;
     hashtagsList.forEach((e) => {
       if (e.name === word || e.name === word.toLowerCase()) {

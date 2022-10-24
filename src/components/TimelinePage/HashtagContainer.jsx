@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { getHashtagList } from '../../services/LinkrAPI';
-import { useEffect, useState } from 'react';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { getHashtagList } from "../../services/LinkrAPI";
+import { useEffect, useState } from "react";
 
 export default function HashtagContainer({ status }) {
   const [hashtagId, setHashtagId] = useState(null);
@@ -22,10 +22,10 @@ export default function HashtagContainer({ status }) {
         {hashtagId === null ? (
           <h2>Loading...</h2>
         ) : (
-          hashtagId.map((i, index) => (
+          hashtagId?.map((i, index) => (
             <Link to={`/hashtag/${i.name}`} state={i} key={index}>
-              {' '}
-              <h2># {i.name}</h2>{' '}
+              {" "}
+              <h2># {i.name}</h2>{" "}
             </Link>
           ))
         )}
@@ -62,7 +62,7 @@ const OutterBox = styled.main`
       font-size: 27px;
       font-weight: 700;
       color: #ffffff;
-      font-family: 'Oswald', sans-serif;
+      font-family: "Oswald", sans-serif;
       cursor: default;
     }
   }
@@ -76,7 +76,7 @@ const OutterBox = styled.main`
       font-size: 19px;
       font-weight: 700;
       color: #ffffff;
-      font-family: 'Lato', sans-serif;
+      font-family: "Lato", sans-serif;
       padding: 5px 0;
       cursor: pointer;
     }

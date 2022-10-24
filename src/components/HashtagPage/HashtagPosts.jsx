@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { RiContactsBookUploadFill, RiPencilFill } from "react-icons/ri";
+import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
