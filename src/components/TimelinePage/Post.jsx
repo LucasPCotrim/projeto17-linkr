@@ -96,6 +96,10 @@ export default function Post({
     setEditing(true);
     setDescriptionEdition(postDescriptionSave);
   }
+
+  function closeEditingText() {
+    setEditing(false);
+  }
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
@@ -117,7 +121,10 @@ export default function Post({
           <EditingDelete
             display={userLogged.email === user.email ? "true" : "false"}
           >
-            <RiPencilFill className="icon" onClick={editingText} />
+            <RiPencilFill
+              className="icon"
+              onClick={editing ? closeEditingText : editingText}
+            />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
           <DeletionModal
@@ -236,7 +243,7 @@ const PostContent = styled.div`
     margin-bottom: 12px;
     input {
       width: 100%;
-      height: 40px;
+      height: 30px;
       border-radius: 7px;
       line-break: auto;
     }
