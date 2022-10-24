@@ -6,6 +6,7 @@ import HashtagContainer  from "../TimelinePage/HashtagContainer";
 import { HashtagPostsContainer } from "./HashtagPostsContainer";
 
 export default function HashtagPage(){
+  const [reload, setReload] = useState(null);
   const location = useLocation();
 
   console.log(location.state)
@@ -14,9 +15,9 @@ export default function HashtagPage(){
           <ContentContainter>
             <Wrapper> 
               <header>#  {location.state.name}</header>
-             <HashtagPostsContainer hashtagName={location.state.name} />
+             <HashtagPostsContainer hashtagName={location.state.name} reload={reload} setReload={setReload}/>
             </Wrapper>
-            <HashtagContainer/>
+            <HashtagContainer reload={reload}/>
 
           </ContentContainter>
        </MainContainer>

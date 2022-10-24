@@ -2,10 +2,10 @@ import Modal from "react-modal";
 import styled from "styled-components";
 import Loading from "../../commons/Loading";
 import { deletePost, getToken } from "../../services/LinkrAPI";
-import { Button } from "./PublishForm";
+import { Button } from "../TimelinePage/PublishForm";
 
-const HashDeletionModal = ({ isOpen, setIsOpen, id, setStatus, status }) => {
-  console.log(status)
+const HashDeletionModal = ({ isOpen, setIsOpen, id, reload, setReload }) => {
+  console.log(reload)
   const customStyles = {
     content: {
       width: "500px",
@@ -22,21 +22,21 @@ const HashDeletionModal = ({ isOpen, setIsOpen, id, setStatus, status }) => {
   };
   const token = getToken();
   const postDeletion = (id, token) => {
-    setStatus("loading");
+    setReload("loading");
     deletePost(id, token).then(
       (response) => {
         console.log(response);
-        setStatus("deleted");
+        setReload("deleted");
       },
       (error) => {
         console.log(error);
-        setStatus("deletionError");
+        setReload("deletionError");
         setIsOpen(false);
         alert("Error while deleting your post, please try again!");
       }
     );
   };
-  const isLoading = status === "loading";
+  const isLoading = reload === "loading";
 
   return (
     <Modal

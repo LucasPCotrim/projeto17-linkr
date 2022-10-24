@@ -5,13 +5,12 @@ import { getHashtag } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 import { useParams } from "react-router-dom";
 
-function HashtagPostsContainer({ hashtagName }) {
+function HashtagPostsContainer({ hashtagName, reload, setReload }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
   let { hashtag } = useParams();
   hashtag = hashtagName
-
 
   useEffect(() => {
     setLoading(true);
@@ -26,7 +25,7 @@ function HashtagPostsContainer({ hashtagName }) {
         setPosts([]);
         setFailedToLoadPosts(true);
       });
-  }, [hashtag]);
+  }, [hashtag, reload]);
 
   if (failedToLoadPosts) {
     return (
@@ -69,6 +68,8 @@ function HashtagPostsContainer({ hashtagName }) {
                 postDescription={post.content}
                 urlMetadata={post.metadata}
                 usersWhoLiked={post.usersWhoLiked}
+                reload={reload}
+                setReload={setReload}
               />
             );
           })
