@@ -1,0 +1,21 @@
+{
+  "name": "projeto17-linkr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vite.config.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasPCotrim/projeto17-linkr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasPCotrim/projeto17-linkr/issues"
+  },
+  "homepage": "https://github.com/LucasPCotrim/projeto17-linkr#readme"
+}
