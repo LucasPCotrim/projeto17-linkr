@@ -1,17 +1,17 @@
-import styled from 'styled-components';
-import { RiPencilFill } from 'react-icons/ri';
-import { BsFillTrashFill } from 'react-icons/bs';
-import { useState, useRef, useEffect, useContext } from 'react';
-import { updatePost } from '../../services/LinkrAPI';
-import { DeletionModal } from './DeletionModal';
-import { LikeButton } from './LikeButton';
-import UserContext from '../../contexts/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import { RiPencilFill } from "react-icons/ri";
+import { BsFillTrashFill } from "react-icons/bs";
+import { useState, useRef, useEffect, useContext } from "react";
+import { updatePost } from "../../services/LinkrAPI";
+import { DeletionModal } from "./DeletionModal";
+import { LikeButton } from "./LikeButton";
+import UserContext from "../../contexts/UserContext";
+import { Link, useNavigate } from "react-router-dom";
 
 function PostDescription({ postText, hashtagsList }) {
-  const arrayWords = postText.split(' ');
+  const arrayWords = postText.split(" ");
 
-  const findHashtagName = (word, hashtagsList) => {
+  const findHashtagName = (word, hashtagsList = []) => {
     let hashtag = undefined;
     hashtagsList.forEach((e) => {
       if (e.name === word || e.name === word.toLowerCase()) {
@@ -24,11 +24,15 @@ function PostDescription({ postText, hashtagsList }) {
     <>
       <PostDescriptionWrapper>
         {arrayWords.map((word, index) => {
-          if (word[0] === '#') {
+          if (word[0] === "#") {
             const hashtag = findHashtagName(word.slice(1), hashtagsList);
             if (hashtag) {
               return (
-                <Link to={`/hashtag/${hashtag.name}`} state={hashtag} key={index}>
+                <Link
+                  to={`/hashtag/${hashtag.name}`}
+                  state={hashtag}
+                  key={index}
+                >
                   <span>{`#${word.slice(1)} `}</span>
                 </Link>
               );
@@ -44,14 +48,14 @@ function PostDescription({ postText, hashtagsList }) {
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target='_blank'>
+      <a href={url} target="_blank">
         <LinkPreviewWrapper>
-          <div className='info-container'>
-            <div className='title'>{metadata.title}</div>
-            <div className='description'>{metadata.description}</div>
-            <div className='link'>{url}</div>
+          <div className="info-container">
+            <div className="title">{metadata.title}</div>
+            <div className="description">{metadata.description}</div>
+            <div className="link">{url}</div>
           </div>
-          <img src={metadata.image} alt='post preview' />
+          <img src={metadata.image} alt="post preview" />
         </LinkPreviewWrapper>
       </a>
     </>
@@ -70,9 +74,10 @@ export default function Post({
   hashtagsList,
 }) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState('teste');
+  const [descriptionEdition, setDescriptionEdition] = useState("teste");
   const [waiting, setWaiting] = useState(false);
-  const [postDescriptionSave, setPostDescriptionSave] = useState(postDescriptionText);
+  const [postDescriptionSave, setPostDescriptionSave] =
+    useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -92,21 +97,35 @@ export default function Post({
     setDescriptionEdition(postDescriptionSave);
   }
 
-
+  function closeEditingText() {
+    setEditing(false);
+  }
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img onClick={() => navigate(`/user/${user.id}`)} src={user.profilePic} alt='profilePic' />
+        <img
+          onClick={() => navigate(`/user/${user.id}`)}
+          src={user.profilePic}
+          alt="profilePic"
+        />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
-        <div className='conteiner'>
-          <div onClick={() => navigate(`/user/${user.id}`)} className='profile-name'>
+        <div className="conteiner">
+          <div
+            onClick={() => navigate(`/user/${user.id}`)}
+            className="profile-name"
+          >
             {user.name}
           </div>
-          <EditingDelete display={userLogged.email === user.email ? 'true' : 'false'}>
-            <RiPencilFill className='icon' onClick={editingText} />
-            <BsFillTrashFill className='icon' onClick={() => setIsOpen(true)} />
+          <EditingDelete
+            display={userLogged.email === user.email ? "true" : "false"}
+          >
+            <RiPencilFill
+              className="icon"
+              onClick={editing ? closeEditingText : editingText}
+            />
+            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
           <DeletionModal
             setStatus={setStatus}
@@ -116,22 +135,22 @@ export default function Post({
             setIsOpen={setIsOpen}
           />
         </div>
-        <div className='post-description-container'>
+        <div className="post-description-container">
           {editing ? (
             <input
               disabled={waiting}
               ref={inputRef}
-              type='text'
+              type="text"
               value={descriptionEdition}
               onChange={(e) => {
                 setDescriptionEdition(e.target.value);
               }}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') {
+                if (event.key === "Escape") {
                   setEditing(false);
                   return;
                 }
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   const body = { postId: id, content: descriptionEdition };
                   updatePost(body)
                     .then((response) => {
@@ -139,7 +158,7 @@ export default function Post({
                       setPostDescriptionSave(descriptionEdition);
                     })
                     .catch((error) => {
-                      alert('Não foi possivel salvar as alterações');
+                      alert("Não foi possivel salvar as alterações");
                       console.log(error);
                       setEditing(true);
                       setWaiting(false);
@@ -150,9 +169,13 @@ export default function Post({
                       setEditing(false);
                     });
                 }
-              }}></input>
+              }}
+            ></input>
           ) : (
-            <PostDescription postText={postDescriptionSave} hashtagsList={hashtagsList} />
+            <PostDescription
+              postText={postDescriptionSave}
+              hashtagsList={hashtagsList}
+            />
           )}
         </div>
         <LinkPreview url={postUrl} metadata={urlMetadata} />
@@ -202,7 +225,7 @@ const PostContent = styled.div`
     }
   }
   .profile-name {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     line-height: 23px;
@@ -211,7 +234,7 @@ const PostContent = styled.div`
     cursor: pointer;
   }
   .post-description-container {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -220,7 +243,7 @@ const PostContent = styled.div`
     margin-bottom: 12px;
     input {
       width: 100%;
-      height: 40px;
+      height: 30px;
       border-radius: 7px;
       line-break: auto;
     }
@@ -248,7 +271,7 @@ const LinkPreviewWrapper = styled.div`
   height: 70%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 400;
   display: flex;
@@ -316,7 +339,7 @@ const EditingDelete = styled.div`
       color: #a6a6a6;
     }
   }
-  display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
+  display: ${(props) => (props.display === "true" ? "initial" : "none")};
 `;
 
 const PostDescriptionWrapper = styled.div`

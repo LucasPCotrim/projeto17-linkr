@@ -106,13 +106,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 614px) {
     flex-direction: row;
   }
 `;
 const Header = styled.div`
   width: 100%;
-  height: 20vh;
+  height: 40vh;
   background-color: #151515;
   color: white;
   display: flex;
@@ -123,16 +123,26 @@ const Header = styled.div`
   h1 {
     font-family: "Passion One", cursive;
     font-weight: bold;
-    font-size: 76px;
+    font-size: 106px;
+    @media screen and (max-width: 614px) {
+      font-size: 76px;
+    }
   }
   h2 {
-    width: 280px;
-    height: 70px;
+    max-width: 442px;
+    height: 128px;
     font-family: "Oswald", sans-serif;
     font-weight: bold;
-    font-size: 23px;
+    font-size: 43px;
+    font-weight: 700;
+    @media screen and (max-width: 614px) {
+      font-size: 23px;
+      max-width: 237px;
+      width: 100%;
+      height: 68px;
+    }
   }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 614px) {
     width: 150%;
     height: 100vh;
   }
@@ -145,9 +155,11 @@ const Forms = styled.form`
   align-items: center;
   justify-content: space-around;
   margin-top: 40px;
+  gap: 13px;
   h5 {
-    font-size: 17px;
+    font-size: 20px;
     color: white;
+    font-weight: 400;
     font-family: "Lato", sans-serif;
     text-decoration: underline;
     margin-top: 20px;
@@ -155,19 +167,16 @@ const Forms = styled.form`
 `;
 const Input = styled.input`
   width: 80%;
-  height: 55px;
-  font-size: 22px;
+  height: 65px;
+  font-size: 27px;
   font-weight: bold;
   color: #000000;
   padding: 10px;
-  border-radius: 5px;
-  &::placeholder {
+  border-radius: 6px;
+  ::placeholder {
     color: #9f9f9f;
-    opacity: 0.8;
-  }
-  &:disabled {
-    background-color: #f2f2f2;
-    color: #d4d4d4;
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
   }
 `;
 const Button = styled.button`

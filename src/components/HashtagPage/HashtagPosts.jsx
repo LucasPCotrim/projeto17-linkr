@@ -6,6 +6,7 @@ import { updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "../TimelinePage/DeletionModal";
 import { LikeButton } from "../TimelinePage/LikeButton";
 import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function LinkPreview({ url, metadata }) {
   return (
@@ -39,6 +40,7 @@ export default function HashtagPosts({
     useState(postDescription);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
@@ -53,20 +55,35 @@ export default function HashtagPosts({
     setEditing(true);
     setDescriptionEdition(postDescriptionSave);
   }
+  function closeEditingText() {
+    setEditing(false);
+  }
 
   return (
     <Wrapper>
       <ProfilePicAndLikeButton>
-        <img src={user.profilePic} alt="profilePic" />
+        <img
+          onClick={() => navigate(`/user/${user.id}`)}
+          src={user.profilePic}
+          alt="profilePic"
+        />
         <LikeButton likes={usersWhoLiked} postId={id} />
       </ProfilePicAndLikeButton>
       <PostContent>
         <div className="conteiner">
-          <div className="profile-name">{user.name}</div>
+          <div
+            onClick={() => navigate(`/user/${user.id}`)}
+            className="profile-name"
+          >
+            {user.name}
+          </div>
           <EditingDelete
             display={userLogged.email === user.email ? "true" : "false"}
           >
-            <RiPencilFill className="icon" onClick={editingText} />
+            <RiPencilFill
+              className="icon"
+              onClick={editing ? closeEditingText : editingText}
+            />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
           <DeletionModal id={id} isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -141,6 +158,7 @@ const ProfilePicAndLikeButton = styled.div`
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
 `;
 
@@ -174,7 +192,7 @@ const PostContent = styled.div`
     margin-bottom: 12px;
     input {
       width: 100%;
-      height: 40px;
+      height: 30px;
       border-radius: 7px;
       line-break: auto;
     }
