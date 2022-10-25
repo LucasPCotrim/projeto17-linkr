@@ -6,7 +6,9 @@ import { updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
+import logo from "../../assets/yoda.jpeg";
 import { Link, useNavigate } from "react-router-dom";
+import { CommentIcon } from "./Comments";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
@@ -101,86 +103,100 @@ export default function Post({
     setEditing(false);
   }
   return (
-    <Wrapper>
-      <ProfilePicAndLikeButton>
-        <img
-          onClick={() => navigate(`/user/${user.id}`)}
-          src={user.profilePic}
-          alt="profilePic"
-        />
-        <LikeButton likes={usersWhoLiked} postId={id} />
-      </ProfilePicAndLikeButton>
-      <PostContent>
-        <div className="conteiner">
-          <div
+    <>
+      <Wrapper>
+        <ProfilePicAndLikeButton>
+          <img
             onClick={() => navigate(`/user/${user.id}`)}
-            className="profile-name"
-          >
-            {user.name}
-          </div>
-          <EditingDelete
-            display={userLogged.email === user.email ? "true" : "false"}
-          >
-            <RiPencilFill
-              className="icon"
-              onClick={editing ? closeEditingText : editingText}
-            />
-            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
-          </EditingDelete>
-          <DeletionModal
-            setStatus={setStatus}
-            status={status}
-            id={id}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
+            src={user.profilePic}
+            alt="profilePic"
           />
-        </div>
-        <div className="post-description-container">
-          {editing ? (
-            <input
-              disabled={waiting}
-              ref={inputRef}
-              type="text"
-              value={descriptionEdition}
-              onChange={(e) => {
-                setDescriptionEdition(e.target.value);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                  setEditing(false);
-                  return;
-                }
-                if (event.key === "Enter") {
-                  const body = { postId: id, content: descriptionEdition };
-                  updatePost(body)
-                    .then((response) => {
-                      setWaiting(true);
-                      setPostDescriptionSave(descriptionEdition);
-                    })
-                    .catch((error) => {
-                      alert("Não foi possivel salvar as alterações");
-                      console.log(error);
-                      setEditing(true);
-                      setWaiting(false);
-                      setDescriptionEdition(postDescriptionSave);
-                    })
-                    .finally(() => {
-                      setWaiting(false);
-                      setEditing(false);
-                    });
-                }
-              }}
-            ></input>
-          ) : (
-            <PostDescription
-              postText={postDescriptionSave}
-              hashtagsList={hashtagsList}
+          <LikeButton likes={usersWhoLiked} postId={id} />
+          <CommentIcon />
+        </ProfilePicAndLikeButton>
+        <PostContent>
+          <div className="conteiner">
+            <div
+              onClick={() => navigate(`/user/${user.id}`)}
+              className="profile-name"
+            >
+              {user.name}
+            </div>
+            <EditingDelete
+              display={userLogged.email === user.email ? "true" : "false"}
+            >
+              <RiPencilFill
+                className="icon"
+                onClick={editing ? closeEditingText : editingText}
+              />
+              <BsFillTrashFill
+                className="icon"
+                onClick={() => setIsOpen(true)}
+              />
+            </EditingDelete>
+            <DeletionModal
+              setStatus={setStatus}
+              status={status}
+              id={id}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
             />
-          )}
+          </div>
+          <div className="post-description-container">
+            {editing ? (
+              <input
+                disabled={waiting}
+                ref={inputRef}
+                type="text"
+                value={descriptionEdition}
+                onChange={(e) => {
+                  setDescriptionEdition(e.target.value);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setEditing(false);
+                    return;
+                  }
+                  if (event.key === "Enter") {
+                    const body = { postId: id, content: descriptionEdition };
+                    updatePost(body)
+                      .then((response) => {
+                        setWaiting(true);
+                        setPostDescriptionSave(descriptionEdition);
+                      })
+                      .catch((error) => {
+                        alert("Não foi possivel salvar as alterações");
+                        console.log(error);
+                        setEditing(true);
+                        setWaiting(false);
+                        setDescriptionEdition(postDescriptionSave);
+                      })
+                      .finally(() => {
+                        setWaiting(false);
+                        setEditing(false);
+                      });
+                  }
+                }}
+              ></input>
+            ) : (
+              <PostDescription
+                postText={postDescriptionSave}
+                hashtagsList={hashtagsList}
+              />
+            )}
+          </div>
+          <LinkPreview url={postUrl} metadata={urlMetadata} />
+        </PostContent>
+      </Wrapper>
+      <CommentWrapper>
+        <div className="user-comment-container">
+          <img src={logo} />
         </div>
-        <LinkPreview url={postUrl} metadata={urlMetadata} />
-      </PostContent>
-    </Wrapper>
+        <div className="user-comment-container">
+          <img src={logo} />
+        </div>
+      </CommentWrapper>
+    </>
   );
 }
 
@@ -188,7 +204,7 @@ const Wrapper = styled.div`
   background-color: #171717;
   width: 100%;
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 16px 16px 0 0;
   display: flex;
   gap: 18px;
 
@@ -263,6 +279,28 @@ const PostContent = styled.div`
   }
   a {
     text-decoration: none;
+  }
+`;
+
+const CommentWrapper = styled.div`
+  background-color: #1e1e1e;
+  width: 100%;
+  padding-left: 20px;
+  border-radius: 0 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-comment-container {
+    display: flex;
+    align-items: center;
+    min-height: 70px;
+    border-bottom: 1px solid #353535;
   }
 `;
 
