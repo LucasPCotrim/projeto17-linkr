@@ -8,6 +8,14 @@ import { BiRefresh } from 'react-icons/bi';
 
 const TIMELINE_REFRESH_INTERVAL = 15000;
 
+//forceUpdate hook
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue((value) => value + 1); // update state to force render
+  // An function that increment 👆🏻 the previous state like here
+  // is better than directly setting `value + 1`
+}
+
 const getNumberNewPosts = (posts, newPosts) => {
   const newPostsIndexes = newPosts.map((post) => post.id);
   const postsIndexes = posts.map((post) => post.id);
@@ -17,14 +25,15 @@ const getNumberNewPosts = (posts, newPosts) => {
   );
 };
 
-function LoadNewPostsButton({ numberNewPosts, setPosts, newLoadedPosts }) {
+function LoadNewPostsButton({ numberNewPosts, status, setStatus, reRender, setReRender }) {
   const handleRefresh = () => {
-    setPosts([...newLoadedPosts]);
+    setReRender(!reRender);
+    setStatus('Loaded new posts');
   };
 
   return (
     <>
-      {numberNewPosts > 0 ? (
+      {numberNewPosts > 0 && status !== 'deleted' ? (
         <NewPostsButtonStyle onClick={() => handleRefresh()}>
           <h2>{`${numberNewPosts} new ${numberNewPosts > 1 ? 'posts' : 'post'}, load more!`}</h2>
           <BiRefresh className='icon' />
@@ -41,6 +50,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [newLoadedPosts, setNewLoadedPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [reRender, setReRender] = useState(false);
 
   useInterval(() => {
     if (userId === 0) {
@@ -73,7 +83,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
         setPosts([]);
         setFailedToLoadPosts(true);
       });
-  }, [status]);
+  }, [status, reRender]);
 
   if (failedToLoadPosts) {
     return (
@@ -113,8 +123,10 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       <Wrapper>
         <LoadNewPostsButton
           numberNewPosts={numberNewPosts}
-          setPosts={setPosts}
-          newLoadedPosts={newLoadedPosts}
+          status={status}
+          setStatus={setStatus}
+          reRender={reRender}
+          setReRender={setReRender}
         />
         {posts.map((post, index) => {
           return (
