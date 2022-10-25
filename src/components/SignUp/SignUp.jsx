@@ -24,7 +24,6 @@ export default function SignUp() {
 
     promise.then((res) => navigate("/"));
     promise.catch((err) => {
-      console.log(err.response.status)
       err.response.status === 409 ? alert(
         "Oops.. Email already exists! 😅 "
       ) : err.response.status=== 422 ?  alert(
