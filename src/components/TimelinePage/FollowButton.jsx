@@ -18,6 +18,10 @@ const OutterButton = styled.main`
     justify-content: center;
     margin-top: 168px;
     margin-right: 10px;
+    cursor: pointer;
+    &:hover {
+    filter: brightness(1.5);
+  }
     //visibility: hidden;
     @media (max-width: 820px) {
        margin-top: 1px;
