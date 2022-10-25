@@ -15,12 +15,8 @@ export default function HashtagPage() {
         <Wrapper>
           {location.state ? (
             <>
-              <nav>
                 <header># {location.state.name}</header>
-                <span>
-                  <FollowButton />
-                </span>
-              </nav>
+              
               <HashtagPostsContainer
                 hashtagName={location.state.name}
                 reload={reload}
@@ -33,7 +29,9 @@ export default function HashtagPage() {
             </LoadingImg>
           )}
         </Wrapper>
-        <HashtagContainer reload={reload} />
+        <div className='rightside'>
+          <HashtagContainer reload={reload} />
+        </div> 
       </ContentContainter>
     </MainContainer>
   );
@@ -50,6 +48,19 @@ const ContentContainter = styled.header`
   width: 915px;
   overflow: hidden;
   gap: 25px;
+
+  .rightside{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top: 180px;
+  margin-bottom: 100px;
+  padding-top: 50px;
+  width: 35%;
+  @media (max-width: 820px) {
+    display: none;
+  }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -63,13 +74,6 @@ const Wrapper = styled.div`
     display:flex;
     align-items: center;
     justify-content: space-between;
-
-    span{
-
-      @media (min-width: 820px) {
-       display: none;
-  }
-    }
   }
   header {
     font-family: "Oswald";
