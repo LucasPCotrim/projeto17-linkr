@@ -4,6 +4,7 @@ import { PostsContainer } from './PostsContainer';
 import styled from 'styled-components';
 import { getToken, publishPost } from '../../services/LinkrAPI';
 import HashtagContainer from './HashtagContainer';
+import FollowButton from './FollowButton';
 
 const TimelinePage = () => {
   const [status, setStatus] = useState('idle');
@@ -31,7 +32,10 @@ const TimelinePage = () => {
     <MainContainer>
       <ContentContainter>
         <Wrapper>
+          <nav>
           <header>timeline</header>
+          <span> <FollowButton/> </span>
+          </nav>
           <PublishForm status={status} handleForm={formHandler} />
           <PostsContainer setStatus={setStatus} status={status} />
         </Wrapper>
@@ -61,6 +65,18 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
+  nav{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span{
+
+      @media (min-width: 820px) {
+       display: none;
+  }
+    }
+  }
   header {
     font-family: 'Oswald';
     font-style: normal;

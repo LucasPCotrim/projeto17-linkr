@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getHashtagList } from "../../services/LinkrAPI";
 import { useEffect, useState } from "react";
+import FollowButton from "./FollowButton";
 
 export default function HashtagContainer({ status, reload}) {
   const [hashtagId, setHashtagId] = useState(null);
@@ -14,6 +15,8 @@ export default function HashtagContainer({ status, reload}) {
   }, [status, reload]);
 
   return (
+    <Align>
+    <FollowButton />
     <OutterBox>
       <span>
         <h1>trending</h1>
@@ -31,8 +34,27 @@ export default function HashtagContainer({ status, reload}) {
         )}
       </div>
     </OutterBox>
+    </Align>
   );
 }
+
+const Align = styled.div`
+  max-width: 301px;
+  width: 100%;
+  //height: 406px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  /* border-radius: 16px;
+  margin: 0 auto;
+  margin-top: 228px;
+  margin-bottom: 100px; */
+  @media (max-width: 820px) {
+    display: none;
+  }
+
+`
 
 const OutterBox = styled.main`
   display: auto;
@@ -42,9 +64,9 @@ const OutterBox = styled.main`
   background-color: #171717;
   border-radius: 16px;
   margin: 0 auto;
-  margin-top: 228px;
+  margin-top: 28px;
+  //margin-top: 228px;
   margin-bottom: 100px;
-
   @media (max-width: 820px) {
     display: none;
   }
