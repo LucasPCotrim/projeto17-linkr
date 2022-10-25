@@ -27,6 +27,7 @@ function HashtagPostsContainer({ hashtagName, reload, setReload }) {
       });
   }, [hashtag, reload]);
 
+
   if (failedToLoadPosts) {
     return (
       <>
@@ -107,5 +108,6 @@ const WarningMessage = styled.div`
   line-height: 40px;
   color: ${(props) => props.color || "ffffff"};
 `;
+
 
 export { HashtagPostsContainer };
