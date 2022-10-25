@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import HashtagContainer from "../TimelinePage/HashtagContainer";
 import { HashtagPostsContainer } from "./HashtagPostsContainer";
+import FollowButton from "../TimelinePage/FollowButton";
 
 export default function HashtagPage() {
   const [reload, setReload] = useState(null);
@@ -14,7 +15,12 @@ export default function HashtagPage() {
         <Wrapper>
           {location.state ? (
             <>
-              <header># {location.state.name}</header>
+              <nav>
+                <header># {location.state.name}</header>
+                <span>
+                  <FollowButton />
+                </span>
+              </nav>
               <HashtagPostsContainer
                 hashtagName={location.state.name}
                 reload={reload}
@@ -42,7 +48,7 @@ const MainContainer = styled.nav`
 const ContentContainter = styled.header`
   display: flex;
   width: 915px;
-  //overflow-x: scroll;
+  overflow: hidden;
   gap: 25px;
 `;
 
@@ -52,8 +58,19 @@ const Wrapper = styled.div`
   margin: 0 auto;
   margin-top: 150px;
   margin-bottom: 100px;
-  max-width: 614px;
-  min-width: 500px;
+  width: min(100vw, 614px);
+  nav{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span{
+
+      @media (min-width: 820px) {
+       display: none;
+  }
+    }
+  }
   header {
     font-family: "Oswald";
     font-style: normal;
