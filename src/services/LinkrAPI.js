@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
-/* const BASE_URL = 'http://localhost:5000/'; */
+//const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
+const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem('linkr'));
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   return auth?.token;
 }
 
@@ -67,7 +67,11 @@ function updatePost(body) {
 function toggleLikePost(postId) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.post(`${BASE_URL}posts/${postId}/like/toggle`, {}, config);
+  const promise = axios.post(
+    `${BASE_URL}posts/${postId}/like/toggle`,
+    {},
+    config
+  );
   return promise;
 }
 
@@ -88,7 +92,17 @@ function getPageUser(id, limit = 20) {
 function getUsersList(string, limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}searchName/${string}?limit=${limit}`, config);
+  const promise = axios.get(
+    `${BASE_URL}searchName/${string}?limit=${limit}`,
+    config
+  );
+  return promise;
+}
+
+function repost(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(`${BASE_URL}reposts/${id}`, [], config);
   return promise;
 }
 
@@ -107,4 +121,5 @@ export {
   getHashtagList,
   getHashtag,
   getUsersList,
+  repost,
 };

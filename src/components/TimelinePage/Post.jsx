@@ -7,10 +7,10 @@ import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
 import { Link, useNavigate } from "react-router-dom";
+import RepostButton from "./RepostButton";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
-
   const findHashtagName = (word, hashtagsList = []) => {
     let hashtag = undefined;
     hashtagsList.forEach((e) => {
@@ -74,12 +74,13 @@ export default function Post({
   hashtagsList,
 }) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState("teste");
+  const [descriptionEdition, setDescriptionEdition] = useState("");
   const [waiting, setWaiting] = useState(false);
   const [postDescriptionSave, setPostDescriptionSave] =
     useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+  const [reposting, setReposting] = useState(false);
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
@@ -90,7 +91,7 @@ export default function Post({
     if (editing) {
       inputRef.current.focus();
     }
-  }, [editing]);
+  }, [editing, status]);
 
   function editingText() {
     setEditing(true);
@@ -109,6 +110,11 @@ export default function Post({
           alt="profilePic"
         />
         <LikeButton likes={usersWhoLiked} postId={id} />
+        <RepostButton
+          reposting={reposting}
+          setReposting={setReposting}
+          postId={id}
+        />
       </ProfilePicAndLikeButton>
       <PostContent>
         <div className="conteiner">
@@ -127,6 +133,7 @@ export default function Post({
             />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
+
           <DeletionModal
             setStatus={setStatus}
             status={status}
@@ -151,6 +158,7 @@ export default function Post({
                   return;
                 }
                 if (event.key === "Enter") {
+                  setStatus("working");
                   const body = { postId: id, content: descriptionEdition };
                   updatePost(body)
                     .then((response) => {
@@ -167,6 +175,7 @@ export default function Post({
                     .finally(() => {
                       setWaiting(false);
                       setEditing(false);
+                      setStatus("sucess");
                     });
                 }
               }}
