@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-/* const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/'; */
+// const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
 const BASE_URL = 'http://localhost:5000/';
 
 function getToken() {
@@ -32,7 +32,7 @@ function logout() {
   return promise;
 }
 
-function getPosts(limit = 20) {
+function getPosts(limit = 10) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);

@@ -33,8 +33,11 @@ const TimelinePage = () => {
       <ContentContainter>
         <Wrapper>
           <nav>
-          <header>timeline</header>
-          <span> <FollowButton/> </span>
+            <header>timeline</header>
+            <span>
+              {' '}
+              <FollowButton />{' '}
+            </span>
           </nav>
           <PublishForm status={status} handleForm={formHandler} />
           <PostsContainer setStatus={setStatus} status={status} />
@@ -65,16 +68,15 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
-  nav{
-    display:flex;
+  nav {
+    display: flex;
     align-items: center;
     justify-content: space-between;
 
-    span{
-
+    span {
       @media (min-width: 820px) {
-       display: none;
-  }
+        display: none;
+      }
     }
   }
   header {
