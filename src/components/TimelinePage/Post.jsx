@@ -8,7 +8,7 @@ import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
 import logo from "../../assets/yoda.jpeg";
 import { Link, useNavigate } from "react-router-dom";
-import { CommentIcon } from "./Comments";
+import { CommentForm, CommentIcon, CommentWrapper } from "./Comments";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
@@ -191,10 +191,18 @@ export default function Post({
       <CommentWrapper>
         <div className="user-comment-container">
           <img src={logo} />
+          <div className="comment-content-container">
+            <div className="comment-header">
+              <h2>Lucas</h2>
+              <h3>• following</h3>
+            </div>
+            <p>Também achei, mudou minha vida</p>
+          </div>
         </div>
         <div className="user-comment-container">
           <img src={logo} />
         </div>
+        <CommentForm user={user} />
       </CommentWrapper>
     </>
   );
@@ -279,28 +287,6 @@ const PostContent = styled.div`
   }
   a {
     text-decoration: none;
-  }
-`;
-
-const CommentWrapper = styled.div`
-  background-color: #1e1e1e;
-  width: 100%;
-  padding-left: 20px;
-  border-radius: 0 0 16px 16px;
-  display: flex;
-  flex-direction: column;
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .user-comment-container {
-    display: flex;
-    align-items: center;
-    min-height: 70px;
-    border-bottom: 1px solid #353535;
   }
 `;
 
