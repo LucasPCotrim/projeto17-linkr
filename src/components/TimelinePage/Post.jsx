@@ -81,6 +81,7 @@ export default function Post({
   const [postDescriptionSave, setPostDescriptionSave] =
     useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const inputRef = useRef(null);
 
   const obj = useContext(UserContext);
@@ -104,7 +105,7 @@ export default function Post({
   }
   return (
     <>
-      <Wrapper>
+      <Wrapper isCommentOpen={isCommentOpen}>
         <ProfilePicAndLikeButton>
           <img
             onClick={() => navigate(`/user/${user.id}`)}
@@ -112,7 +113,7 @@ export default function Post({
             alt="profilePic"
           />
           <LikeButton likes={usersWhoLiked} postId={id} />
-          <CommentIcon />
+          <CommentIcon isOpen={isCommentOpen} setIsOpen={setIsCommentOpen} />
         </ProfilePicAndLikeButton>
         <PostContent>
           <div className="conteiner">
@@ -188,22 +189,24 @@ export default function Post({
           <LinkPreview url={postUrl} metadata={urlMetadata} />
         </PostContent>
       </Wrapper>
-      <CommentWrapper>
-        <div className="user-comment-container">
-          <img src={logo} />
-          <div className="comment-content-container">
-            <div className="comment-header">
-              <h2>Lucas</h2>
-              <h3>• following</h3>
+      {isCommentOpen && (
+        <CommentWrapper>
+          <div className="user-comment-container">
+            <img src={logo} />
+            <div className="comment-content-container">
+              <div className="comment-header">
+                <h2>Lucas</h2>
+                <h3>• following</h3>
+              </div>
+              <p>Também achei, mudou minha vida</p>
             </div>
-            <p>Também achei, mudou minha vida</p>
           </div>
-        </div>
-        <div className="user-comment-container">
-          <img src={logo} />
-        </div>
-        <CommentForm user={user} />
-      </CommentWrapper>
+          <div className="user-comment-container">
+            <img src={logo} />
+          </div>
+          <CommentForm id={id} user={user} />
+        </CommentWrapper>
+      )}
     </>
   );
 }
@@ -212,9 +215,12 @@ const Wrapper = styled.div`
   background-color: #171717;
   width: 100%;
   padding: 20px;
-  border-radius: 16px 16px 0 0;
+  border-radius: ${({ isCommentOpen }) =>
+    isCommentOpen ? "16px 16px 0 0" : "16px"};
+
   display: flex;
   gap: 18px;
+  margin-bottom: ${({ isCommentOpen }) => (isCommentOpen ? "0" : "16px")};
 
   @media screen and (max-width: 614px) {
     border-radius: 0;

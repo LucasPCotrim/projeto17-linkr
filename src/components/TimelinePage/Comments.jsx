@@ -1,22 +1,33 @@
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { SlPaperPlane } from "react-icons/sl";
+import { insertComment } from "../../services/LinkrAPI";
 import styled from "styled-components";
 
-const CommentIcon = () => {
+const CommentIcon = ({ setIsOpen, isOpen }) => {
   return (
-    <IconContainer>
+    <IconContainer onClick={() => setIsOpen(!isOpen)}>
       <IoChatbubblesOutline color="#FFFFFF" size={"25px"} />
       <p>? comments</p>
     </IconContainer>
   );
 };
 
-const CommentForm = ({ user }) => {
+const CommentForm = ({ user, id }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { content } = e.target.elements;
+
+    insertComment({ content: content.value }, id).then(
+      (response) => console.log(response),
+      (error) => console.log(error)
+    );
+    content.value = null;
+  };
   return (
     <FormContainer>
       <img src={user.profilePic} />
-      <Form>
-        <input placeholder="write a comment..." />
+      <Form onSubmit={handleSubmit}>
+        <input id="content" placeholder="write a comment..." />
         <button>
           <SlPaperPlane color="#FFFFFF" />
         </button>
@@ -74,6 +85,7 @@ const CommentWrapper = styled.div`
   padding: 0 20px 0 20px;
   border-radius: 0 0 16px 16px;
   display: flex;
+  margin-bottom: 18px;
   flex-direction: column;
   img {
     width: 39px;

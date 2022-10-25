@@ -99,6 +99,13 @@ function getUsersList(string, limit = 20) {
   return promise;
 }
 
+const insertComment = (data, id) => {
+  const token = getToken();
+  return axios.post(`${BASE_URL}posts/comments/${id}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export {
   getToken,
   login,
@@ -114,4 +121,5 @@ export {
   getHashtagList,
   getHashtag,
   getUsersList,
+  insertComment,
 };
