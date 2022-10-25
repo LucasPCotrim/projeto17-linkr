@@ -65,8 +65,8 @@ export default function SearchBar() {
               onClick={() => {
                 setListUsers([]);
                 setStringSearch("");
-                navigate(`/user/${user.id}`);
-                /*  window.location.assign(`/user/${user.id}`); */
+                /* navigate(`/user/${user.id}`); */
+                window.location.assign(`/user/${user.id}`);
               }}
             />
           ))
