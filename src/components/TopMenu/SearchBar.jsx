@@ -10,6 +10,7 @@ function ResultSearch({ user, ...otherProps }) {
     <BoxResultuser {...otherProps}>
       <img src={user.profilePic} alt="profilePic" />
       {user.name}
+      {parseInt(user.follow) ? <p>• following</p> : ""}
     </BoxResultuser>
   );
 }
@@ -167,6 +168,10 @@ const BoxResultuser = styled.div`
   transition: all 0.6s;
   &:hover {
     transform: scale(1.04);
+  }
+  p {
+    margin-left: 6px;
+    color: #c5c5c5;
   }
 `;
 
