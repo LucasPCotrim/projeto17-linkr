@@ -50,14 +50,15 @@ const MainContainer = styled.nav`
   align-items: center;
   justify-content: center;
   width: 100%;
- 
 `;
 const ContentContainter = styled.header`
   display: flex;
   width: 915px;
   overflow: hidden;
   gap: 25px;
-
+  @media (max-width: 820px) {
+       gap: 0;
+  }
 
     .right{
       display: flex;
@@ -66,8 +67,7 @@ const ContentContainter = styled.header`
       justify-content: flex-end;
       width: 301px;
       overflow: hidden;
-      padding-bottom: 32px;
-     
+      padding-bottom: 42px;
 
       @media (max-width: 820px) {
        display: none;
@@ -85,7 +85,6 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
-
   header {
     font-family: "Oswald";
     font-style: normal;
@@ -95,7 +94,6 @@ const Wrapper = styled.div`
     color: #ffffff;
     margin-left: 17px;
     margin-bottom: 19px;
-
     @media (max-width: 821px) {
        margin-bottom: 8px;
   }
@@ -112,7 +110,7 @@ const Wrapper = styled.div`
 
   nav{
     margin-left: 17px;
-
+    
     @media (min-width: 821px) {
        display: none;
   }
