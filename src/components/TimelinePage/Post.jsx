@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
-import { updatePost } from "../../services/LinkrAPI";
+import { getComments, updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
@@ -82,6 +82,7 @@ export default function Post({
     useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const inputRef = useRef(null);
 
   const obj = useContext(UserContext);
@@ -95,6 +96,13 @@ export default function Post({
     }
   }, [editing]);
 
+  useEffect(() => {
+    getComments(id).then(
+      (response) => setComments(response.data),
+      (error) => console.log(error)
+    );
+  }, []);
+  console.log(comments);
   function editingText() {
     setEditing(true);
     setDescriptionEdition(postDescriptionSave);
@@ -191,19 +199,20 @@ export default function Post({
       </Wrapper>
       {isCommentOpen && (
         <CommentWrapper>
-          <div className="user-comment-container">
-            <img src={logo} />
-            <div className="comment-content-container">
-              <div className="comment-header">
-                <h2>Lucas</h2>
-                <h3>• following</h3>
+          {comments.map((value) => {
+            return (
+              <div className="user-comment-container">
+                <img src={value.profilePic} />
+                <div className="comment-content-container">
+                  <div className="comment-header">
+                    <h2>{value.name}</h2>
+                    <h3>• following</h3>
+                  </div>
+                  <p>{value.content}</p>
+                </div>
               </div>
-              <p>Também achei, mudou minha vida</p>
-            </div>
-          </div>
-          <div className="user-comment-container">
-            <img src={logo} />
-          </div>
+            );
+          })}
           <CommentForm id={id} user={user} />
         </CommentWrapper>
       )}

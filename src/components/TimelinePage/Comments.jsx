@@ -45,7 +45,7 @@ const Form = styled.form`
   display: flex;
   width: 100%;
   margin-left: 15px;
-  input {
+  input#content {
     background: #252525;
     width: 100%;
     color: #ffffff;

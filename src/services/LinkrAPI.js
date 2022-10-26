@@ -106,6 +106,13 @@ const insertComment = (data, id) => {
   });
 };
 
+const getComments = (id) => {
+  const token = getToken();
+  return axios.get(`${BASE_URL}posts/comments/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export {
   getToken,
   login,
@@ -122,4 +129,5 @@ export {
   getHashtag,
   getUsersList,
   insertComment,
+  getComments,
 };
