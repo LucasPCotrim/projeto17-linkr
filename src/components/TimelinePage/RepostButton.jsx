@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { BiRepost } from "react-icons/bi";
-import { repost } from "../../services/LinkrAPI";
+import { getRepostsQnt, repost } from "../../services/LinkrAPI";
+import { useEffect, useState } from "react";
 
 function RepostModal({ setReposting, rePost }) {
   return (
@@ -22,7 +23,21 @@ function RepostModal({ setReposting, rePost }) {
   );
 }
 
-export default function RepostButton({ reposting, setReposting, postId }) {
+export default function RepostButton({
+  reposting,
+  setReposting,
+  postId,
+  status,
+  isRepost,
+}) {
+  const [repostQnt, setRespostQnt] = useState(0);
+
+  useEffect(() => {
+    getRepostsQnt(postId)
+      .then((res) => setRespostQnt(res.data.qnt))
+      .catch((err) => console.log(err));
+  }, [repostQnt, reposting, status]);
+
   function startReposting() {
     setReposting(true);
   }
@@ -35,13 +50,21 @@ export default function RepostButton({ reposting, setReposting, postId }) {
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.data) {
+          alert(err.response.data);
+        }
       });
   }
 
+  function doNothing() {}
+
   return (
     <Wraper>
-      <BiRepost className="icon" onClick={startReposting} />
-      <h6>0 re-posts</h6>
+      <BiRepost
+        className="icon"
+        onClick={isRepost ? doNothing : startReposting}
+      />
+      <h6>{repostQnt} re-posts</h6>
       {reposting ? (
         <RepostModal setReposting={setReposting} rePost={acceptRepost} />
       ) : (

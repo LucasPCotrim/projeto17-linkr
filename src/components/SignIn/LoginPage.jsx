@@ -25,7 +25,8 @@ export default function LoginPage() {
       .then((response) => {
         const { email, token } = JSON.parse(localStorage.getItem("linkr"));
         const { name, profilePic, id } = response.data;
-        const newUser = { email, token, name, profilePic, id };
+        const dateLogin = new Date();
+        const newUser = { email, token, name, profilePic, id, dateLogin };
         setUser(newUser);
         localStorage.setItem("linkr", JSON.stringify(newUser));
       })
@@ -63,8 +64,8 @@ export default function LoginPage() {
     <Wrapper>
       <Header>
         <nav>
-        <h1>linkr</h1>
-        <h2>save, share and discover the best links on the web</h2>
+          <h1>linkr</h1>
+          <h2>save, share and discover the best links on the web</h2>
         </nav>
       </Header>
       <Forms onSubmit={logIn}>
@@ -121,8 +122,7 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.25);
-  nav{
-    
+  nav {
     width: 90%;
     display: flex;
     flex-direction: column;

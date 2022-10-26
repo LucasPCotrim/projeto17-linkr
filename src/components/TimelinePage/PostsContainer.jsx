@@ -71,6 +71,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
                 status={status}
                 setStatus={setStatus}
                 hashtagsList={post.hashtagsList}
+                repostedBy={post.userWhoRepost}
+                nameRepostedBy={post.nameUserWhoRepost}
               />
             );
           })
@@ -88,7 +90,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: 25px;
 `;
 
 const WarningMessage = styled.div`

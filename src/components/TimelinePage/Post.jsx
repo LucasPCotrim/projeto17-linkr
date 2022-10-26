@@ -8,6 +8,7 @@ import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import RepostButton from "./RepostButton";
+import { BiRepost } from "react-icons/bi";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
@@ -72,6 +73,8 @@ export default function Post({
   status,
   usersWhoLiked,
   hashtagsList,
+  repostedBy,
+  nameRepostedBy,
 }) {
   const [editing, setEditing] = useState(false);
   const [descriptionEdition, setDescriptionEdition] = useState("");
@@ -81,6 +84,7 @@ export default function Post({
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
   const [reposting, setReposting] = useState(false);
+  const [isRepost, setIsrepost] = useState(Boolean);
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
@@ -90,6 +94,11 @@ export default function Post({
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
+    }
+    if (repostedBy === null) {
+      setIsrepost(false);
+    } else {
+      setIsrepost(true);
     }
   }, [editing, status]);
 
@@ -102,96 +111,122 @@ export default function Post({
     setEditing(false);
   }
   return (
-    <Wrapper>
-      <ProfilePicAndLikeButton>
-        <img
-          onClick={() => navigate(`/user/${user.id}`)}
-          src={user.profilePic}
-          alt="profilePic"
-        />
-        <LikeButton likes={usersWhoLiked} postId={id} />
-        <RepostButton
-          reposting={reposting}
-          setReposting={setReposting}
-          postId={id}
-        />
-      </ProfilePicAndLikeButton>
-      <PostContent>
-        <div className="conteiner">
-          <div
-            onClick={() => navigate(`/user/${user.id}`)}
-            className="profile-name"
-          >
-            {user.name}
-          </div>
-          <EditingDelete
-            display={userLogged.email === user.email ? "true" : "false"}
-          >
-            <RiPencilFill
-              className="icon"
-              onClick={editing ? closeEditingText : editingText}
-            />
-            <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
-          </EditingDelete>
+    <FullWrapper repost={isRepost}>
+      {isRepost ? (
+        <TopPost>
+          <BiRepost className="icon" />
+          <p>
+            Re-posted by{" "}
+            <span>
+              {nameRepostedBy === userLogged.name ? "you" : nameRepostedBy}
+            </span>
+          </p>
+        </TopPost>
+      ) : (
+        ""
+      )}
 
-          <DeletionModal
-            setStatus={setStatus}
-            status={status}
-            id={id}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
+      <Wrapper>
+        <ProfilePicAndLikeButton>
+          <img
+            onClick={() => navigate(`/user/${user.id}`)}
+            src={user.profilePic}
+            alt="profilePic"
           />
-        </div>
-        <div className="post-description-container">
-          {editing ? (
-            <input
-              disabled={waiting}
-              ref={inputRef}
-              type="text"
-              value={descriptionEdition}
-              onChange={(e) => {
-                setDescriptionEdition(e.target.value);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                  setEditing(false);
-                  return;
-                }
-                if (event.key === "Enter") {
-                  setStatus("working");
-                  const body = { postId: id, content: descriptionEdition };
-                  updatePost(body)
-                    .then((response) => {
-                      setWaiting(true);
-                      setPostDescriptionSave(descriptionEdition);
-                    })
-                    .catch((error) => {
-                      alert("Não foi possivel salvar as alterações");
-                      console.log(error);
-                      setEditing(true);
-                      setWaiting(false);
-                      setDescriptionEdition(postDescriptionSave);
-                    })
-                    .finally(() => {
-                      setWaiting(false);
-                      setEditing(false);
-                      setStatus("sucess");
-                    });
-                }
-              }}
-            ></input>
-          ) : (
-            <PostDescription
-              postText={postDescriptionSave}
-              hashtagsList={hashtagsList}
+          <LikeButton likes={usersWhoLiked} postId={id} isRepost={isRepost} />
+          <RepostButton
+            reposting={reposting}
+            setReposting={setReposting}
+            postId={id}
+            status={status}
+            isRepost={isRepost}
+          />
+        </ProfilePicAndLikeButton>
+        <PostContent>
+          <div className="conteiner">
+            <div
+              onClick={() => navigate(`/user/${user.id}`)}
+              className="profile-name"
+            >
+              {user.name}
+            </div>
+            <EditingDelete
+              display={userLogged.email === user.email ? "true" : "false"}
+            >
+              <RiPencilFill
+                className="icon"
+                onClick={editing ? closeEditingText : editingText}
+              />
+              <BsFillTrashFill
+                className="icon"
+                onClick={() => setIsOpen(true)}
+              />
+            </EditingDelete>
+
+            <DeletionModal
+              setStatus={setStatus}
+              status={status}
+              id={id}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
             />
-          )}
-        </div>
-        <LinkPreview url={postUrl} metadata={urlMetadata} />
-      </PostContent>
-    </Wrapper>
+          </div>
+          <div className="post-description-container">
+            {editing ? (
+              <input
+                disabled={waiting}
+                ref={inputRef}
+                type="text"
+                value={descriptionEdition}
+                onChange={(e) => {
+                  setDescriptionEdition(e.target.value);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setEditing(false);
+                    return;
+                  }
+                  if (event.key === "Enter") {
+                    setStatus("working");
+                    const body = { postId: id, content: descriptionEdition };
+                    updatePost(body)
+                      .then((response) => {
+                        setWaiting(true);
+                        setPostDescriptionSave(descriptionEdition);
+                      })
+                      .catch((error) => {
+                        alert("Não foi possivel salvar as alterações");
+                        console.log(error);
+                        setEditing(true);
+                        setWaiting(false);
+                        setDescriptionEdition(postDescriptionSave);
+                      })
+                      .finally(() => {
+                        setWaiting(false);
+                        setEditing(false);
+                        setStatus("sucess");
+                      });
+                  }
+                }}
+              ></input>
+            ) : (
+              <PostDescription
+                postText={postDescriptionSave}
+                hashtagsList={hashtagsList}
+              />
+            )}
+          </div>
+          <LinkPreview url={postUrl} metadata={urlMetadata} />
+        </PostContent>
+      </Wrapper>
+    </FullWrapper>
   );
 }
+const FullWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  margin-top: ${(props) => (props.repost ? "25px" : "0")};
+`;
 
 const Wrapper = styled.div`
   background-color: #171717;
@@ -200,7 +235,6 @@ const Wrapper = styled.div`
   border-radius: 16px;
   display: flex;
   gap: 18px;
-
   @media screen and (max-width: 614px) {
     border-radius: 0;
   }
@@ -359,5 +393,30 @@ const PostDescriptionWrapper = styled.div`
   }
   span {
     font-weight: 700;
+  }
+`;
+
+const TopPost = styled.div`
+  position: absolute;
+  top: -25px;
+  width: 100%;
+  height: 50px;
+  background-color: #1e1e1e;
+  margin-bottom: 10px;
+  z-index: -1;
+  border-radius: 11px;
+  color: white;
+  display: flex;
+  align-items: flex-start;
+  padding-left: 15px;
+  font-size: 16px;
+  .icon {
+    font-size: 25px;
+  }
+  p {
+    padding-top: 5px;
+  }
+  span {
+    font-weight: bold;
   }
 `;

@@ -4,7 +4,12 @@ import axios from "axios";
 const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
+  const dateNow = new Date();
   const auth = JSON.parse(localStorage.getItem("linkr"));
+  if (dateNow - auth.dateLogin > 7200000) {
+    localStorage.removeItem("linkr");
+    return;
+  }
   return auth?.token;
 }
 
@@ -106,6 +111,13 @@ function repost(id) {
   return promise;
 }
 
+function getRepostsQnt(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}reposts/${id}`, config);
+  return promise;
+}
+
 export {
   getToken,
   login,
@@ -122,4 +134,5 @@ export {
   getHashtag,
   getUsersList,
   repost,
+  getRepostsQnt,
 };
