@@ -31,17 +31,14 @@ const TimelinePage = () => {
     <MainContainer>
       <ContentContainter>
         <Wrapper>
-          <nav>
-            <header>timeline</header>
-            <span>
-              {" "}
-              <FollowButton />{" "}
-            </span>
-          </nav>
+          <header>timeline</header>
+
           <PublishForm status={status} handleForm={formHandler} />
           <PostsContainer setStatus={setStatus} status={status} />
         </Wrapper>
-        <HashtagContainer status={status} />
+        <div className="rightside">
+          <HashtagContainer status={status} />
+        </div>
       </ContentContainter>
     </MainContainer>
   );
@@ -58,6 +55,18 @@ const ContentContainter = styled.header`
   width: 915px;
   overflow: hidden;
   gap: 25px;
+  .rightside {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 150px;
+    margin-bottom: 100px;
+    padding-top: 50px;
+    width: 35%;
+    @media (max-width: 820px) {
+      display: none;
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -67,17 +76,6 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    span {
-      @media (min-width: 820px) {
-        display: none;
-      }
-    }
-  }
   header {
     font-family: "Oswald";
     font-style: normal;
