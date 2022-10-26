@@ -48,7 +48,7 @@ const getToolTipText = (usersWhoLiked, loggedUser) => {
   return tooltipText;
 };
 
-function LikeButton({ likes, postId, isRepost }) {
+function LikeButton({ likes, postId, isRepost, reRender, setReRender }) {
   const { user: loggedUser } = useContext(UserContext);
   const [usersWhoLiked, setUsersWhoLiked] = useState(likes);
   const nLikes = usersWhoLiked.length;
@@ -72,6 +72,9 @@ function LikeButton({ likes, postId, isRepost }) {
       })
       .catch((res) => {
         console.log(res);
+      })
+      .finally(() => {
+        setReRender(!reRender);
       });
   };
   function doNothing() {}

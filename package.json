@@ -20,7 +20,8 @@
     "react-router-dom": "^6.4.2",
     "react-tooltip": "^4.4.2",
     "styled-components": "^5.3.6",
-    "url-metadata": "^2.5.0"
+    "url-metadata": "^2.5.0",
+    "use-interval": "^1.4.0"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",

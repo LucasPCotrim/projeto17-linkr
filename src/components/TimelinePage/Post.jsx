@@ -2,13 +2,14 @@ import styled from "styled-components";
 import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
-import { updatePost } from "../../services/LinkrAPI";
+import { getComments, updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import RepostButton from "./RepostButton";
 import { BiRepost } from "react-icons/bi";
+import { CommentForm, CommentIcon, CommentWrapper } from "./Comments";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
@@ -75,6 +76,8 @@ export default function Post({
   hashtagsList,
   repostedBy,
   nameRepostedBy,
+  reRender,
+  setReRender,
 }) {
   const [editing, setEditing] = useState(false);
   const [descriptionEdition, setDescriptionEdition] = useState("");
@@ -82,6 +85,9 @@ export default function Post({
   const [postDescriptionSave, setPostDescriptionSave] =
     useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [commentStatus, setCommentStatus] = useState("iddle");
+  const [comments, setComments] = useState([]);
   const inputRef = useRef(null);
   const [reposting, setReposting] = useState(false);
   const [isRepost, setIsrepost] = useState(Boolean);
@@ -101,6 +107,13 @@ export default function Post({
       setIsrepost(true);
     }
   }, [editing, status]);
+
+  useEffect(() => {
+    getComments(id).then(
+      (response) => setComments(response.data),
+      (error) => console.log(error)
+    );
+  }, [commentStatus, status]);
 
   function editingText() {
     setEditing(true);
@@ -126,20 +139,33 @@ export default function Post({
         ""
       )}
 
-      <Wrapper>
+      <Wrapper isCommentOpen={isCommentOpen}>
         <ProfilePicAndLikeButton>
           <img
             onClick={() => navigate(`/user/${user.id}`)}
             src={user.profilePic}
             alt="profilePic"
           />
-          <LikeButton likes={usersWhoLiked} postId={id} isRepost={isRepost} />
+          <LikeButton
+            likes={usersWhoLiked}
+            postId={id}
+            isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
+          />
           <RepostButton
             reposting={reposting}
             setReposting={setReposting}
             postId={id}
             status={status}
             isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
+          />
+          <CommentIcon
+            comments={comments}
+            isOpen={isCommentOpen}
+            setIsOpen={setIsCommentOpen}
           />
         </ProfilePicAndLikeButton>
         <PostContent>
@@ -219,6 +245,39 @@ export default function Post({
           <LinkPreview url={postUrl} metadata={urlMetadata} />
         </PostContent>
       </Wrapper>
+      {isCommentOpen && (
+        <CommentWrapper>
+          {comments.map((value) => {
+            return (
+              <div className="user-comment-container">
+                <img src={value.profilePic} />
+                <div className="comment-content-container">
+                  <div className="comment-header">
+                    <h2>{value.name}</h2>
+                    <h3>
+                      {user.id === value.userId
+                        ? "• post’s author"
+                        : value.followerId === null
+                        ? null
+                        : "• following"}
+                    </h3>
+                  </div>
+                  <p>{value.content}</p>
+                </div>
+              </div>
+            );
+          })}
+          <CommentForm
+            status={commentStatus}
+            setStatus={setCommentStatus}
+            id={id}
+            user={user}
+            isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
+          />
+        </CommentWrapper>
+      )}
     </FullWrapper>
   );
 }
@@ -232,9 +291,13 @@ const Wrapper = styled.div`
   background-color: #171717;
   width: 100%;
   padding: 20px;
-  border-radius: 16px;
+  border-radius: ${({ isCommentOpen }) =>
+    isCommentOpen ? "16px 16px 0 0" : "16px"};
+
   display: flex;
   gap: 18px;
+  margin-bottom: ${({ isCommentOpen }) => (isCommentOpen ? "0" : "16px")};
+
   @media screen and (max-width: 614px) {
     border-radius: 0;
   }

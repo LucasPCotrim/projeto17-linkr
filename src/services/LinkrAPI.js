@@ -37,7 +37,7 @@ function logout() {
   return promise;
 }
 
-function getPosts(limit = 20) {
+function getPosts(limit = 10) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}posts?limit=${limit}`, config);
@@ -118,6 +118,20 @@ function getRepostsQnt(id) {
   return promise;
 }
 
+const insertComment = (data, id) => {
+  const token = getToken();
+  return axios.post(`${BASE_URL}posts/comments/${id}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+const getComments = (id) => {
+  const token = getToken();
+  return axios.get(`${BASE_URL}posts/comments/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export {
   getToken,
   login,
@@ -135,4 +149,6 @@ export {
   getUsersList,
   repost,
   getRepostsQnt,
+  insertComment,
+  getComments,
 };

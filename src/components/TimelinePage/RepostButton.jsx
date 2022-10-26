@@ -29,6 +29,8 @@ export default function RepostButton({
   postId,
   status,
   isRepost,
+  reRender,
+  setReRender,
 }) {
   const [repostQnt, setRespostQnt] = useState(0);
 
@@ -47,6 +49,7 @@ export default function RepostButton({
     repost(postId)
       .then((res) => {
         console.log(res);
+        setReRender(!reRender);
       })
       .catch((err) => {
         console.log(err);
@@ -102,6 +105,7 @@ const RepostWraper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 10;
   h1 {
     width: 70%;
     height: 70px;
