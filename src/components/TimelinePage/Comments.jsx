@@ -3,23 +3,29 @@ import { SlPaperPlane } from "react-icons/sl";
 import { insertComment } from "../../services/LinkrAPI";
 import styled from "styled-components";
 
-const CommentIcon = ({ setIsOpen, isOpen }) => {
+const CommentIcon = ({ setIsOpen, isOpen, comments }) => {
   return (
     <IconContainer onClick={() => setIsOpen(!isOpen)}>
       <IoChatbubblesOutline color="#FFFFFF" size={"25px"} />
-      <p>? comments</p>
+      <p> {comments[0]?.commentsCount ?? "0"} comments</p>
     </IconContainer>
   );
 };
 
-const CommentForm = ({ user, id }) => {
+const CommentForm = ({ user, id, status, setStatus }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { content } = e.target.elements;
-
+    setStatus("loading");
     insertComment({ content: content.value }, id).then(
-      (response) => console.log(response),
-      (error) => console.log(error)
+      (response) => {
+        console.log(response);
+        setStatus("sucess");
+      },
+      (error) => {
+        console.log(error);
+        setStatus("error");
+      }
     );
     content.value = null;
   };

@@ -6,7 +6,6 @@ import { getComments, updatePost } from "../../services/LinkrAPI";
 import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
-import logo from "../../assets/yoda.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { CommentForm, CommentIcon, CommentWrapper } from "./Comments";
 
@@ -82,6 +81,7 @@ export default function Post({
     useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [commentStatus, setCommentStatus] = useState("iddle");
   const [comments, setComments] = useState([]);
   const inputRef = useRef(null);
 
@@ -101,8 +101,8 @@ export default function Post({
       (response) => setComments(response.data),
       (error) => console.log(error)
     );
-  }, []);
-  console.log(comments);
+  }, [commentStatus]);
+
   function editingText() {
     setEditing(true);
     setDescriptionEdition(postDescriptionSave);
@@ -121,7 +121,11 @@ export default function Post({
             alt="profilePic"
           />
           <LikeButton likes={usersWhoLiked} postId={id} />
-          <CommentIcon isOpen={isCommentOpen} setIsOpen={setIsCommentOpen} />
+          <CommentIcon
+            comments={comments}
+            isOpen={isCommentOpen}
+            setIsOpen={setIsCommentOpen}
+          />
         </ProfilePicAndLikeButton>
         <PostContent>
           <div className="conteiner">
@@ -206,14 +210,25 @@ export default function Post({
                 <div className="comment-content-container">
                   <div className="comment-header">
                     <h2>{value.name}</h2>
-                    <h3>• following</h3>
+                    <h3>
+                      {user.id === value.userId
+                        ? "• post’s author"
+                        : value.followerId === null
+                        ? null
+                        : "• following"}
+                    </h3>
                   </div>
                   <p>{value.content}</p>
                 </div>
               </div>
             );
           })}
-          <CommentForm id={id} user={user} />
+          <CommentForm
+            status={commentStatus}
+            setStatus={setCommentStatus}
+            id={id}
+            user={user}
+          />
         </CommentWrapper>
       )}
     </>
