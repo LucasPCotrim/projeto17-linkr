@@ -18,10 +18,26 @@ export default function SearchBar() {
   const [stringSearch, setStringSearch] = useState("");
   const [listUsers, setListUsers] = useState([]);
   const navigate = useNavigate();
+  let controllerGetAll = true;
+
+  function getAllUsers() {
+    const promise = getUsersList("allusers");
+    promise
+      .then((res) => {
+        setListUsers(res.data);
+        controllerGetAll = true;
+      })
+      .catch((res) => {
+        console.log(res);
+        controllerGetAll = true;
+      });
+  }
 
   function clickSearch() {
-    if (stringSearch === "") {
-    } else {
+    if (stringSearch === "" && controllerGetAll) {
+      controllerGetAll = false;
+      getAllUsers();
+    } else if (stringSearch !== "") {
       setStringSearch("");
     }
   }
