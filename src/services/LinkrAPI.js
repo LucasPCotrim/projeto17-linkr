@@ -1,10 +1,15 @@
 import axios from "axios";
 
-/* const BASE_URL = "https://projeto-linkr-backend.herokuapp.com/"; */
+//const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
 const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
+  const dateNow = new Date();
   const auth = JSON.parse(localStorage.getItem("linkr"));
+  if (dateNow - auth.dateLogin > 7200000) {
+    localStorage.removeItem("linkr");
+    return;
+  }
   return auth?.token;
 }
 
@@ -99,6 +104,20 @@ function getUsersList(string, limit = 20) {
   return promise;
 }
 
+function repost(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(`${BASE_URL}reposts/${id}`, [], config);
+  return promise;
+}
+
+function getRepostsQnt(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}reposts/${id}`, config);
+  return promise;
+}
+
 const insertComment = (data, id) => {
   const token = getToken();
   return axios.post(`${BASE_URL}posts/comments/${id}`, data, {
@@ -128,6 +147,8 @@ export {
   getHashtagList,
   getHashtag,
   getUsersList,
+  repost,
+  getRepostsQnt,
   insertComment,
   getComments,
 };

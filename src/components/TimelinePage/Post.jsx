@@ -7,11 +7,12 @@ import { DeletionModal } from "./DeletionModal";
 import { LikeButton } from "./LikeButton";
 import UserContext from "../../contexts/UserContext";
 import { Link, useNavigate } from "react-router-dom";
+import RepostButton from "./RepostButton";
+import { BiRepost } from "react-icons/bi";
 import { CommentForm, CommentIcon, CommentWrapper } from "./Comments";
 
 function PostDescription({ postText, hashtagsList }) {
   const arrayWords = postText.split(" ");
-
   const findHashtagName = (word, hashtagsList = []) => {
     let hashtag = undefined;
     hashtagsList.forEach((e) => {
@@ -73,9 +74,13 @@ export default function Post({
   status,
   usersWhoLiked,
   hashtagsList,
+  repostedBy,
+  nameRepostedBy,
+  reRender,
+  setReRender,
 }) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState("teste");
+  const [descriptionEdition, setDescriptionEdition] = useState("");
   const [waiting, setWaiting] = useState(false);
   const [postDescriptionSave, setPostDescriptionSave] =
     useState(postDescriptionText);
@@ -84,6 +89,8 @@ export default function Post({
   const [commentStatus, setCommentStatus] = useState("iddle");
   const [comments, setComments] = useState([]);
   const inputRef = useRef(null);
+  const [reposting, setReposting] = useState(false);
+  const [isRepost, setIsrepost] = useState(Boolean);
 
   const obj = useContext(UserContext);
   const userLogged = obj.user;
@@ -94,14 +101,19 @@ export default function Post({
     if (editing) {
       inputRef.current.focus();
     }
-  }, [editing]);
+    if (repostedBy === null) {
+      setIsrepost(false);
+    } else {
+      setIsrepost(true);
+    }
+  }, [editing, status]);
 
   useEffect(() => {
     getComments(id).then(
       (response) => setComments(response.data),
       (error) => console.log(error)
     );
-  }, [commentStatus]);
+  }, [commentStatus, status]);
 
   function editingText() {
     setEditing(true);
@@ -112,7 +124,21 @@ export default function Post({
     setEditing(false);
   }
   return (
-    <>
+    <FullWrapper repost={isRepost}>
+      {isRepost ? (
+        <TopPost>
+          <BiRepost className="icon" />
+          <p>
+            Re-posted by{" "}
+            <span>
+              {nameRepostedBy === userLogged.name ? "you" : nameRepostedBy}
+            </span>
+          </p>
+        </TopPost>
+      ) : (
+        ""
+      )}
+
       <Wrapper isCommentOpen={isCommentOpen}>
         <ProfilePicAndLikeButton>
           <img
@@ -120,7 +146,22 @@ export default function Post({
             src={user.profilePic}
             alt="profilePic"
           />
-          <LikeButton likes={usersWhoLiked} postId={id} />
+          <LikeButton
+            likes={usersWhoLiked}
+            postId={id}
+            isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
+          />
+          <RepostButton
+            reposting={reposting}
+            setReposting={setReposting}
+            postId={id}
+            status={status}
+            isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
+          />
           <CommentIcon
             comments={comments}
             isOpen={isCommentOpen}
@@ -147,6 +188,7 @@ export default function Post({
                 onClick={() => setIsOpen(true)}
               />
             </EditingDelete>
+
             <DeletionModal
               setStatus={setStatus}
               status={status}
@@ -171,6 +213,7 @@ export default function Post({
                     return;
                   }
                   if (event.key === "Enter") {
+                    setStatus("working");
                     const body = { postId: id, content: descriptionEdition };
                     updatePost(body)
                       .then((response) => {
@@ -187,6 +230,7 @@ export default function Post({
                       .finally(() => {
                         setWaiting(false);
                         setEditing(false);
+                        setStatus("sucess");
                       });
                   }
                 }}
@@ -228,12 +272,20 @@ export default function Post({
             setStatus={setCommentStatus}
             id={id}
             user={user}
+            isRepost={isRepost}
+            reRender={reRender}
+            setReRender={setReRender}
           />
         </CommentWrapper>
       )}
-    </>
+    </FullWrapper>
   );
 }
+const FullWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  margin-top: ${(props) => (props.repost ? "25px" : "0")};
+`;
 
 const Wrapper = styled.div`
   background-color: #171717;
@@ -404,5 +456,30 @@ const PostDescriptionWrapper = styled.div`
   }
   span {
     font-weight: 700;
+  }
+`;
+
+const TopPost = styled.div`
+  position: absolute;
+  top: -25px;
+  width: 100%;
+  height: 50px;
+  background-color: #1e1e1e;
+  margin-bottom: 10px;
+  z-index: -1;
+  border-radius: 11px;
+  color: white;
+  display: flex;
+  align-items: flex-start;
+  padding-left: 15px;
+  font-size: 16px;
+  .icon {
+    font-size: 25px;
+  }
+  p {
+    padding-top: 5px;
+  }
+  span {
+    font-weight: bold;
   }
 `;

@@ -12,7 +12,15 @@ const CommentIcon = ({ setIsOpen, isOpen, comments }) => {
   );
 };
 
-const CommentForm = ({ user, id, status, setStatus }) => {
+const CommentForm = ({
+  user,
+  id,
+  status,
+  setStatus,
+  isRepost,
+  reRender,
+  setReRender,
+}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { content } = e.target.elements;
@@ -33,7 +41,11 @@ const CommentForm = ({ user, id, status, setStatus }) => {
     <FormContainer>
       <img src={user.profilePic} />
       <Form onSubmit={handleSubmit}>
-        <input id="content" placeholder="write a comment..." />
+        <input
+          id="content"
+          placeholder="write a comment..."
+          disabled={isRepost}
+        />
         <button>
           <SlPaperPlane color="#FFFFFF" />
         </button>
