@@ -32,9 +32,7 @@ const TimelinePage = () => {
     <MainContainer>
       <ContentContainter>
         <Wrapper>
-        
           <header>timeline</header>
-         
           <PublishForm status={status} handleForm={formHandler} />
           <PostsContainer setStatus={setStatus} status={status} />
         </Wrapper>
@@ -79,7 +77,7 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
-  
+
   header {
     font-family: 'Oswald';
     font-style: normal;
