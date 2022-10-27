@@ -64,7 +64,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
         });
     }
   }, TIMELINE_REFRESH_INTERVAL);
-
+ 
   useEffect(() => {
     setLoading(true);
     const promise =
