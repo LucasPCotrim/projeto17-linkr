@@ -53,7 +53,6 @@ export default function TopMenu() {
         <Linkr>
           <h1 onClick={() => navigate("/")}>linkr</h1>
         </Linkr>
-        <SearchBar />
         <ContainerUserPic onClick={() => setTurnArrow(!turnArrow)}>
           {turnArrow ? <FiChevronUp /> : <FiChevronDown />}
 
@@ -76,6 +75,7 @@ export default function TopMenu() {
           }
         }}
       />
+      <SearchBar />
     </>
   );
 }
