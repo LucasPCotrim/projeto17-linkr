@@ -1,20 +1,14 @@
-import styled from "styled-components";
-import Post from "./Post";
-import { useEffect, useState } from "react";
-import { getPosts, getPageUser, getUsersList } from "../../services/LinkrAPI";
-import Loading from "../../commons/Loading";
-import useInterval from "use-interval";
-import { BiRefresh } from "react-icons/bi";
+import styled from 'styled-components';
+import Post from './Post';
+import { useEffect, useState, useCallback } from 'react';
+import { getPosts, getPageUser, getUsersList } from '../../services/LinkrAPI';
+import Loading from '../../commons/Loading';
+import useInterval from 'use-interval';
+import { BiRefresh } from 'react-icons/bi';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const TIMELINE_REFRESH_INTERVAL = 15000;
-
-//forceUpdate hook
-function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue((value) => value + 1); // update state to force render
-  // An function that increment 👆🏻 the previous state like here
-  // is better than directly setting `value + 1`
-}
+const N_POSTS_PER_PAGE = 10;
 
 const getNumberNewPosts = (posts, newPosts) => {
   const newPostsIndexes = newPosts.map((post) => post.id);
@@ -25,26 +19,18 @@ const getNumberNewPosts = (posts, newPosts) => {
   );
 };
 
-function LoadNewPostsButton({
-  numberNewPosts,
-  status,
-  setStatus,
-  reRender,
-  setReRender,
-}) {
+function LoadNewPostsButton({ numberNewPosts, status, setStatus, reRender, setReRender }) {
   const handleRefresh = () => {
     setReRender(!reRender);
-    setStatus("Loaded new posts");
+    setStatus('Loaded new posts');
   };
 
   return (
     <>
-      {numberNewPosts > 0 && status !== "deleted" ? (
+      {numberNewPosts > 0 && status !== 'deleted' ? (
         <NewPostsButtonStyle onClick={() => handleRefresh()}>
-          <h2>{`${numberNewPosts} new ${
-            numberNewPosts > 1 ? "posts" : "post"
-          }, load more!`}</h2>
-          <BiRefresh className="icon" />
+          <h2>{`${numberNewPosts} new ${numberNewPosts > 1 ? 'posts' : 'post'}, load more!`}</h2>
+          <BiRefresh className='icon' />
         </NewPostsButtonStyle>
       ) : (
         <></>
@@ -59,11 +45,14 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
   const [reRender, setReRender] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [postsPage, setPostsPage] = useState(1);
   const [followedNoPosts, setFollowedNoPosts] = useState(false);
 
   useInterval(() => {
     if (userId === 0) {
-      const promise = getPosts();
+      const promise = getPosts({});
       promise
         .then((res) => {
           setNewLoadedPosts(res.data);
@@ -78,7 +67,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
 
   useEffect(() => {
     setLoading(true);
-    const promise = userId === 0 ? getPosts() : getPageUser(userId);
+    const promise =
+      userId === 0 ? getPosts({ limit: N_POSTS_PER_PAGE, offset: 0 }) : getPageUser(userId);
     promise
       .then((res) => {
         setPosts(res.data);
@@ -94,8 +84,31 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       });
   }, [status, reRender]);
 
+  const fetchItems = useCallback(async () => {
+    if (fetching) {
+      return;
+    }
+    setFetching(true);
+    try {
+      const { data: fetchedPosts } = await getPosts({
+        limit: N_POSTS_PER_PAGE,
+        offset: N_POSTS_PER_PAGE * postsPage,
+      });
+      setPosts([...posts, ...fetchedPosts]);
+
+      if (fetchedPosts.length < N_POSTS_PER_PAGE) {
+        setHasMore(false);
+      } else {
+        setPostsPage(postsPage + 1);
+        setHasMore(true);
+      }
+    } finally {
+      setFetching(false);
+    }
+  }, [posts, fetching, postsPage]);
+
   useEffect(() => {
-    const promise = getUsersList("allusers");
+    const promise = getUsersList('allusers');
     promise
       .then((res) => {
         if (res.data.filter((user) => parseInt(user.follow) > 0).length > 0) {
@@ -111,31 +124,31 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={"#853232"}>
-            An error occured while trying to fetch the posts, please refresh the
-            page
+          <WarningMessage color={'#853232'}>
+            An error occured while trying to fetch the posts, please refresh the page
           </WarningMessage>
         </Wrapper>
       </>
     );
   }
+  const loader = (
+    <>
+      <Wrapper key={0}>
+        <WarningMessage color={'white'}>Loading</WarningMessage>
+        <Loading color={'white'} />
+      </Wrapper>
+    </>
+  );
   if (loading) {
-    return (
-      <>
-        <Wrapper>
-          <WarningMessage color={"white"}>Loading</WarningMessage>
-          <Loading color={"white"} />
-        </Wrapper>
-      </>
-    );
+    return loader;
   }
   if (posts.length === 0) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={"white"}>
+          <WarningMessage color={'white'}>
             {followedNoPosts
-              ? "No posts found from your friends"
+              ? 'No posts found from your friends'
               : `You don't follow anyone yet. Search for new friends!`}
           </WarningMessage>
         </Wrapper>
@@ -155,26 +168,28 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
           reRender={reRender}
           setReRender={setReRender}
         />
-        {posts.map((post, index) => {
-          return (
-            <Post
-              key={index}
-              user={post.user}
-              id={post.id}
-              postUrl={post.url}
-              postDescriptionText={post.content}
-              urlMetadata={post.metadata}
-              usersWhoLiked={post.usersWhoLiked}
-              status={status}
-              setStatus={setStatus}
-              hashtagsList={post.hashtagsList}
-              repostedBy={post.userWhoRepost}
-              nameRepostedBy={post.nameUserWhoRepost}
-              reRender={reRender}
-              setReRender={setReRender}
-            />
-          );
-        })}
+        <InfiniteScroll loadMore={fetchItems} hasMore={hasMore} loader={loader}>
+          {posts.map((post, index) => {
+            return (
+              <Post
+                key={index}
+                user={post.user}
+                id={post.id}
+                postUrl={post.url}
+                postDescriptionText={post.content}
+                urlMetadata={post.metadata}
+                usersWhoLiked={post.usersWhoLiked}
+                status={status}
+                setStatus={setStatus}
+                hashtagsList={post.hashtagsList}
+                repostedBy={post.userWhoRepost}
+                nameRepostedBy={post.nameUserWhoRepost}
+                reRender={reRender}
+                setReRender={setReRender}
+              />
+            );
+          })}
+        </InfiniteScroll>
       </Wrapper>
     </>
   );
@@ -200,12 +215,12 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: "Oswald";
+  font-family: 'Oswald';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || "ffffff"};
+  color: ${(props) => props.color || 'ffffff'};
 `;
 
 const NewPostsButtonStyle = styled.div`
@@ -219,7 +234,7 @@ const NewPostsButtonStyle = styled.div`
   align-items: center;
   cursor: pointer;
   h2 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

@@ -1,18 +1,18 @@
-import styled from "styled-components";
-import { RiPencilFill } from "react-icons/ri";
-import { BsFillTrashFill } from "react-icons/bs";
-import { useState, useRef, useEffect, useContext } from "react";
-import { getComments, updatePost } from "../../services/LinkrAPI";
-import { DeletionModal } from "./DeletionModal";
-import { LikeButton } from "./LikeButton";
-import UserContext from "../../contexts/UserContext";
-import { Link, useNavigate } from "react-router-dom";
-import RepostButton from "./RepostButton";
-import { BiRepost } from "react-icons/bi";
-import { CommentForm, CommentIcon, CommentWrapper } from "./Comments";
+import styled from 'styled-components';
+import { RiPencilFill } from 'react-icons/ri';
+import { BsFillTrashFill } from 'react-icons/bs';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { getComments, updatePost } from '../../services/LinkrAPI';
+import { DeletionModal } from './DeletionModal';
+import { LikeButton } from './LikeButton';
+import UserContext from '../../contexts/UserContext';
+import { Link, useNavigate } from 'react-router-dom';
+import RepostButton from './RepostButton';
+import { BiRepost } from 'react-icons/bi';
+import { CommentForm, CommentIcon, CommentWrapper } from './Comments';
 
 function PostDescription({ postText, hashtagsList }) {
-  const arrayWords = postText.split(" ");
+  const arrayWords = postText.split(' ');
   const findHashtagName = (word, hashtagsList = []) => {
     let hashtag = undefined;
     hashtagsList.forEach((e) => {
@@ -26,15 +26,11 @@ function PostDescription({ postText, hashtagsList }) {
     <>
       <PostDescriptionWrapper>
         {arrayWords.map((word, index) => {
-          if (word[0] === "#") {
+          if (word[0] === '#') {
             const hashtag = findHashtagName(word.slice(1), hashtagsList);
             if (hashtag) {
               return (
-                <Link
-                  to={`/hashtag/${hashtag.name}`}
-                  state={hashtag}
-                  key={index}
-                >
+                <Link to={`/hashtag/${hashtag.name}`} state={hashtag} key={index}>
                   <span>{`#${word.slice(1)} `}</span>
                 </Link>
               );
@@ -50,14 +46,14 @@ function PostDescription({ postText, hashtagsList }) {
 function LinkPreview({ url, metadata }) {
   return (
     <>
-      <a href={url} target="_blank">
+      <a href={url} target='_blank'>
         <LinkPreviewWrapper>
-          <div className="info-container">
-            <div className="title">{metadata.title}</div>
-            <div className="description">{metadata.description}</div>
-            <div className="link">{url}</div>
+          <div className='info-container'>
+            <div className='title'>{metadata.title}</div>
+            <div className='description'>{metadata.description}</div>
+            <div className='link'>{url}</div>
           </div>
-          <img src={metadata.image} alt="post preview" />
+          <img src={metadata.image} alt='post preview' />
         </LinkPreviewWrapper>
       </a>
     </>
@@ -80,13 +76,12 @@ export default function Post({
   setReRender,
 }) {
   const [editing, setEditing] = useState(false);
-  const [descriptionEdition, setDescriptionEdition] = useState("");
+  const [descriptionEdition, setDescriptionEdition] = useState('');
   const [waiting, setWaiting] = useState(false);
-  const [postDescriptionSave, setPostDescriptionSave] =
-    useState(postDescriptionText);
+  const [postDescriptionSave, setPostDescriptionSave] = useState(postDescriptionText);
   const [isOpen, setIsOpen] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
-  const [commentStatus, setCommentStatus] = useState("iddle");
+  const [commentStatus, setCommentStatus] = useState('iddle');
   const [comments, setComments] = useState([]);
   const inputRef = useRef(null);
   const [reposting, setReposting] = useState(false);
@@ -127,16 +122,13 @@ export default function Post({
     <FullWrapper repost={isRepost}>
       {isRepost ? (
         <TopPost>
-          <BiRepost className="icon" />
+          <BiRepost className='icon' />
           <p>
-            Re-posted by{" "}
-            <span>
-              {nameRepostedBy === userLogged.name ? "you" : nameRepostedBy}
-            </span>
+            Re-posted by <span>{nameRepostedBy === userLogged.name ? 'you' : nameRepostedBy}</span>
           </p>
         </TopPost>
       ) : (
-        ""
+        ''
       )}
 
       <Wrapper isCommentOpen={isCommentOpen}>
@@ -144,7 +136,7 @@ export default function Post({
           <img
             onClick={() => navigate(`/user/${user.id}`)}
             src={user.profilePic}
-            alt="profilePic"
+            alt='profilePic'
           />
           <LikeButton
             likes={usersWhoLiked}
@@ -162,31 +154,16 @@ export default function Post({
             reRender={reRender}
             setReRender={setReRender}
           />
-          <CommentIcon
-            comments={comments}
-            isOpen={isCommentOpen}
-            setIsOpen={setIsCommentOpen}
-          />
+          <CommentIcon comments={comments} isOpen={isCommentOpen} setIsOpen={setIsCommentOpen} />
         </ProfilePicAndLikeButton>
         <PostContent>
-          <div className="conteiner">
-            <div
-              onClick={() => navigate(`/user/${user.id}`)}
-              className="profile-name"
-            >
+          <div className='conteiner'>
+            <div onClick={() => navigate(`/user/${user.id}`)} className='profile-name'>
               {user.name}
             </div>
-            <EditingDelete
-              display={userLogged.email === user.email ? "true" : "false"}
-            >
-              <RiPencilFill
-                className="icon"
-                onClick={editing ? closeEditingText : editingText}
-              />
-              <BsFillTrashFill
-                className="icon"
-                onClick={() => setIsOpen(true)}
-              />
+            <EditingDelete display={userLogged.email === user.email ? 'true' : 'false'}>
+              <RiPencilFill className='icon' onClick={editing ? closeEditingText : editingText} />
+              <BsFillTrashFill className='icon' onClick={() => setIsOpen(true)} />
             </EditingDelete>
 
             <DeletionModal
@@ -197,23 +174,23 @@ export default function Post({
               setIsOpen={setIsOpen}
             />
           </div>
-          <div className="post-description-container">
+          <div className='post-description-container'>
             {editing ? (
               <input
                 disabled={waiting}
                 ref={inputRef}
-                type="text"
+                type='text'
                 value={descriptionEdition}
                 onChange={(e) => {
                   setDescriptionEdition(e.target.value);
                 }}
                 onKeyDown={(event) => {
-                  if (event.key === "Escape") {
+                  if (event.key === 'Escape') {
                     setEditing(false);
                     return;
                   }
-                  if (event.key === "Enter") {
-                    setStatus("working");
+                  if (event.key === 'Enter') {
+                    setStatus('working');
                     const body = { postId: id, content: descriptionEdition };
                     updatePost(body)
                       .then((response) => {
@@ -221,7 +198,7 @@ export default function Post({
                         setPostDescriptionSave(descriptionEdition);
                       })
                       .catch((error) => {
-                        alert("Não foi possivel salvar as alterações");
+                        alert('Não foi possivel salvar as alterações');
                         console.log(error);
                         setEditing(true);
                         setWaiting(false);
@@ -230,16 +207,12 @@ export default function Post({
                       .finally(() => {
                         setWaiting(false);
                         setEditing(false);
-                        setStatus("sucess");
+                        setStatus('sucess');
                       });
                   }
-                }}
-              ></input>
+                }}></input>
             ) : (
-              <PostDescription
-                postText={postDescriptionSave}
-                hashtagsList={hashtagsList}
-              />
+              <PostDescription postText={postDescriptionSave} hashtagsList={hashtagsList} />
             )}
           </div>
           <LinkPreview url={postUrl} metadata={urlMetadata} />
@@ -247,19 +220,19 @@ export default function Post({
       </Wrapper>
       {isCommentOpen && (
         <CommentWrapper>
-          {comments.map((value) => {
+          {comments.map((value, index) => {
             return (
-              <div className="user-comment-container">
+              <div className='user-comment-container' key={index}>
                 <img src={value.profilePic} />
-                <div className="comment-content-container">
-                  <div className="comment-header">
+                <div className='comment-content-container'>
+                  <div className='comment-header'>
                     <h2>{value.name}</h2>
                     <h3>
                       {user.id === value.userId
-                        ? "• post’s author"
+                        ? '• post’s author'
                         : value.followerId === null
                         ? null
-                        : "• following"}
+                        : '• following'}
                     </h3>
                   </div>
                   <p>{value.content}</p>
@@ -284,19 +257,18 @@ export default function Post({
 const FullWrapper = styled.div`
   width: 100%;
   position: relative;
-  margin-top: ${(props) => (props.repost ? "25px" : "0")};
+  margin-top: ${(props) => (props.repost ? '25px' : '0')};
 `;
 
 const Wrapper = styled.div`
   background-color: #171717;
   width: 100%;
   padding: 20px;
-  border-radius: ${({ isCommentOpen }) =>
-    isCommentOpen ? "16px 16px 0 0" : "16px"};
+  border-radius: ${({ isCommentOpen }) => (isCommentOpen ? '16px 16px 0 0' : '16px')};
 
   display: flex;
   gap: 18px;
-  margin-bottom: ${({ isCommentOpen }) => (isCommentOpen ? "0" : "16px")};
+  margin-bottom: ${({ isCommentOpen }) => (isCommentOpen ? '0' : '16px')};
 
   @media screen and (max-width: 614px) {
     border-radius: 0;
@@ -331,7 +303,7 @@ const PostContent = styled.div`
     }
   }
   .profile-name {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     line-height: 23px;
@@ -340,7 +312,7 @@ const PostContent = styled.div`
     cursor: pointer;
   }
   .post-description-container {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -377,7 +349,7 @@ const LinkPreviewWrapper = styled.div`
   height: 70%;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
   display: flex;
@@ -445,7 +417,7 @@ const EditingDelete = styled.div`
       color: #a6a6a6;
     }
   }
-  display: ${(props) => (props.display === "true" ? "initial" : "none")};
+  display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
 `;
 
 const PostDescriptionWrapper = styled.div`
