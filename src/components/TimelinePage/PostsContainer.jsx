@@ -66,7 +66,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
         });
     }
   }, TIMELINE_REFRESH_INTERVAL);
-
+ 
   useEffect(() => {
     setLoading(true);
     const promise = userId === 0 ? getPosts() : getPageUser(userId);
