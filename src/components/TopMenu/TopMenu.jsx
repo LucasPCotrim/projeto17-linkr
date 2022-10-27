@@ -11,7 +11,7 @@ export default function TopMenu() {
   const [turnArrow, setTurnArrow] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("linkr"));
     if (!user?.profilePic && !!localUser?.profilePic) {
       const promise = getUser();
@@ -28,7 +28,7 @@ export default function TopMenu() {
         });
       setUser(localUser);
     }
-  }, []);
+  }, []); */
 
   function resetUser() {
     logout()
