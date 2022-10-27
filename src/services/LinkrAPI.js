@@ -1,10 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
-// const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
-const BASE_URL = 'http://localhost:5000/';
+const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
+//const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
-  const auth = JSON.parse(localStorage.getItem('linkr'));
+  const dateNow = new Date();
+  const auth = JSON.parse(localStorage.getItem("linkr"));
+  if (dateNow - auth.dateLogin > 7200000) {
+    localStorage.removeItem("linkr");
+    return;
+  }
   return auth?.token;
 }
 
@@ -67,7 +72,11 @@ function updatePost(body) {
 function toggleLikePost(postId) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.post(`${BASE_URL}posts/${postId}/like/toggle`, {}, config);
+  const promise = axios.post(
+    `${BASE_URL}posts/${postId}/like/toggle`,
+    {},
+    config
+  );
   return promise;
 }
 
@@ -88,9 +97,40 @@ function getPageUser(id, limit = 20) {
 function getUsersList(string, limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}searchName/${string}?limit=${limit}`, config);
+  const promise = axios.get(
+    `${BASE_URL}searchName/${string}?limit=${limit}`,
+    config
+  );
   return promise;
 }
+
+function repost(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(`${BASE_URL}reposts/${id}`, [], config);
+  return promise;
+}
+
+function getRepostsQnt(id) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}reposts/${id}`, config);
+  return promise;
+}
+
+const insertComment = (data, id) => {
+  const token = getToken();
+  return axios.post(`${BASE_URL}posts/comments/${id}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+const getComments = (id) => {
+  const token = getToken();
+  return axios.get(`${BASE_URL}posts/comments/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 
 export {
   getToken,
@@ -107,4 +147,8 @@ export {
   getHashtagList,
   getHashtag,
   getUsersList,
+  repost,
+  getRepostsQnt,
+  insertComment,
+  getComments,
 };

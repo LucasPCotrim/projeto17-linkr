@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-import Post from './Post';
-import { useEffect, useState } from 'react';
-import { getPosts, getPageUser } from '../../services/LinkrAPI';
-import Loading from '../../commons/Loading';
-import useInterval from 'use-interval';
-import { BiRefresh } from 'react-icons/bi';
+import styled from "styled-components";
+import Post from "./Post";
+import { useEffect, useState } from "react";
+import { getPosts, getPageUser } from "../../services/LinkrAPI";
+import Loading from "../../commons/Loading";
+import useInterval from "use-interval";
+import { BiRefresh } from "react-icons/bi";
 
 const TIMELINE_REFRESH_INTERVAL = 15000;
 
@@ -25,18 +25,26 @@ const getNumberNewPosts = (posts, newPosts) => {
   );
 };
 
-function LoadNewPostsButton({ numberNewPosts, status, setStatus, reRender, setReRender }) {
+function LoadNewPostsButton({
+  numberNewPosts,
+  status,
+  setStatus,
+  reRender,
+  setReRender,
+}) {
   const handleRefresh = () => {
     setReRender(!reRender);
-    setStatus('Loaded new posts');
+    setStatus("Loaded new posts");
   };
 
   return (
     <>
-      {numberNewPosts > 0 && status !== 'deleted' ? (
+      {numberNewPosts > 0 && status !== "deleted" ? (
         <NewPostsButtonStyle onClick={() => handleRefresh()}>
-          <h2>{`${numberNewPosts} new ${numberNewPosts > 1 ? 'posts' : 'post'}, load more!`}</h2>
-          <BiRefresh className='icon' />
+          <h2>{`${numberNewPosts} new ${
+            numberNewPosts > 1 ? "posts" : "post"
+          }, load more!`}</h2>
+          <BiRefresh className="icon" />
         </NewPostsButtonStyle>
       ) : (
         <></>
@@ -89,8 +97,9 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'#853232'}>
-            An error occured while trying to fetch the posts, please refresh the page
+          <WarningMessage color={"#853232"}>
+            An error occured while trying to fetch the posts, please refresh the
+            page
           </WarningMessage>
         </Wrapper>
       </>
@@ -100,8 +109,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'white'}>Loading</WarningMessage>
-          <Loading color={'white'} />
+          <WarningMessage color={"white"}>Loading</WarningMessage>
+          <Loading color={"white"} />
         </Wrapper>
       </>
     );
@@ -110,7 +119,9 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
+          <WarningMessage color={"white"}>
+            There are no posts yet
+          </WarningMessage>
         </Wrapper>
       </>
     );
@@ -141,6 +152,10 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
               status={status}
               setStatus={setStatus}
               hashtagsList={post.hashtagsList}
+              repostedBy={post.userWhoRepost}
+              nameRepostedBy={post.nameUserWhoRepost}
+              reRender={reRender}
+              setReRender={setReRender}
             />
           );
         })}
@@ -156,7 +171,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: 25px;
 `;
 
 const WarningMessage = styled.div`
@@ -169,12 +184,12 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || 'ffffff'};
+  color: ${(props) => props.color || "ffffff"};
 `;
 
 const NewPostsButtonStyle = styled.div`
@@ -188,7 +203,7 @@ const NewPostsButtonStyle = styled.div`
   align-items: center;
   cursor: pointer;
   h2 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
 import { toggleLikePost } from "../../services/LinkrAPI";
 import ReactTooltip from "react-tooltip";
@@ -48,7 +48,7 @@ const getToolTipText = (usersWhoLiked, loggedUser) => {
   return tooltipText;
 };
 
-function LikeButton({ likes, postId }) {
+function LikeButton({ likes, postId, isRepost, reRender, setReRender }) {
   const { user: loggedUser } = useContext(UserContext);
   const [usersWhoLiked, setUsersWhoLiked] = useState(likes);
   const nLikes = usersWhoLiked.length;
@@ -72,15 +72,25 @@ function LikeButton({ likes, postId }) {
       })
       .catch((res) => {
         console.log(res);
+      })
+      .finally(() => {
+        setReRender(!reRender);
       });
   };
+  function doNothing() {}
   return (
     <LikeButtonWrapper>
       <div className="like-button">
         {liked ? (
-          <FaHeart className="icon liked" onClick={() => handleLike()} />
+          <FaHeart
+            className="icon liked"
+            onClick={isRepost ? doNothing : () => handleLike()}
+          />
         ) : (
-          <FaRegHeart className="icon not-liked" onClick={() => handleLike()} />
+          <FaRegHeart
+            className="icon not-liked"
+            onClick={isRepost ? doNothing : () => handleLike()}
+          />
         )}
       </div>
       <h2 data-tip={tooltipText}>
