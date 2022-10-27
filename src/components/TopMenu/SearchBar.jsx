@@ -10,6 +10,7 @@ function ResultSearch({ user, ...otherProps }) {
     <BoxResultuser {...otherProps}>
       <img src={user.profilePic} alt="profilePic" />
       {user.name}
+      {parseInt(user.follow) ? <p>• following</p> : ""}
     </BoxResultuser>
   );
 }
@@ -18,10 +19,26 @@ export default function SearchBar() {
   const [stringSearch, setStringSearch] = useState("");
   const [listUsers, setListUsers] = useState([]);
   const navigate = useNavigate();
+  let controllerGetAll = true;
+
+  function getAllUsers() {
+    const promise = getUsersList("allusers");
+    promise
+      .then((res) => {
+        setListUsers(res.data);
+        controllerGetAll = true;
+      })
+      .catch((res) => {
+        console.log(res);
+        controllerGetAll = true;
+      });
+  }
 
   function clickSearch() {
-    if (stringSearch === "") {
-    } else {
+    if (stringSearch === "" && controllerGetAll) {
+      controllerGetAll = false;
+      getAllUsers();
+    } else if (stringSearch !== "") {
       setStringSearch("");
     }
   }
@@ -65,8 +82,8 @@ export default function SearchBar() {
               onClick={() => {
                 setListUsers([]);
                 setStringSearch("");
-                navigate(`/user/${user.id}`);
-                /*  window.location.assign(`/user/${user.id}`); */
+                /* navigate(`/user/${user.id}`); */
+                window.location.assign(`/user/${user.id}`);
               }}
             />
           ))
@@ -151,6 +168,10 @@ const BoxResultuser = styled.div`
   transition: all 0.6s;
   &:hover {
     transform: scale(1.04);
+  }
+  p {
+    margin-left: 6px;
+    color: #c5c5c5;
   }
 `;
 
