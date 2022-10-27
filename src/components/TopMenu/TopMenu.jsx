@@ -19,12 +19,12 @@ export default function TopMenu() {
         .then((res) => {
           if (res.data === "token expirado" || res.status !== 200) {
             localStorage.removeItem("linkr");
-            navigate("/");
+            window.location.assign("/");
           }
         })
         .catch((res) => {
           localStorage.removeItem("linkr");
-          navigate("/");
+          window.location.assign("/");
         });
       setUser(localUser);
     }
@@ -58,8 +58,8 @@ export default function TopMenu() {
           {turnArrow ? <FiChevronUp /> : <FiChevronDown />}
 
           <UserPic
-            src={!!user.profilePic ? user.profilePic : "https://http.cat/404"}
-            alt={user.name}
+            src={!!user?.profilePic ? user?.profilePic : "https://http.cat/404"}
+            alt={user?.name}
           />
         </ContainerUserPic>
       </ContainerTop>

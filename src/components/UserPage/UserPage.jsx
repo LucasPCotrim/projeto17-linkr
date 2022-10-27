@@ -16,14 +16,13 @@ export default function UserPage() {
         <Wrapper>
           {!!pageName?.name ? (
             <>
-            <header>
-              <img src={pageName?.profilePic} alt="profilePic" />
-              {pageName?.name} posts
-            </header> 
-            <nav>
-              
-              <FollowButton />
-            </nav>
+              <header>
+                <img src={pageName?.profilePic} alt="profilePic" />
+                {pageName?.name} posts
+              </header>
+              <nav>
+                <FollowButton />
+              </nav>
             </>
           ) : (
             ""
@@ -35,15 +34,16 @@ export default function UserPage() {
             setPageName={setPageName}
           />
         </Wrapper>
-          <rightWrap>
-            <div className="right"><FollowButton /></div>
-            <HashtagContainer status={status} />
-          </rightWrap>
+        <rightWrap>
+          <div className="right">
+            <FollowButton />
+          </div>
+          <HashtagContainer status={status} />
+        </rightWrap>
       </ContentContainter>
     </MainContainer>
   );
 }
-
 
 const MainContainer = styled.nav`
   display: flex;
@@ -57,26 +57,23 @@ const ContentContainter = styled.header`
   overflow: hidden;
   gap: 25px;
   @media (max-width: 820px) {
-       gap: 0;
+    gap: 0;
   }
 
-    .right{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: flex-end;
-      width: 301px;
-      overflow: hidden;
-      padding-bottom: 42px;
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 301px;
+    overflow: hidden;
+    padding-bottom: 42px;
 
-      @media (max-width: 820px) {
-       display: none;
-  }
-      
+    @media (max-width: 820px) {
+      display: none;
     }
+  }
 `;
-
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -95,8 +92,8 @@ const Wrapper = styled.div`
     margin-left: 17px;
     margin-bottom: 19px;
     @media (max-width: 821px) {
-       margin-bottom: 8px;
-  }
+      margin-bottom: 8px;
+    }
     img {
       width: 50px;
       height: 50px;
@@ -104,15 +101,14 @@ const Wrapper = styled.div`
       object-fit: cover;
       margin-right: 18px;
       margin-top: 10px;
-  
     }
   }
 
-  nav{
+  nav {
     margin-left: 17px;
-    
+
     @media (min-width: 821px) {
-       display: none;
-  }
+      display: none;
+    }
   }
 `;
