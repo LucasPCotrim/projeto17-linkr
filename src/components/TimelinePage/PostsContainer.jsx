@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Post from './Post';
 import { useEffect, useState, useCallback } from 'react';
-import { getPosts, getPageUser } from '../../services/LinkrAPI';
+import { getPosts, getPageUser, getUsersList } from '../../services/LinkrAPI';
 import Loading from '../../commons/Loading';
 import useInterval from 'use-interval';
 import { BiRefresh } from 'react-icons/bi';
@@ -48,6 +48,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [fetching, setFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [postsPage, setPostsPage] = useState(1);
+  const [followedNoPosts, setFollowedNoPosts] = useState(false);
 
   useInterval(() => {
     if (userId === 0) {
@@ -106,6 +107,19 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     }
   }, [posts, fetching, postsPage]);
 
+  useEffect(() => {
+    const promise = getUsersList('allusers');
+    promise
+      .then((res) => {
+        if (res.data.filter((user) => parseInt(user.follow) > 0).length > 0) {
+          setFollowedNoPosts(true);
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+
   if (failedToLoadPosts) {
     return (
       <>
@@ -132,7 +146,11 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
+          <WarningMessage color={'white'}>
+            {followedNoPosts
+              ? 'No posts found from your friends'
+              : `You don't follow anyone yet. Search for new friends!`}
+          </WarningMessage>
         </Wrapper>
       </>
     );
