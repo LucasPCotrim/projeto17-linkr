@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import HashtagContainer from "../TimelinePage/HashtagContainer";
 import { HashtagPostsContainer } from "./HashtagPostsContainer";
-import FollowButton from "../TimelinePage/FollowButton";
 
 export default function HashtagPage() {
   const [reload, setReload] = useState(null);

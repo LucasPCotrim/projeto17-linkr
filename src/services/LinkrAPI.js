@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
-/* const BASE_URL = "http://localhost:5000/"; */
+const BASE_URL = "https://projeto-linkr-backend.herokuapp.com/";
+//const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
   const dateNow = new Date();
-  const auth = JSON.parse(localStorage.getItem('linkr'));
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   if (dateNow - auth.dateLogin > 7200000) {
-    localStorage.removeItem('linkr');
+    localStorage.removeItem("linkr");
     return;
   }
   return auth?.token;
@@ -40,7 +40,10 @@ function logout() {
 function getPosts({ limit = 10, offset = 0 }) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}posts?limit=${limit}&offset=${offset}`, config);
+  const promise = axios.get(
+    `${BASE_URL}posts?limit=${limit}&offset=${offset}`,
+    config
+  );
   return promise;
 }
 
@@ -72,7 +75,11 @@ function updatePost(body) {
 function toggleLikePost(postId) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.post(`${BASE_URL}posts/${postId}/like/toggle`, {}, config);
+  const promise = axios.post(
+    `${BASE_URL}posts/${postId}/like/toggle`,
+    {},
+    config
+  );
   return promise;
 }
 
@@ -93,7 +100,37 @@ function getPageUser({ userId, limit = 10, offset = 0 }) {
 function getUsersList(string, limit = 20) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}searchName/${string}?limit=${limit}`, config);
+  const promise = axios.get(
+    `${BASE_URL}searchName/${string}?limit=${limit}`,
+    config
+  );
+  return promise;
+}
+
+function checkFollow(user, follower) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(
+    `${BASE_URL}follow/${user}?followerId=${follower}`,
+    config
+  );
+  return promise;
+}
+
+function followUser(body) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(`${BASE_URL}follow`, body, config);
+  return promise;
+}
+
+function unfollowUser(user, follower) {
+  const token = getToken();
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.delete(
+    `${BASE_URL}follow/${user}?followerId=${follower}`,
+    config
+  );
   return promise;
 }
 
@@ -140,6 +177,9 @@ export {
   getHashtagList,
   getHashtag,
   getUsersList,
+  checkFollow,
+  followUser,
+  unfollowUser,
   repost,
   getRepostsQnt,
   insertComment,

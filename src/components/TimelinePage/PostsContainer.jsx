@@ -83,7 +83,11 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       .then((res) => {
         setPosts(res.data);
         if (userId !== 0) {
-          setPageName(res.data[0].user);
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].userWhoRepost === null) {
+              setPageName(res.data[i].user);
+            }
+          }
         }
         setLoading(false);
       })
@@ -179,7 +183,12 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
           reRender={reRender}
           setReRender={setReRender}
         />
-        <InfiniteScroll loadMore={fetchItems} hasMore={hasMore} loader={loader}>
+        <InfiniteScroll
+          loadMore={fetchItems}
+          hasMore={hasMore}
+          loader={loader}
+          className="infinite-scroll"
+        >
           {posts.map((post, index) => {
             return (
               <Post
@@ -207,6 +216,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
 }
 
 const Wrapper = styled.div`
+  margin-top: 29px;
   margin: 29px auto 0 auto;
   width: 100%;
   display: flex;
@@ -214,6 +224,9 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 25px;
+  .infinite-scroll {
+    width: 100%;
+  }
 `;
 
 const WarningMessage = styled.div`

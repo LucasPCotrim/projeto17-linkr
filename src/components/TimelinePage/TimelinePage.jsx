@@ -5,10 +5,10 @@ import styled from "styled-components";
 import { getToken, publishPost } from "../../services/LinkrAPI";
 import HashtagContainer from "./HashtagContainer";
 import FollowButton from "./FollowButton";
+import { useNavigate } from "react-router-dom";
 
 const TimelinePage = () => {
   const [status, setStatus] = useState("idle");
-
   const formHandler = (e) => {
     e.preventDefault();
     const { url, content } = e.target.elements;
