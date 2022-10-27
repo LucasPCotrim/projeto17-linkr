@@ -1,60 +1,65 @@
-import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import { PostsContainer } from "../TimelinePage/PostsContainer";
-import { useParams } from "react-router-dom";
-import HashtagContainer from "../TimelinePage/HashtagContainer";
-import FollowButton from "../TimelinePage/FollowButton";
-import UserContext from "../../contexts/UserContext";
-import { checkFollow } from "../../services/LinkrAPI";
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { PostsContainer } from '../TimelinePage/PostsContainer';
+import { useParams } from 'react-router-dom';
+import HashtagContainer from '../TimelinePage/HashtagContainer';
+import FollowButton from '../TimelinePage/FollowButton';
+import UserContext from '../../contexts/UserContext';
+import { checkFollow } from '../../services/LinkrAPI';
 
 export default function UserPage() {
   const { id } = useParams();
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState('idle');
   const [pageName, setPageName] = useState({});
   const [follows, setFollows] = useState(null);
   const [load, setLoad] = useState(null);
   const obj = useContext(UserContext);
   const userLogged = obj.user.id;
-  const user = parseInt(id); 
+  const user = parseInt(id);
   let visibility;
- 
-  userLogged === user ? visibility = "hidden" : visibility = "visible";
+
+  userLogged === user ? (visibility = 'hidden') : (visibility = 'visible');
 
   useEffect(() => {
-   if(userLogged){ 
-   const promise = checkFollow(user, userLogged);
-   promise.then((res)=> {
-    setFollows(res.data.follows);
-   })
-   .catch((res) => {
-    console.log(res)
-   })
+    if (userLogged) {
+      const promise = checkFollow(user, userLogged);
+      promise
+        .then((res) => {
+          setFollows(res.data.follows);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
+  }, [load, userLogged]);
+
+  if (follows === null) {
+    return <h1>Loading</h1>;
   }
-  },[load, userLogged])
 
-
-  if(follows === null){
-    return (<h1>Loading</h1>)
-  }
-
-   
   return (
     <MainContainer>
       <ContentContainter>
         <Wrapper>
           {!!pageName?.name ? (
             <>
-            <header>
-              <img src={pageName?.profilePic} alt="profilePic" />
-              {pageName?.name} posts
-            </header> 
-            <nav>
-              
-              <FollowButton load={load} setLoad = {setLoad} visibility = {visibility} follows={follows} user={user} userLogged={userLogged}/>
-            </nav>
+              <header>
+                <img src={pageName?.profilePic} alt='profilePic' />
+                {pageName?.name} posts
+              </header>
+              <nav>
+                <FollowButton
+                  load={load}
+                  setLoad={setLoad}
+                  visibility={visibility}
+                  follows={follows}
+                  user={user}
+                  userLogged={userLogged}
+                />
+              </nav>
             </>
           ) : (
-            ""
+            ''
           )}
           <PostsContainer
             setStatus={setStatus}
@@ -63,17 +68,25 @@ export default function UserPage() {
             setPageName={setPageName}
           />
         </Wrapper>
-          <RightWrap>
-            <div className="right"><FollowButton load={load} setLoad = {setLoad} visibility={visibility} follows={follows} user={user} userLogged={userLogged}/></div>
-            <HashtagContainer status={status} />
-          </RightWrap>
+        <RightWrap>
+          <div className='right'>
+            <FollowButton
+              load={load}
+              setLoad={setLoad}
+              visibility={visibility}
+              follows={follows}
+              user={user}
+              userLogged={userLogged}
+            />
+          </div>
+          <HashtagContainer status={status} />
+        </RightWrap>
       </ContentContainter>
     </MainContainer>
   );
 }
 
-const RightWrap = styled.div`
-`
+const RightWrap = styled.div``;
 
 const MainContainer = styled.nav`
   display: flex;
@@ -113,7 +126,7 @@ const Wrapper = styled.div`
   margin-bottom: 100px;
   width: min(100vw, 614px);
   header {
-    font-family: "Oswald";
+    font-family: 'Oswald';
     font-style: normal;
     font-weight: 700;
     font-size: 43px;

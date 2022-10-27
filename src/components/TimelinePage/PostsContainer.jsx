@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import Post from "./Post";
-import { useEffect, useState, useCallback } from "react";
-import { getPosts, getPageUser, getUsersList } from "../../services/LinkrAPI";
-import Loading from "../../commons/Loading";
-import useInterval from "use-interval";
-import { BiRefresh } from "react-icons/bi";
-import InfiniteScroll from "react-infinite-scroller";
+import styled from 'styled-components';
+import Post from './Post';
+import { useEffect, useState, useCallback } from 'react';
+import { getPosts, getPageUser, getUsersList } from '../../services/LinkrAPI';
+import Loading from '../../commons/Loading';
+import useInterval from 'use-interval';
+import { BiRefresh } from 'react-icons/bi';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const TIMELINE_REFRESH_INTERVAL = 15000;
 const N_POSTS_PER_PAGE = 10;
@@ -19,26 +19,18 @@ const getNumberNewPosts = (posts, newPosts) => {
   );
 };
 
-function LoadNewPostsButton({
-  numberNewPosts,
-  status,
-  setStatus,
-  reRender,
-  setReRender,
-}) {
+function LoadNewPostsButton({ numberNewPosts, status, setStatus, reRender, setReRender }) {
   const handleRefresh = () => {
     setReRender(!reRender);
-    setStatus("Loaded new posts");
+    setStatus('Loaded new posts');
   };
 
   return (
     <>
-      {numberNewPosts > 0 && status !== "deleted" ? (
+      {numberNewPosts > 0 && status !== 'deleted' ? (
         <NewPostsButtonStyle onClick={() => handleRefresh()}>
-          <h2>{`${numberNewPosts} new ${
-            numberNewPosts > 1 ? "posts" : "post"
-          }, load more!`}</h2>
-          <BiRefresh className="icon" />
+          <h2>{`${numberNewPosts} new ${numberNewPosts > 1 ? 'posts' : 'post'}, load more!`}</h2>
+          <BiRefresh className='icon' />
         </NewPostsButtonStyle>
       ) : (
         <></>
@@ -104,13 +96,23 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     }
     setFetching(true);
     try {
-      const { data: fetchedPosts } = await getPosts({
-        limit: N_POSTS_PER_PAGE,
-        offset: N_POSTS_PER_PAGE * postsPage,
-      });
-      setPosts([...posts, ...fetchedPosts]);
+      let fetchedPosts = null;
+      if (userId === 0) {
+        fetchedPosts = await getPosts({
+          limit: N_POSTS_PER_PAGE,
+          offset: N_POSTS_PER_PAGE * postsPage,
+        });
+      } else {
+        fetchedPosts = await getPageUser({
+          userId,
+          limit: N_POSTS_PER_PAGE,
+          offset: N_POSTS_PER_PAGE * postsPage,
+        });
+      }
 
-      if (fetchedPosts.length < N_POSTS_PER_PAGE) {
+      setPosts([...posts, ...fetchedPosts.data]);
+
+      if (fetchedPosts.data.length < N_POSTS_PER_PAGE) {
         setHasMore(false);
       } else {
         setPostsPage(postsPage + 1);
@@ -122,7 +124,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   }, [posts, fetching, postsPage]);
 
   useEffect(() => {
-    const promise = getUsersList("allusers");
+    const promise = getUsersList('allusers');
     promise
       .then((res) => {
         if (res.data.filter((user) => parseInt(user.follow) > 0).length > 0) {
@@ -138,9 +140,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={"#853232"}>
-            An error occured while trying to fetch the posts, please refresh the
-            page
+          <WarningMessage color={'#853232'}>
+            An error occured while trying to fetch the posts, please refresh the page
           </WarningMessage>
         </Wrapper>
       </>
@@ -149,8 +150,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const loader = (
     <>
       <Wrapper key={0}>
-        <WarningMessage color={"white"}>Loading</WarningMessage>
-        <Loading color={"white"} />
+        <WarningMessage color={'white'}>Loading</WarningMessage>
+        <Loading color={'white'} />
       </Wrapper>
     </>
   );
@@ -161,9 +162,9 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={"white"}>
-            {followedNoPosts
-              ? "No posts found from your friends"
+          <WarningMessage color={'white'}>
+            {followedNoPosts && userId == 0
+              ? 'No posts found from your friends'
               : `You don't follow anyone yet. Search for new friends!`}
           </WarningMessage>
         </Wrapper>
@@ -187,8 +188,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
           loadMore={fetchItems}
           hasMore={hasMore}
           loader={loader}
-          className="infinite-scroll"
-        >
+          className='infinite-scroll'>
           {posts.map((post, index) => {
             return (
               <Post
@@ -239,12 +239,12 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: "Oswald";
+  font-family: 'Oswald';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || "ffffff"};
+  color: ${(props) => props.color || 'ffffff'};
 `;
 
 const NewPostsButtonStyle = styled.div`
@@ -258,7 +258,7 @@ const NewPostsButtonStyle = styled.div`
   align-items: center;
   cursor: pointer;
   h2 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
