@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import Post from './Post';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getPosts, getPageUser } from '../../services/LinkrAPI';
 import Loading from '../../commons/Loading';
 import useInterval from 'use-interval';
 import { BiRefresh } from 'react-icons/bi';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const TIMELINE_REFRESH_INTERVAL = 15000;
+const N_POSTS_PER_PAGE = 10;
 
 const getNumberNewPosts = (posts, newPosts) => {
   const newPostsIndexes = newPosts.map((post) => post.id);
@@ -43,10 +45,13 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
   const [reRender, setReRender] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [postsPage, setPostsPage] = useState(1);
 
   useInterval(() => {
     if (userId === 0) {
-      const promise = getPosts();
+      const promise = getPosts({});
       promise
         .then((res) => {
           setNewLoadedPosts(res.data);
@@ -61,7 +66,8 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
 
   useEffect(() => {
     setLoading(true);
-    const promise = userId === 0 ? getPosts() : getPageUser(userId);
+    const promise =
+      userId === 0 ? getPosts({ limit: N_POSTS_PER_PAGE, offset: 0 }) : getPageUser(userId);
     promise
       .then((res) => {
         setPosts(res.data);
@@ -77,6 +83,29 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       });
   }, [status, reRender]);
 
+  const fetchItems = useCallback(async () => {
+    if (fetching) {
+      return;
+    }
+    setFetching(true);
+    try {
+      const { data: fetchedPosts } = await getPosts({
+        limit: N_POSTS_PER_PAGE,
+        offset: N_POSTS_PER_PAGE * postsPage,
+      });
+      setPosts([...posts, ...fetchedPosts]);
+
+      if (fetchedPosts.length < N_POSTS_PER_PAGE) {
+        setHasMore(false);
+      } else {
+        setPostsPage(postsPage + 1);
+        setHasMore(true);
+      }
+    } finally {
+      setFetching(false);
+    }
+  }, [posts, fetching, postsPage]);
+
   if (failedToLoadPosts) {
     return (
       <>
@@ -88,15 +117,16 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       </>
     );
   }
+  const loader = (
+    <>
+      <Wrapper key={0}>
+        <WarningMessage color={'white'}>Loading</WarningMessage>
+        <Loading color={'white'} />
+      </Wrapper>
+    </>
+  );
   if (loading) {
-    return (
-      <>
-        <Wrapper>
-          <WarningMessage color={'white'}>Loading</WarningMessage>
-          <Loading color={'white'} />
-        </Wrapper>
-      </>
-    );
+    return loader;
   }
   if (posts.length === 0) {
     return (
@@ -120,26 +150,28 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
           reRender={reRender}
           setReRender={setReRender}
         />
-        {posts.map((post, index) => {
-          return (
-            <Post
-              key={index}
-              user={post.user}
-              id={post.id}
-              postUrl={post.url}
-              postDescriptionText={post.content}
-              urlMetadata={post.metadata}
-              usersWhoLiked={post.usersWhoLiked}
-              status={status}
-              setStatus={setStatus}
-              hashtagsList={post.hashtagsList}
-              repostedBy={post.userWhoRepost}
-              nameRepostedBy={post.nameUserWhoRepost}
-              reRender={reRender}
-              setReRender={setReRender}
-            />
-          );
-        })}
+        <InfiniteScroll loadMore={fetchItems} hasMore={hasMore} loader={loader}>
+          {posts.map((post, index) => {
+            return (
+              <Post
+                key={index}
+                user={post.user}
+                id={post.id}
+                postUrl={post.url}
+                postDescriptionText={post.content}
+                urlMetadata={post.metadata}
+                usersWhoLiked={post.usersWhoLiked}
+                status={status}
+                setStatus={setStatus}
+                hashtagsList={post.hashtagsList}
+                repostedBy={post.userWhoRepost}
+                nameRepostedBy={post.nameUserWhoRepost}
+                reRender={reRender}
+                setReRender={setReRender}
+              />
+            );
+          })}
+        </InfiniteScroll>
       </Wrapper>
     </>
   );
