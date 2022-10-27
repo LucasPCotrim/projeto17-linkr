@@ -78,7 +78,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     const promise =
       userId === 0
         ? getPosts({ limit: N_POSTS_PER_PAGE, offset: 0 })
-        : getPageUser(userId);
+        : getPageUser({ userId, limit: N_POSTS_PER_PAGE, offset: 0 });
     promise
       .then((res) => {
         setPosts(res.data);

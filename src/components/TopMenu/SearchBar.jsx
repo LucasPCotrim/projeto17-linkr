@@ -7,11 +7,13 @@ import { FiSearch, FiXCircle } from "react-icons/fi";
 
 function ResultSearch({ user, ...otherProps }) {
   return (
-    <BoxResultuser {...otherProps}>
-      <img src={user.profilePic} alt="profilePic" />
-      {user.name}
-      {parseInt(user.follow) ? <p>• following</p> : ""}
-    </BoxResultuser>
+    <>
+      <BoxResultuser {...otherProps}>
+        <img src={user.profilePic} alt="profilePic" />
+        {user.name}
+        {parseInt(user.follow) ? <p>• following</p> : ""}
+      </BoxResultuser>
+    </>
   );
 }
 
@@ -59,39 +61,49 @@ export default function SearchBar() {
   }, [stringSearch]);
 
   return (
-    <ContainerSearch>
-      <StyledDebounce
-        debounceTimeout={300}
-        onChange={(e) => setStringSearch(e.target.value)}
-        placeholder="Search for people and friends"
-        value={stringSearch}
+    <>
+      <ClickCaptureBox
+        active={listUsers.length > 0}
+        onClick={() => {
+          if (listUsers) {
+            setListUsers(true);
+          }
+        }}
       />
-      <StyledSearch>
-        {stringSearch === "" ? (
-          <FiSearch onClick={() => clickSearch()} />
-        ) : (
-          <FiXCircle onClick={() => clickSearch()} />
-        )}
-      </StyledSearch>
-      <ContainerResultSearch>
-        {listUsers?.length > 0 ? (
-          listUsers?.map((user, index) => (
-            <ResultSearch
-              key={index}
-              user={user}
-              onClick={() => {
-                setListUsers([]);
-                setStringSearch("");
-                /* navigate(`/user/${user.id}`); */
-                window.location.assign(`/user/${user.id}`);
-              }}
-            />
-          ))
-        ) : (
-          <></>
-        )}
-      </ContainerResultSearch>
-    </ContainerSearch>
+      <ContainerSearch>
+        <StyledDebounce
+          debounceTimeout={300}
+          onChange={(e) => setStringSearch(e.target.value)}
+          placeholder="Search for people and friends"
+          value={stringSearch}
+        />
+        <StyledSearch>
+          {stringSearch === "" ? (
+            <FiSearch onClick={() => clickSearch()} />
+          ) : (
+            <FiXCircle onClick={() => clickSearch()} />
+          )}
+        </StyledSearch>
+        <ContainerResultSearch>
+          {listUsers?.length > 0 ? (
+            listUsers?.map((user, index) => (
+              <ResultSearch
+                key={index}
+                user={user}
+                onClick={() => {
+                  setListUsers([]);
+                  setStringSearch("");
+                  /* navigate(`/user/${user.id}`); */
+                  window.location.assign(`/user/${user.id}`);
+                }}
+              />
+            ))
+          ) : (
+            <></>
+          )}
+        </ContainerResultSearch>
+      </ContainerSearch>
+    </>
   );
 }
 
@@ -119,13 +131,16 @@ const StyledDebounce = styled(DebounceInput)`
 `;
 
 const ContainerSearch = styled.div`
-  position: relative;
+  position: fixed;
+  z-index: 10;
+  top: 13px;
+  left: 25vw;
   @media screen and (max-width: 614px) {
     position: absolute;
     width: 96%;
     top: 82px;
     left: 10px;
-    z-index: 10;
+    z-index: 3;
   }
 `;
 
@@ -185,4 +200,20 @@ const StyledSearch = styled.div`
   color: #c6c6c6;
   font-size: 28px;
   cursor: pointer;
+`;
+
+const ClickCaptureBox = styled.div`
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  ${(props) => {
+    if (props.active) {
+      return `
+        display flex;
+      `;
+    }
+  }}
 `;
