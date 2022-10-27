@@ -205,7 +205,6 @@ const StyledSearch = styled.div`
 const ClickCaptureBox = styled.div`
   display: none;
   position: fixed;
-  background-color: rgba(155, 62, 160, 0.3);
   top: 0;
   left: 0;
   width: 100%;

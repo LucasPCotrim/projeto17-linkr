@@ -17,7 +17,7 @@ export default function PrivatePage({ children }) {
       navigate("/");
     }
   }, []);
-
+  // refactoring
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("linkr"));
     if (!user?.profilePic && !!localUser?.profilePic) {
@@ -39,7 +39,7 @@ export default function PrivatePage({ children }) {
       setLoadingUser(true);
     }
   }, []);
-
+  // refactoring
   return (
     <>
       {loadingUser ? (
