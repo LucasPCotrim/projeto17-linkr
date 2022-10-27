@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { getHashtag } from "../../services/LinkrAPI";
 import Loading from "../../commons/Loading";
 import { useParams } from "react-router-dom";
+import Post from "../TimelinePage/Post";
 
-function HashtagPostsContainer({ hashtagName, reload, setReload }) {
+function HashtagPostsContainer({ hashtagName, status, setStatus }) {
   const [posts, setPosts] = useState([]);
   const [failedToLoadPosts, setFailedToLoadPosts] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [reRender, setReRender] = useState(false);
   let { hashtag } = useParams();
-  hashtag = hashtagName
+  hashtag = hashtagName;
 
   useEffect(() => {
     setLoading(true);
@@ -25,8 +27,7 @@ function HashtagPostsContainer({ hashtagName, reload, setReload }) {
         setPosts([]);
         setFailedToLoadPosts(true);
       });
-  }, [hashtag, reload]);
-
+  }, [hashtag, status]);
 
   if (failedToLoadPosts) {
     return (
@@ -61,16 +62,21 @@ function HashtagPostsContainer({ hashtagName, reload, setReload }) {
         ) : (
           posts.map((post, index) => {
             return (
-              <HashtagPosts
+              <Post
                 key={index}
                 user={post.user}
                 id={post.id}
                 postUrl={post.url}
-                postDescription={post.content}
+                postDescriptionText={post.content}
                 urlMetadata={post.metadata}
                 usersWhoLiked={post.usersWhoLiked}
-                reload={reload}
-                setReload={setReload}
+                status={status}
+                setStatus={setStatus}
+                hashtagsList={post.hashtagsList}
+                repostedBy={post.userWhoRepost}
+                nameRepostedBy={post.nameUserWhoRepost}
+                reRender={reRender}
+                setReRender={setReRender}
               />
             );
           })
@@ -108,6 +114,5 @@ const WarningMessage = styled.div`
   line-height: 40px;
   color: ${(props) => props.color || "ffffff"};
 `;
-
 
 export { HashtagPostsContainer };

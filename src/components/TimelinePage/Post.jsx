@@ -146,13 +146,7 @@ export default function Post({
             src={user.profilePic}
             alt="profilePic"
           />
-          <LikeButton
-            likes={usersWhoLiked}
-            postId={id}
-            isRepost={isRepost}
-            reRender={reRender}
-            setReRender={setReRender}
-          />
+          <LikeButton likes={usersWhoLiked} postId={id} isRepost={isRepost} />
           <RepostButton
             reposting={reposting}
             setReposting={setReposting}
@@ -273,8 +267,6 @@ export default function Post({
             id={id}
             user={user}
             isRepost={isRepost}
-            reRender={reRender}
-            setReRender={setReRender}
           />
         </CommentWrapper>
       )}
