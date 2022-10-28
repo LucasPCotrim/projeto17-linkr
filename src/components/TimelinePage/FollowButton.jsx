@@ -11,7 +11,9 @@ export default function FollowButton({
   userLogged,
 }) {
   const [disable, setDisable] = useState(false);
-
+  const [backgroundColor, setBackgroundColor] = useState(follows ? "#ffffff" : "#1877f2");
+  const [color, setColor] = useState(follows ? "#1877f2" : "#ffffff");
+  
   function following() {
     setDisable(true);
     const body = {
@@ -21,17 +23,19 @@ export default function FollowButton({
 
     if (follows) {
       const promise = unfollowUser(user, userLogged);
-      promise.then((res) => setLoad("Unfollowed"), setDisable(false));
+      promise.then((res) => setLoad("Unfollowed"), setDisable(false), setBackgroundColor("#1877f2"),
+      setColor("#ffffff"));
       promise.catch((res) => alert("Requirement failed! Please try again later"))
     } else {
       const promise = followUser(body);
-      promise.then((res) => setLoad("Following"), setDisable(false));
+      promise.then((res) => setLoad("Following"), setDisable(false), setBackgroundColor("#ffffff"),
+      setColor("#1877f2"));
       promise.catch((res) => alert("Requirement failed! Please try again later"))
     }
   }
 
   return (
-    <OutterButton visibility={visibility}>
+    <OutterButton visibility={visibility} color={color} backgroundColor={backgroundColor}>
       <div onClick={following}>
         {disable ? (
           <ThreeDots
@@ -44,7 +48,7 @@ export default function FollowButton({
             wrapperClass
           />
         ) : follows ? (
-          "Following"
+          "Unfollow"
         ) : (
           "Follow"
         )}
@@ -56,7 +60,7 @@ export default function FollowButton({
 const OutterButton = styled.main`
   width: 112px;
   height: 31px;
-  background-color: #1877f2;
+  background-color: ${((props) => props.backgroundColor)};
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -77,12 +81,13 @@ const OutterButton = styled.main`
   }
 
   div {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     font-weight: 700;
-    color: #ffffff;
+    color: ${((props) => props.color)};
     font-family: "Lato", sans-serif;
   }
 `;
