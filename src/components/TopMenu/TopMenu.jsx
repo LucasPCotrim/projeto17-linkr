@@ -11,7 +11,7 @@ export default function TopMenu() {
   const [turnArrow, setTurnArrow] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("linkr"));
     if (!user?.profilePic && !!localUser?.profilePic) {
       const promise = getUser();
@@ -28,7 +28,7 @@ export default function TopMenu() {
         });
       setUser(localUser);
     }
-  }, []);
+  }, []); */
 
   function resetUser() {
     logout()
@@ -53,7 +53,6 @@ export default function TopMenu() {
         <Linkr>
           <h1 onClick={() => navigate("/")}>linkr</h1>
         </Linkr>
-        <SearchBar />
         <ContainerUserPic onClick={() => setTurnArrow(!turnArrow)}>
           {turnArrow ? <FiChevronUp /> : <FiChevronDown />}
 
@@ -76,6 +75,7 @@ export default function TopMenu() {
           }
         }}
       />
+      <SearchBar />
     </>
   );
 }

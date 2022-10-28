@@ -64,16 +64,22 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
         });
     }
   }, TIMELINE_REFRESH_INTERVAL);
- 
+
   useEffect(() => {
     setLoading(true);
     const promise =
-      userId === 0 ? getPosts({ limit: N_POSTS_PER_PAGE, offset: 0 }) : getPageUser(userId);
+      userId === 0
+        ? getPosts({ limit: N_POSTS_PER_PAGE, offset: 0 })
+        : getPageUser({ userId, limit: N_POSTS_PER_PAGE, offset: 0 });
     promise
       .then((res) => {
         setPosts(res.data);
         if (userId !== 0) {
-          setPageName(res.data[0].user);
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].userWhoRepost === null) {
+              setPageName(res.data[i].user);
+            }
+          }
         }
         setLoading(false);
       })
@@ -90,13 +96,23 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
     }
     setFetching(true);
     try {
-      const { data: fetchedPosts } = await getPosts({
-        limit: N_POSTS_PER_PAGE,
-        offset: N_POSTS_PER_PAGE * postsPage,
-      });
-      setPosts([...posts, ...fetchedPosts]);
+      let fetchedPosts = null;
+      if (userId === 0) {
+        fetchedPosts = await getPosts({
+          limit: N_POSTS_PER_PAGE,
+          offset: N_POSTS_PER_PAGE * postsPage,
+        });
+      } else {
+        fetchedPosts = await getPageUser({
+          userId,
+          limit: N_POSTS_PER_PAGE,
+          offset: N_POSTS_PER_PAGE * postsPage,
+        });
+      }
 
-      if (fetchedPosts.length < N_POSTS_PER_PAGE) {
+      setPosts([...posts, ...fetchedPosts.data]);
+
+      if (fetchedPosts.data.length < N_POSTS_PER_PAGE) {
         setHasMore(false);
       } else {
         setPostsPage(postsPage + 1);
@@ -147,7 +163,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
       <>
         <Wrapper>
           <WarningMessage color={'white'}>
-            {followedNoPosts
+            {followedNoPosts && userId == 0
               ? 'No posts found from your friends'
               : `You don't follow anyone yet. Search for new friends!`}
           </WarningMessage>
@@ -168,7 +184,11 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
           reRender={reRender}
           setReRender={setReRender}
         />
-        <InfiniteScroll loadMore={fetchItems} hasMore={hasMore} loader={loader}>
+        <InfiniteScroll
+          loadMore={fetchItems}
+          hasMore={hasMore}
+          loader={loader}
+          className='infinite-scroll'>
           {posts.map((post, index) => {
             return (
               <Post
@@ -196,6 +216,7 @@ function PostsContainer({ status, setStatus, userId = 0, setPageName }) {
 }
 
 const Wrapper = styled.div`
+  margin-top: 29px;
   margin: 29px auto 0 auto;
   width: 100%;
   display: flex;
@@ -203,6 +224,9 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 25px;
+  .infinite-scroll {
+    width: 100%;
+  }
 `;
 
 const WarningMessage = styled.div`

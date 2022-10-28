@@ -58,10 +58,13 @@ const getHashtagList = () => {
   return promise;
 };
 
-const getHashtag = (hashtag) => {
+const getHashtag = ({ hashtag, limit = 10, offset = 0 }) => {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}hashtag/${hashtag}`, config);
+  const promise = axios.get(
+    `${BASE_URL}hashtag/${hashtag}?limit=${limit}&offset=${offset}`,
+    config
+  );
   return promise;
 };
 
@@ -90,10 +93,13 @@ function getUser() {
   return promise;
 }
 
-function getPageUser(id, limit = 20) {
+function getPageUser({ userId, limit = 10, offset = 0 }) {
   const token = getToken();
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}user/${id}?limit=${limit}`, config);
+  const promise = axios.get(
+    `${BASE_URL}user/${userId}?limit=${limit}&offset=${offset}`,
+    config
+  );
   return promise;
 }
 

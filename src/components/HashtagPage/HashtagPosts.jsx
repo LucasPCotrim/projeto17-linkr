@@ -3,11 +3,10 @@ import { RiPencilFill } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { updatePost } from "../../services/LinkrAPI";
-import { HashDeletionModal } from "./HashDeletionModal";
 import { LikeButton } from "../TimelinePage/LikeButton";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { DeletionModal } from "../TimelinePage/DeletionModal";
 function LinkPreview({ url, metadata }) {
   return (
     <>
@@ -33,7 +32,7 @@ export default function HashtagPosts({
   urlMetadata,
   usersWhoLiked,
   reload,
-  setReload
+  setReload,
 }) {
   const [editing, setEditing] = useState(false);
   const [descriptionEdition, setDescriptionEdition] = useState("teste");
@@ -88,7 +87,13 @@ export default function HashtagPosts({
             />
             <BsFillTrashFill className="icon" onClick={() => setIsOpen(true)} />
           </EditingDelete>
-          <HashDeletionModal id={id} isOpen={isOpen} setIsOpen={setIsOpen} reload={reload} setReload={setReload}/>
+          <DeletionModal
+            id={id}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            reload={reload}
+            setReload={setReload}
+          />
         </div>
         <div className="post-description">
           {editing ? (

@@ -5,21 +5,20 @@ import HashtagContainer from "../TimelinePage/HashtagContainer";
 import { HashtagPostsContainer } from "./HashtagPostsContainer";
 
 export default function HashtagPage() {
-  const [reload, setReload] = useState(null);
   const location = useLocation();
-
+  const [status, setStatus] = useState("idle");
   return (
     <MainContainer>
       <ContentContainter>
         <Wrapper>
           {location.state ? (
             <>
-                <header># {location.state.name}</header>
-              
+              <header># {location.state.name}</header>
+
               <HashtagPostsContainer
                 hashtagName={location.state.name}
-                reload={reload}
-                setReload={setReload}
+                status={status}
+                setStatus={setStatus}
               />
             </>
           ) : (
@@ -28,9 +27,9 @@ export default function HashtagPage() {
             </LoadingImg>
           )}
         </Wrapper>
-        <div className='rightside'>
-          <HashtagContainer reload={reload} />
-        </div> 
+        <div className="rightside">
+          <HashtagContainer status={status} />
+        </div>
       </ContentContainter>
     </MainContainer>
   );
@@ -48,17 +47,17 @@ const ContentContainter = styled.header`
   overflow: hidden;
   gap: 25px;
 
-  .rightside{
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  margin-top: 180px;
-  margin-bottom: 100px;
-  padding-top: 50px;
-  width: 35%;
-  @media (max-width: 820px) {
-    display: none;
-  }
+  .rightside {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 180px;
+    margin-bottom: 100px;
+    padding-top: 50px;
+    width: 35%;
+    @media (max-width: 820px) {
+      display: none;
+    }
   }
 `;
 
@@ -69,8 +68,8 @@ const Wrapper = styled.div`
   margin-top: 150px;
   margin-bottom: 100px;
   width: min(100vw, 614px);
-  nav{
-    display:flex;
+  nav {
+    display: flex;
     align-items: center;
     justify-content: space-between;
   }
