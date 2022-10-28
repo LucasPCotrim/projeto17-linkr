@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { PostsContainer } from '../TimelinePage/PostsContainer';
-import { useParams } from 'react-router-dom';
-import HashtagContainer from '../TimelinePage/HashtagContainer';
-import FollowButton from '../TimelinePage/FollowButton';
-import UserContext from '../../contexts/UserContext';
-import { checkFollow } from '../../services/LinkrAPI';
+import React, { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
+import { PostsContainer } from "../TimelinePage/PostsContainer";
+import { useParams } from "react-router-dom";
+import HashtagContainer from "../TimelinePage/HashtagContainer";
+import FollowButton from "../TimelinePage/FollowButton";
+import UserContext from "../../contexts/UserContext";
+import { checkFollow, getUserById } from "../../services/LinkrAPI";
 
 export default function UserPage() {
   const { id } = useParams();
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState("idle");
   const [pageName, setPageName] = useState({});
   const [follows, setFollows] = useState(null);
   const [load, setLoad] = useState(null);
@@ -18,7 +18,7 @@ export default function UserPage() {
   const user = parseInt(id);
   let visibility;
 
-  userLogged === user ? (visibility = 'hidden') : (visibility = 'visible');
+  userLogged === user ? (visibility = "hidden") : (visibility = "visible");
 
   useEffect(() => {
     if (userLogged) {
@@ -33,6 +33,17 @@ export default function UserPage() {
     }
   }, [load, userLogged]);
 
+  useEffect(() => {
+    const promise = getUserById(id);
+    promise
+      .then((res) => {
+        setPageName(res.data);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+
   if (follows === null) {
     return <h1>Loading</h1>;
   }
@@ -44,7 +55,7 @@ export default function UserPage() {
           {!!pageName?.name ? (
             <>
               <header>
-                <img src={pageName?.profilePic} alt='profilePic' />
+                <img src={pageName?.profilePic} alt="profilePic" />
                 {pageName?.name} posts
               </header>
               <nav>
@@ -59,17 +70,12 @@ export default function UserPage() {
               </nav>
             </>
           ) : (
-            ''
+            ""
           )}
-          <PostsContainer
-            setStatus={setStatus}
-            status={status}
-            userId={id}
-            setPageName={setPageName}
-          />
+          <PostsContainer setStatus={setStatus} status={status} userId={id} />
         </Wrapper>
         <RightWrap>
-          <div className='right'>
+          <div className="right">
             <FollowButton
               load={load}
               setLoad={setLoad}
@@ -126,7 +132,7 @@ const Wrapper = styled.div`
   margin-bottom: 100px;
   width: min(100vw, 614px);
   header {
-    font-family: 'Oswald';
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 700;
     font-size: 43px;
