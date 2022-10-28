@@ -20,6 +20,24 @@ export default function UserPage() {
 
   userLogged === user ? (visibility = "hidden") : (visibility = "visible");
 
+  if (parseInt(id) === 0 || isNaN(parseInt(id))) {
+    return (
+      <MainContainer>
+        <ContentContainter>
+          <Wrapper>
+            <LoadingImg>
+              <h1>User not found!</h1>
+              <img
+                src="https://miro.medium.com/max/1400/1*VYPlqLaosLszAtKlx5fHzg.jpeg"
+                alt="Not found"
+              />
+            </LoadingImg>
+          </Wrapper>
+        </ContentContainter>
+      </MainContainer>
+    );
+  }
+
   useEffect(() => {
     if (userLogged) {
       const promise = checkFollow(user, userLogged);
@@ -74,9 +92,9 @@ export default function UserPage() {
           )}
           <PostsContainer setStatus={setStatus} status={status} userId={id} />
         </Wrapper>
-        <RightWrap>
+        {!!pageName?.name ? ( <RightWrap>
           <div className="right">
-            <FollowButton
+          <FollowButton
               load={load}
               setLoad={setLoad}
               visibility={visibility}
@@ -84,9 +102,11 @@ export default function UserPage() {
               user={user}
               userLogged={userLogged}
             />
-          </div>
+          </div> 
           <HashtagContainer status={status} />
-        </RightWrap>
+        </RightWrap>) : (
+              ""
+            )}
       </ContentContainter>
     </MainContainer>
   );
@@ -159,5 +179,31 @@ const Wrapper = styled.div`
     @media (min-width: 821px) {
       display: none;
     }
+  }
+`;
+
+const LoadingImg = styled.div`
+  min-width: 375px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 375px;
+    width: 90%;
+  }
+  h1 {
+    font-family: "Oswald";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: #ffffff;
+    margin-left: 17px;
+    margin-bottom: 19px;
   }
 `;
