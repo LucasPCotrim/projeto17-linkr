@@ -1,10 +1,10 @@
-import { getToken, getUser } from "../services/LinkrAPI";
-import { useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
-import React, { useState, useContext, useEffect } from "react";
-import styled from "styled-components";
-import TopMenu from "./TopMenu/TopMenu";
-import Loading from "../commons/Loading";
+import { getToken, getUser } from '../services/LinkrAPI';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../contexts/UserContext';
+import React, { useState, useContext, useEffect } from 'react';
+import styled from 'styled-components';
+import TopMenu from './TopMenu/TopMenu';
+import Loading from '../commons/Loading';
 
 export default function PrivatePage({ children }) {
   const navigate = useNavigate();
@@ -14,25 +14,27 @@ export default function PrivatePage({ children }) {
   useEffect(() => {
     const token = getToken();
     if (!token) {
-      navigate("/");
+      navigate('/');
     }
   }, []);
   // refactoring
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("linkr"));
+    const localUser = JSON.parse(localStorage.getItem('linkr'));
     if (!user?.profilePic && !!localUser?.profilePic) {
       const promise = getUser();
       promise
         .then((res) => {
-          if (res.data === "token expirado" || res.status !== 200) {
-            localStorage.removeItem("linkr");
-            window.location.assign("/");
+          if (res.data === 'token expirado' || res.status !== 200) {
+            localStorage.removeItem('linkr');
+            // window.location.assign("/");
+            navigate('/');
           }
           setLoadingUser(true);
         })
         .catch((res) => {
-          localStorage.removeItem("linkr");
-          window.location.assign("/");
+          localStorage.removeItem('linkr');
+          // window.location.assign("/");
+          navigate('/');
         });
       setUser(localUser);
     } else {
@@ -50,8 +52,8 @@ export default function PrivatePage({ children }) {
       ) : (
         <>
           <Wrapper>
-            <WarningMessage color={"white"}>Loading</WarningMessage>
-            <Loading color={"white"} />
+            <WarningMessage color={'white'}>Loading</WarningMessage>
+            <Loading color={'white'} />
           </Wrapper>
         </>
       )}
@@ -79,10 +81,10 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: "Oswald";
+  font-family: 'Oswald';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || "ffffff"};
+  color: ${(props) => props.color || 'ffffff'};
 `;
