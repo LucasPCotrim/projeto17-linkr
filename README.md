@@ -11,12 +11,16 @@ It's also possible to like, comment and repost.
 <img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/1_signup.png" width="500" height="500" />
 
 ### Log in
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/2_login.png" width="500" height="500" />
 
 ### Post
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/3_post.png" width="500" height="500" />
 
 ### Like
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/4_like.png" width="500" height="500" />
 
 ### Comment
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/5_comment.png" width="500" height="500" />
 
 ### Repost
 
