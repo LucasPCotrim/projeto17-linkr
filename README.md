@@ -24,6 +24,7 @@ It's also possible to like, comment and repost.
 <img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/5_comment.png" height="500" />
 
 ### Repost
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/6_repost.png" height="500" />
 
 ### Follow/unfollow users
 <img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/7_follow_unfollow.png" height="500" />
