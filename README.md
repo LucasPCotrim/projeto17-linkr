@@ -8,20 +8,27 @@ It's also possible to like, comment and repost.
 ## Functionalities
 
 ### Sign up
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/1_signup.png" width="500" height="500" />
 
 ### Log in
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/2_login.png" width="500" height="500" />
 
 ### Post
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/3_post.png" width="500" height="500" />
 
 ### Like
 
+
 ### Comment
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/5_comment.png" width="500" height="500" />
 
 ### Repost
 
 ### Follow/unfollow users
 
 ### See posts from specific hashtag
+
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/8_hashtag.png" width="500" height="500" />
 
 
 ## Deploy
