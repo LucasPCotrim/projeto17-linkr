@@ -20,22 +20,21 @@ export default function UserPage() {
 
   userLogged === user ? (visibility = "hidden") : (visibility = "visible");
 
-  if (parseInt(id) === 0 || isNaN(parseInt(id))) {
+  function UserNotFound() {
     return (
       <MainContainer>
         <ContentContainter>
           <Wrapper>
             <LoadingImg>
               <h1>User not found!</h1>
-              <img
-                src="https://miro.medium.com/max/1400/1*VYPlqLaosLszAtKlx5fHzg.jpeg"
-                alt="Not found"
-              />
             </LoadingImg>
           </Wrapper>
         </ContentContainter>
       </MainContainer>
     );
+  }
+  if (parseInt(id) === 0 || isNaN(parseInt(id))) {
+    return <UserNotFound />;
   }
 
   useEffect(() => {
@@ -86,27 +85,33 @@ export default function UserPage() {
                   userLogged={userLogged}
                 />
               </nav>
+              <PostsContainer
+                setStatus={setStatus}
+                status={status}
+                userId={id}
+              />
             </>
           ) : (
-            ""
+            <UserNotFound />
           )}
-          <PostsContainer setStatus={setStatus} status={status} userId={id} />
         </Wrapper>
-        {!!pageName?.name ? ( <RightWrap>
-          <div className="right">
-          <FollowButton
-              load={load}
-              setLoad={setLoad}
-              visibility={visibility}
-              follows={follows}
-              user={user}
-              userLogged={userLogged}
-            />
-          </div> 
-          <HashtagContainer status={status} />
-        </RightWrap>) : (
-              ""
-            )}
+        {!!pageName?.name ? (
+          <RightWrap>
+            <div className="right">
+              <FollowButton
+                load={load}
+                setLoad={setLoad}
+                visibility={visibility}
+                follows={follows}
+                user={user}
+                userLogged={userLogged}
+              />
+            </div>
+            <HashtagContainer status={status} />
+          </RightWrap>
+        ) : (
+          ""
+        )}
       </ContentContainter>
     </MainContainer>
   );
