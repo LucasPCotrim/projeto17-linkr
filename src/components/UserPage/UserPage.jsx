@@ -74,9 +74,9 @@ export default function UserPage() {
           )}
           <PostsContainer setStatus={setStatus} status={status} userId={id} />
         </Wrapper>
-        <RightWrap>
+        {!!pageName?.name ? ( <RightWrap>
           <div className="right">
-            <FollowButton
+          <FollowButton
               load={load}
               setLoad={setLoad}
               visibility={visibility}
@@ -84,9 +84,11 @@ export default function UserPage() {
               user={user}
               userLogged={userLogged}
             />
-          </div>
+          </div> 
           <HashtagContainer status={status} />
-        </RightWrap>
+        </RightWrap>) : (
+              ""
+            )}
       </ContentContainter>
     </MainContainer>
   );

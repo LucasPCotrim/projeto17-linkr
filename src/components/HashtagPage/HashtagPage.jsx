@@ -23,7 +23,7 @@ export default function HashtagPage() {
             </>
           ) : (
             <LoadingImg>
-              <img src="https://bit.ly/3gDOJX0" alt="Not found" />
+              <img src="https://bit.ly/3FrQj8L" alt="Not found" />
             </LoadingImg>
           )}
         </Wrapper>
