@@ -11,25 +11,6 @@ export default function TopMenu() {
   const [turnArrow, setTurnArrow] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
-  /*   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("linkr"));
-    if (!user?.profilePic && !!localUser?.profilePic) {
-      const promise = getUser();
-      promise
-        .then((res) => {
-          if (res.data === "token expirado" || res.status !== 200) {
-            localStorage.removeItem("linkr");
-            window.location.assign("/");
-          }
-        })
-        .catch((res) => {
-          localStorage.removeItem("linkr");
-          window.location.assign("/");
-        });
-      setUser(localUser);
-    }
-  }, []); */
-
   function resetUser() {
     logout()
       .then(() => {

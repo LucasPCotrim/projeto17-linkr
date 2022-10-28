@@ -142,7 +142,7 @@ export default function Post({
       <Wrapper isCommentOpen={isCommentOpen}>
         <ProfilePicAndLikeButton>
           <img
-            onClick={() => navigate(`/user/${user.id}`)}
+            onClick={() => window.location.assign(`/user/${user.id}`)}
             src={user.profilePic}
             alt="profilePic"
           />
@@ -244,10 +244,21 @@ export default function Post({
           {comments.map((value, index) => {
             return (
               <div className="user-comment-container" key={index}>
-                <img src={value.profilePic} />
+                <img
+                  onClick={() =>
+                    window.location.assign(`/user/${value.userId}`)
+                  }
+                  src={value.profilePic}
+                />
                 <div className="comment-content-container">
                   <div className="comment-header">
-                    <h2>{value.name}</h2>
+                    <h2
+                      onClick={() =>
+                        window.location.assign(`/user/${value.userId}`)
+                      }
+                    >
+                      {value.name}
+                    </h2>
                     <h3>
                       {user.id === value.userId
                         ? "• post’s author"
