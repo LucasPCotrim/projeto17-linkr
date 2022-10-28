@@ -39,7 +39,10 @@ const CommentForm = ({
   };
   return (
     <FormContainer>
-      <img src={user.profilePic} />
+      <img
+        onClick={() => window.location.assign(`/user/${user.id}`)}
+        src={user.profilePic}
+      />
       <Form onSubmit={handleSubmit}>
         <input
           id="content"
