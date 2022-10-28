@@ -8,6 +8,7 @@ It's also possible to like, comment and repost.
 ## Functionalities
 
 ### Sign up
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/1_signup.png" width="500" height="500" />
 
 ### Log in
 
