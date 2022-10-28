@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { useEffect, useState, useCallback } from 'react';
-import { getHashtag } from '../../services/LinkrAPI';
-import Loading from '../../commons/Loading';
-import { useParams } from 'react-router-dom';
-import Post from '../TimelinePage/Post';
-import InfiniteScroll from 'react-infinite-scroller';
-import useInterval from 'use-interval';
+import styled from "styled-components";
+import { useEffect, useState, useCallback } from "react";
+import { getHashtag } from "../../services/LinkrAPI";
+import Loading from "../../commons/Loading";
+import { useParams } from "react-router-dom";
+import Post from "../TimelinePage/Post";
+import InfiniteScroll from "react-infinite-scroller";
+import useInterval from "use-interval";
 
 const N_POSTS_PER_PAGE = 10;
 const TIMELINE_REFRESH_INTERVAL = 15000;
@@ -19,18 +19,26 @@ const getNumberNewPosts = (posts, newPosts) => {
   );
 };
 
-function LoadNewPostsButton({ numberNewPosts, status, setStatus, reRender, setReRender }) {
+function LoadNewPostsButton({
+  numberNewPosts,
+  status,
+  setStatus,
+  reRender,
+  setReRender,
+}) {
   const handleRefresh = () => {
     setReRender(!reRender);
-    setStatus('Loaded new posts');
+    setStatus("Loaded new posts");
   };
 
   return (
     <>
-      {numberNewPosts > 0 && status !== 'deleted' ? (
+      {numberNewPosts > 0 && status !== "deleted" ? (
         <NewPostsButtonStyle onClick={() => handleRefresh()}>
-          <h2>{`${numberNewPosts} new ${numberNewPosts > 1 ? 'posts' : 'post'}, load more!`}</h2>
-          <BiRefresh className='icon' />
+          <h2>{`${numberNewPosts} new ${
+            numberNewPosts > 1 ? "posts" : "post"
+          }, load more!`}</h2>
+          <BiRefresh className="icon" />
         </NewPostsButtonStyle>
       ) : (
         <></>
@@ -78,7 +86,7 @@ function HashtagPostsContainer({ hashtagName, status, setStatus }) {
         setPosts([]);
         setFailedToLoadPosts(true);
       });
-  }, [hashtag, status]);
+  }, [hashtag, status, reRender]);
 
   const fetchItems = useCallback(async () => {
     if (fetching) {
@@ -108,8 +116,9 @@ function HashtagPostsContainer({ hashtagName, status, setStatus }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'#853232'}>
-            An error occured while trying to fetch the posts, please refresh the page
+          <WarningMessage color={"#853232"}>
+            An error occured while trying to fetch the posts, please refresh the
+            page
           </WarningMessage>
         </Wrapper>
       </>
@@ -118,8 +127,8 @@ function HashtagPostsContainer({ hashtagName, status, setStatus }) {
   const loader = (
     <>
       <Wrapper key={0}>
-        <WarningMessage color={'white'}>Loading</WarningMessage>
-        <Loading color={'white'} />
+        <WarningMessage color={"white"}>Loading</WarningMessage>
+        <Loading color={"white"} />
       </Wrapper>
     </>
   );
@@ -130,7 +139,9 @@ function HashtagPostsContainer({ hashtagName, status, setStatus }) {
     return (
       <>
         <Wrapper>
-          <WarningMessage color={'white'}>There are no posts yet</WarningMessage>
+          <WarningMessage color={"white"}>
+            There are no posts yet
+          </WarningMessage>
         </Wrapper>
       </>
     );
@@ -152,7 +163,8 @@ function HashtagPostsContainer({ hashtagName, status, setStatus }) {
           loadMore={fetchItems}
           hasMore={hasMore}
           loader={loader}
-          className='infinite-scroll'>
+          className="infinite-scroll"
+        >
           {posts.map((post, index) => {
             return (
               <Post
@@ -187,6 +199,9 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 16px;
+  .infinite-scroll {
+    width: 100%;
+  }
 `;
 
 const WarningMessage = styled.div`
@@ -199,12 +214,12 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || 'ffffff'};
+  color: ${(props) => props.color || "ffffff"};
 `;
 
 export { HashtagPostsContainer };
