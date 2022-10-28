@@ -26,15 +26,13 @@ export default function PrivatePage({ children }) {
         .then((res) => {
           if (res.data === 'token expirado' || res.status !== 200) {
             localStorage.removeItem('linkr');
-            // window.location.assign("/");
-            navigate('/');
+            window.location.assign('/');
           }
           setLoadingUser(true);
         })
         .catch((res) => {
           localStorage.removeItem('linkr');
-          // window.location.assign("/");
-          navigate('/');
+          window.location.assign('/');
         });
       setUser(localUser);
     } else {
