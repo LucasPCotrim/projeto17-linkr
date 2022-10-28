@@ -165,7 +165,7 @@ export default function Post({
         <PostContent>
           <div className="conteiner">
             <div
-              onClick={() => navigate(`/user/${user.id}`)}
+              onClick={() => window.location.assign(`/user/${user.id}`)}
               className="profile-name"
             >
               {user.name}
