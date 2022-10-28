@@ -8,27 +8,29 @@ It's also possible to like, comment and repost.
 ## Functionalities
 
 ### Sign up
-<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/1_signup.png" width="500" height="500" />
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/1_signup.png" height="500" />
 
 ### Log in
-<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/2_login.png" width="500" height="500" />
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/2_login.png" height="500" />
 
 ### Post
-<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/3_post.png" width="500" height="500" />
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/3_post.png" height="500" />
 
 ### Like
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/4_like.png" height="500" />
 
 
 ### Comment
-<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/5_comment.png" width="500" height="500" />
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/5_comment.png" height="500" />
 
 ### Repost
 
 ### Follow/unfollow users
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/7_follow_unfollow.png" height="500" />
 
 ### See posts from specific hashtag
 
-<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/8_hashtag.png" width="500" height="500" />
+<img src="https://github.com/LucasPCotrim/projeto17-linkr/blob/main/readme_screenshots/8_hashtag.png" height="500" />
 
 
 ## Deploy
