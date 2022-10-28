@@ -244,10 +244,15 @@ export default function Post({
           {comments.map((value, index) => {
             return (
               <div className="user-comment-container" key={index}>
-                <img src={value.profilePic} />
+                <img
+                  onClick={() => navigate(`/user/${value.userId}`)}
+                  src={value.profilePic}
+                />
                 <div className="comment-content-container">
                   <div className="comment-header">
-                    <h2>{value.name}</h2>
+                    <h2 onClick={() => navigate(`/user/${value.userId}`)}>
+                      {value.name}
+                    </h2>
                     <h3>
                       {user.id === value.userId
                         ? "• post’s author"

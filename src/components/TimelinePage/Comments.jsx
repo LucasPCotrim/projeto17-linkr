@@ -110,6 +110,7 @@ const CommentWrapper = styled.div`
     height: 39px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
 
   .user-comment-container {
@@ -132,6 +133,7 @@ const CommentWrapper = styled.div`
       font-weight: 700;
       font-size: 14px;
       color: #f3f3f3;
+      cursor: pointer;
     }
     p {
       font-family: "Lato";
