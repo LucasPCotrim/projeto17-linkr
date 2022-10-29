@@ -14,7 +14,6 @@ export default function PrivatePage({ children }) {
   useEffect(() => {
     const token = getToken();
     if (!token) {
-      alert("primeiro token");
       navigate("/");
     } else {
       const localUser = JSON.parse(localStorage.getItem("linkr"));
@@ -24,14 +23,12 @@ export default function PrivatePage({ children }) {
           .then((res) => {
             if (res.data === "token expirado" || res.status !== 200) {
               localStorage.removeItem("linkr");
-              alert("espitou");
               window.location.assign("/");
             }
             setLoadingUser(true);
           })
           .catch((res) => {
             localStorage.removeItem("linkr");
-            alert("deu chabu");
             window.location.assign("/");
           });
         setUser(localUser);
