@@ -15,6 +15,7 @@ export default function TopMenu() {
     logout()
       .then(() => {
         localStorage.removeItem("linkr");
+        setUser({});
         navigate("/");
       })
       .catch(() => {
