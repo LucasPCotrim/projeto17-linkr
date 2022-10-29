@@ -11,10 +11,15 @@ export default function PrivatePage({ children }) {
   const { user, setUser } = useContext(UserContext);
   const [loadingUser, setLoadingUser] = useState(false);
 
+  function redirctLogin() {
+    localStorage.removeItem("linkr");
+    window.location.assign("/");
+  }
+
   useEffect(() => {
     const token = getToken();
     if (!token) {
-      navigate("/");
+      redirctLogin();
     } else {
       const localUser = JSON.parse(localStorage.getItem("linkr"));
       if (!user?.profilePic || !!localUser?.profilePic) {
@@ -22,14 +27,12 @@ export default function PrivatePage({ children }) {
         promise
           .then((res) => {
             if (res.data === "token expirado" || res.status !== 200) {
-              localStorage.removeItem("linkr");
-              window.location.assign("/");
+              redirctLogin();
             }
             setLoadingUser(true);
           })
           .catch((res) => {
-            localStorage.removeItem("linkr");
-            window.location.assign("/");
+            redirctLogin();
           });
         setUser(localUser);
       } else {
