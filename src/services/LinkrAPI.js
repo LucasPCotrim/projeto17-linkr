@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://projeto-linkr-backend.herokuapp.com/';
-// const BASE_URL = 'http://localhost:5000/';
+const BASE_URL = "https://projeto-linkr-backend.herokuapp.com/";
+//const BASE_URL = "http://localhost:5000/";
 
 function getToken() {
   const dateNow = new Date();
   const auth = JSON.parse(localStorage.getItem('linkr'));
-  if (dateNow - auth.dateLogin > 7200000) {
+  if (dateNow - auth?.dateLogin > 7200000) {
     localStorage.removeItem('linkr');
     return;
   }

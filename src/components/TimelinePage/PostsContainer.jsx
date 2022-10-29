@@ -74,6 +74,7 @@ function PostsContainer({ status, setStatus, userId = 0 }) {
     promise
       .then((res) => {
         setPosts(res.data);
+        console.log(res.data);
         setLoading(false);
       })
       .catch((res) => {

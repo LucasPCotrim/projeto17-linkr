@@ -1,45 +1,46 @@
-import { getToken, getUser } from '../services/LinkrAPI';
-import { useNavigate } from 'react-router-dom';
-import UserContext from '../contexts/UserContext';
-import React, { useState, useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import TopMenu from './TopMenu/TopMenu';
-import Loading from '../commons/Loading';
+import { getToken, getUser } from "../services/LinkrAPI";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
+import React, { useState, useContext, useEffect } from "react";
+import styled from "styled-components";
+import TopMenu from "./TopMenu/TopMenu";
+import Loading from "../commons/Loading";
 
 export default function PrivatePage({ children }) {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   const [loadingUser, setLoadingUser] = useState(false);
 
+  function redirctLogin() {
+    localStorage.removeItem("linkr");
+    window.location.assign("/");
+  }
+
   useEffect(() => {
     const token = getToken();
     if (!token) {
-      navigate('/');
-    }
-  }, []);
-  // refactoring
-  useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('linkr'));
-    if (!user?.profilePic && !!localUser?.profilePic) {
-      const promise = getUser();
-      promise
-        .then((res) => {
-          if (res.data === 'token expirado' || res.status !== 200) {
-            localStorage.removeItem('linkr');
-            window.location.assign('/');
-          }
-          setLoadingUser(true);
-        })
-        .catch((res) => {
-          localStorage.removeItem('linkr');
-          window.location.assign('/');
-        });
-      setUser(localUser);
+      redirctLogin();
     } else {
-      setLoadingUser(true);
+      const localUser = JSON.parse(localStorage.getItem("linkr"));
+      if (!user?.profilePic || !!localUser?.profilePic) {
+        const promise = getUser();
+        promise
+          .then((res) => {
+            if (res.data === "token expirado" || res.status !== 200) {
+              redirctLogin();
+            }
+            setLoadingUser(true);
+          })
+          .catch((res) => {
+            redirctLogin();
+          });
+        setUser(localUser);
+      } else {
+        setLoadingUser(true);
+      }
     }
   }, []);
-  // refactoring
+
   return (
     <>
       {loadingUser ? (
@@ -50,8 +51,8 @@ export default function PrivatePage({ children }) {
       ) : (
         <>
           <Wrapper>
-            <WarningMessage color={'white'}>Loading</WarningMessage>
-            <Loading color={'white'} />
+            <WarningMessage color={"white"}>Loading</WarningMessage>
+            <Loading color={"white"} />
           </Wrapper>
         </>
       )}
@@ -79,10 +80,10 @@ const WarningMessage = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 40px;
-  color: ${(props) => props.color || 'ffffff'};
+  color: ${(props) => props.color || "ffffff"};
 `;
